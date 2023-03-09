@@ -18,15 +18,16 @@ const MapLocationSearch = ({
   nextScreen,
   route,
   containerStyling,
+  location,
+  onLocationChange,
 }) => {
-  const [location, setLocation] = useState({});
   const [isMapVisible, setIsMapVisible] = useState(false);
   const currentRoute = useRoute();
   const currentNavigation = useNavigation();
 
   useEffect(() => {
     if (!route.params || route.params.screen !== currentRoute.name) return;
-    setLocation(route.params.departure);
+    onLocationChange(route.params.departure);
   }, [route.params]);
 
   useEffect(() => {
@@ -66,11 +67,11 @@ const MapLocationSearch = ({
             latitude={location.latitude}
             longitude={location.longitude}
             onDrangEnd={({ latitude, longitude }) =>
-              setLocation((prevState) => ({
-                ...prevState,
+              onLocationChange({
+                ...location,
                 latitude,
                 longitude,
-              }))
+              })
             }
           />
           <Button

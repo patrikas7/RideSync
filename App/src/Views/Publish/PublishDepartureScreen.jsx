@@ -10,12 +10,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
 import NoResults from "../../Components/NoResults/NoResults";
+import { useDispatch, useSelector } from "react-redux";
+import { setDeparture } from "../../redux/publish/publishSlice";
 
 const PublishDepartureScreen = ({ navigation, route }) => {
   const currentRoute = useRoute();
   const { token, id } = useUserData();
   const [isUserEligebleToPost, setIsUserEligebleToPost] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const departure = useSelector((state) => state.publish.departure);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!token || !id) return;
@@ -40,7 +44,7 @@ const PublishDepartureScreen = ({ navigation, route }) => {
   const renderContent = () => {
     if (isLoading) return <Spinner visible={isLoading} />;
 
-    return isUserEligebleToPost ? (
+    return true ? (
       <MapLocationSearch
         headerText="Pasirinkite kelionės pradžios tašką 🏁"
         inputPlaceholder="Išvykimo vieta"
@@ -50,6 +54,8 @@ const PublishDepartureScreen = ({ navigation, route }) => {
         nextScreen={PageNames.PUBLISH_DESTINATION_SEARCH}
         route={route}
         containerStyling={PublishStyles.formContainer}
+        location={departure}
+        onLocationChange={(departure) => dispatch(setDeparture(departure))}
       />
     ) : (
       <NoResults
@@ -65,7 +71,7 @@ const PublishDepartureScreen = ({ navigation, route }) => {
       <Spinner visible={isLoading} />
       <ButtonsSwitch
         leftButtonText="Kelionės skelbimas"
-        rightButtonText="Kelionės paieška"
+        rightButtonText="Kelionės paieškos skelbimas"
       />
       {renderContent()}
     </Container>

@@ -13,6 +13,7 @@ const ButtonSwitchStyles = StyleSheet.create({
   toggleItem: {
     padding: 8,
     width: "50%",
+    justifyContent: "center",
   },
   toggleItemLeft: {
     borderTopLeftRadius: Sizes.DEFAULT_BORDER_RADIUS,
