@@ -33,13 +33,7 @@ const Tabs = ({ route, navigation }) => {
       />
       <Tab.Screen
         name={PageNames.PUBLISH}
-        children={(props) => (
-          <Publish
-            navigation={navigation}
-            route={route}
-            tabNavigation={props.navigation}
-          />
-        )}
+        children={() => <Publish navigation={navigation} route={route} />}
         options={{
           tabBarLabel: "Skelbti",
           tabBarIcon: ({ color }) => (
