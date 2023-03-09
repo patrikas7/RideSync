@@ -17,6 +17,12 @@ const checkUserByEmail = async (req, res) => {
   }
 };
 
+const getUserCars = async (req, res) => {
+  const user = req.user;
+  res.status(StatusCodes.OK).json({ carsList: user.cars });
+};
+
 export default {
   checkUserByEmail,
+  getUserCars,
 };

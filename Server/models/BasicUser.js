@@ -7,6 +7,12 @@ const BasicUserSchema = new Schema({
   tripBookmarks: [
     { departure: String, destination: String, personCount: Number },
   ],
+  cars: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Car",
+    },
+  ],
 });
 
 const BasicUser = User.discriminator("BasicUser", BasicUserSchema);
