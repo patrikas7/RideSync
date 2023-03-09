@@ -9,11 +9,28 @@ const Publish = ({ navigation, route, tabNavigation }) => {
     <Stack.Navigator>
       <Stack.Screen
         name={PageNames.PUBLISH_DEPARTURE_SEARCH}
-        children={() => (
+        children={(props) => (
           <PublishLocationSearchScreen
             navigation={navigation}
             route={route}
             tabNavigation={tabNavigation}
+            publishNavigation={props.navigation}
+            nextScreen={PageNames.PUBLISH_DESTINATION_SEARCH}
+          />
+        )}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.PUBLISH_DESTINATION_SEARCH}
+        children={(props) => (
+          <PublishLocationSearchScreen
+            navigation={navigation}
+            route={route}
+            tabNavigation={tabNavigation}
+            publishNavigation={props.navigation}
+            nextScreen={PageNames.PUBLISH_DESTINATION_SEARCH}
           />
         )}
         options={{

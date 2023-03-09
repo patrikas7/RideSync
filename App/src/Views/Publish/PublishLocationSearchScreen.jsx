@@ -10,15 +10,23 @@ import { useState, useEffect } from "react";
 import PageNames from "../../Constants/pageNames";
 import Button from "../../Components/Button/Button";
 import Map from "../../Components/Map/Map";
+import { useRoute } from "@react-navigation/native";
 
-const PublishLocationSearchScreen = ({ navigation, route, tabNavigation }) => {
+const PublishLocationSearchScreen = ({
+  navigation,
+  route,
+  tabNavigation,
+  publishNavigation,
+  nextScreen,
+}) => {
   const [departure, setDeparture] = useState({});
   const [isMapVisible, setIsMapVisible] = useState(false);
+  const publishRoute = useRoute();
 
   useEffect(() => {
-    if (!route.params || !tabNavigation.isFocused()) return;
+    if (!route.params || route.params.screen !== PageNames.PUBLISH) return;
     setDeparture(route.params.departure);
-  }, [route.params, tabNavigation]);
+  }, [route.params]);
 
   useEffect(() => {
     if (!departure.addressLine1) return;
@@ -35,7 +43,7 @@ const PublishLocationSearchScreen = ({ navigation, route, tabNavigation }) => {
   };
 
   const handleOnNextClick = () => {
-    console.log(departure);
+    publishNavigation.navigate(nextScreen);
   };
 
   return (

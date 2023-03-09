@@ -7,7 +7,6 @@ import Button from "../Button/Button";
 import { useEffect, useState } from "react";
 import ErrorMessages from "../../Constants/errorMessages";
 import PageNames from "../../Constants/pageNames";
-import Spinner from "react-native-loading-spinner-overlay/lib";
 import useUserData from "../../hooks/useUserData";
 import axios from "axios";
 
@@ -41,7 +40,6 @@ const TripSearchForm = ({
     destination: "",
     date: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
   const { id, token } = useUserData();
 
   useEffect(() => {
@@ -131,7 +129,6 @@ const TripSearchForm = ({
 
   return (
     <View style={TripSearchStyles.searchContainer}>
-      <Spinner visible={isLoading} />
       <View style={TripSearchStyles.formContainer}>
         <Input
           placeholder={"Išvykimo vieta"}
