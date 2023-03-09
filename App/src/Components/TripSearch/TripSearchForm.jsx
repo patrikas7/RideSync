@@ -16,24 +16,26 @@ const InputTypes = {
   DESTINATION: "destination",
 };
 
+const initialState = {
+  departure: {
+    addressLine1: "",
+    city: "",
+  },
+  destination: {
+    addressLine1: "",
+    city: "",
+  },
+  date: "",
+  personCount: "",
+};
+
 const TripSearchForm = ({
   navigation,
   route,
   setIsStarIconVisible,
   setIsFavorite,
 }) => {
-  const [formState, setFormState] = useState({
-    departure: {
-      addressLine1: "",
-      city: "",
-    },
-    destination: {
-      addressLine1: "",
-      city: "",
-    },
-    date: "",
-    personCount: "",
-  });
+  const [formState, setFormState] = useState(initialState);
   const [errors, setErrors] = useState({
     departure: "",
     destination: "",
@@ -43,7 +45,7 @@ const TripSearchForm = ({
   const { id, token } = useUserData();
 
   useEffect(() => {
-    if (!route.params) return;
+    if (!route.params || route.params.screen !== PageNames.SEARCH) return;
     setFormState((currentState) => ({ ...currentState, ...route.params }));
   }, [route.params]);
 
@@ -122,6 +124,7 @@ const TripSearchForm = ({
     navigation.navigate(PageNames.CITY_SEARCH, {
       inputType,
       value,
+      prevScreen: PageNames.SEARCH,
     });
     Keyboard.dismiss();
   };

@@ -10,17 +10,15 @@ import { useState, useEffect } from "react";
 import PageNames from "../../Constants/pageNames";
 import Button from "../../Components/Button/Button";
 import Map from "../../Components/Map/Map";
-import { useIsFocused } from "@react-navigation/native";
 
-const PublishScreen = ({ navigation, route, tabNavigation }) => {
+const PublishLocationSearchScreen = ({ navigation, route, tabNavigation }) => {
   const [departure, setDeparture] = useState({});
   const [isMapVisible, setIsMapVisible] = useState(false);
-  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (!route.params || !tabNavigation.isFocused() || !isFocused) return;
+    if (!route.params || !tabNavigation.isFocused()) return;
     setDeparture(route.params.departure);
-  }, [route.params, tabNavigation, isFocused]);
+  }, [route.params, tabNavigation]);
 
   useEffect(() => {
     if (!departure.addressLine1) return;
@@ -32,7 +30,12 @@ const PublishScreen = ({ navigation, route, tabNavigation }) => {
     navigation.navigate(PageNames.CITY_SEARCH, {
       inputType: "departure",
       value: departure?.addressLine1,
+      prevScreen: PageNames.PUBLISH,
     });
+  };
+
+  const handleOnNextClick = () => {
+    console.log(departure);
   };
 
   return (
@@ -68,16 +71,20 @@ const PublishScreen = ({ navigation, route, tabNavigation }) => {
               }))
             }
           />
-          <Button text="Toliau" styling={PublishStyles.buttonContainer} />
+          <Button
+            text="Toliau"
+            styling={PublishStyles.buttonContainer}
+            onClick={() => handleOnNextClick()}
+          />
         </>
       )}
     </Container>
   );
 };
 
-PublishScreen.propTypes = {
+PublishLocationSearchScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
   route: PropTypes.object.isRequired,
 };
 
-export default PublishScreen;
+export default PublishLocationSearchScreen;

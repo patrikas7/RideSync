@@ -20,7 +20,8 @@ import { useIsFocused } from "@react-navigation/native";
 // Mirsta appsasa atidarius citySearch su klaipeda, su kitais miestais lyg viskas okey
 
 const CitySearchScreen = ({ route, navigation }) => {
-  const [searchTerm, setSearchTerm] = useState(route.params?.value);
+  const { inputType, value, prevScreen } = route.params;
+  const [searchTerm, setSearchTerm] = useState(value);
   const [isLoading, setIsLoading] = useState(true);
   const [suggestions, setSuggestions] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
@@ -28,7 +29,6 @@ const CitySearchScreen = ({ route, navigation }) => {
   const debouncedSearchTerm = useDebounce(searchTerm);
   const { token, id } = useUserData();
   const isFocused = useIsFocused();
-  const { inputType } = route.params;
 
   useEffect(() => {
     if (token && id) getSearchHistory();
@@ -90,6 +90,7 @@ const CitySearchScreen = ({ route, navigation }) => {
   const handleOnSuggestionPress = (suggestion) => {
     saveSearchHistory(suggestion.addressLine1);
     navigation.navigate(PageNames.HOME, {
+      screen: prevScreen,
       [inputType]: {
         addressLine1: suggestion.addressLine1,
         addressLine2: suggestion.addressLine2,

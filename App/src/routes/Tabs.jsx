@@ -6,9 +6,9 @@ import Colors from "../Constants/colors";
 import PageNames from "../Constants/pageNames";
 import Sizes from "../Constants/sizes";
 import BookmarksScreen from "../Views/Bookmarks/BookmarksScreen";
-import PublishScreen from "../Views/Publish/PublishScreen";
 import SearchScreen from "../Views/Search/SearchScreen";
 import FutureTrips from "../Views/Trips/FutureTrips/FutureTrips";
+import Publish from "./Publish";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -17,7 +17,13 @@ const Tabs = ({ route, navigation }) => {
     <Tab.Navigator barStyle={styles.barStyle} activeColor={Colors.BLUE_400}>
       <Tab.Screen
         name={PageNames.SEARCH}
-        children={() => <SearchScreen navigation={navigation} route={route} />}
+        children={(props) => (
+          <SearchScreen
+            navigation={navigation}
+            route={route}
+            tabNavigation={props.navigation}
+          />
+        )}
         options={{
           tabBarLabel: "Paieška",
           tabBarIcon: ({ color }) => (
@@ -28,7 +34,7 @@ const Tabs = ({ route, navigation }) => {
       <Tab.Screen
         name={PageNames.PUBLISH}
         children={(props) => (
-          <PublishScreen
+          <Publish
             navigation={navigation}
             route={route}
             tabNavigation={props.navigation}
