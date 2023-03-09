@@ -1,0 +1,11 @@
+const StatusCodes = {
+  OK: 200,
+  CREATION_SUCCESS: 201,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
+  CANT_PROCESS: 422,
+  UNEXPECTED_ERROR: 500,
+};
+
+export default StatusCodes;
