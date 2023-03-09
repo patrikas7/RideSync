@@ -4,15 +4,9 @@ import Button from "../Button/Button";
 import NoResultsSVG from "../Svg/NoResults";
 import NoResultsStyle from "./NoResultsStyles";
 
-const NoResults = ({
-  primaryText,
-  secondaryText,
-  buttonText,
-  onPress,
-  containerStyling,
-}) => {
+const NoResults = ({ primaryText, secondaryText, buttonText, onPress }) => {
   return (
-    <View style={containerStyling}>
+    <View style={NoResultsStyle.containerStyling}>
       <NoResultsSVG />
       <View style={NoResultsStyle.textContainer}>
         <Text style={NoResultsStyle.primaryText}>{primaryText}</Text>

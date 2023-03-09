@@ -43,7 +43,6 @@ const TripsSearchResults = ({ navigation, route }) => {
       <Spinner visible={isLoading} />
       {!isLoading && !tripsList.length && (
         <NoResults
-          containerStyling={TripsSearchResultsStyle.noResultsContainer}
           primaryText="Nerasta jokių kelionių pagal paieškos kriterijus"
           secondaryText="Atnaujinkite paiešką arba užprenumeruokite pranešimą, kai atitinkama kelionė bus galima"
           buttonText="Užpenumeruoti kelionėss pranešimą"

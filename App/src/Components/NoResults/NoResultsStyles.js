@@ -3,6 +3,9 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
 const NoResultsStyle = StyleSheet.create({
+  containerStyling: {
+    marginTop: "20%",
+  },
   textContainer: {
     marginTop: 24,
   },

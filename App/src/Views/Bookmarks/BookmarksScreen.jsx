@@ -11,7 +11,6 @@ const BookmarksScreen = ({ navigation }) => {
   return (
     <Container>
       <NoResults
-        containerStyling={BookmarksStyle.noResultsContainer}
         primaryText="Jūs neturite jokių išsaugotų maršrutų"
         secondaryText="Kelionių paieškoje galite išsaugoti norimą maršrutą"
         buttonText="Į kelionių paiešką"

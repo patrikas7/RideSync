@@ -6,7 +6,6 @@ const FutureTrips = () => {
   return (
     <Container>
       <NoResults
-        containerStyling={styles.noResultsContainer}
         primaryText="Jūs neturite jokių suplanuotų kelionių"
         secondaryText="Sukurkite naują kelionę arba užsirezervuokite vietą per kelionių paiešką"
         buttonText="Mano kelionių istorija"
@@ -15,10 +14,6 @@ const FutureTrips = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  noResultsContainer: {
-    marginTop: "20%",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default FutureTrips;
