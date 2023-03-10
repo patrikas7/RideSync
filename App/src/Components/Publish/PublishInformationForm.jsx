@@ -3,6 +3,7 @@ import PublishInformationFormStyles from "./PublishInformationFormStyles";
 import InputDatePicker from "../Form/InputDatePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { setDate } from "../../redux/publish/publishSlice";
+import Input from "../Form/Input";
 
 const PublishInformationForm = () => {
   const state = useSelector((state) => state.publish);
@@ -10,11 +11,10 @@ const PublishInformationForm = () => {
 
   return (
     <View style={PublishInformationFormStyles.formContainer}>
-      <InputDatePicker
-        placeholder="Kelionės data"
-        minimumDate={new Date()}
-        value={state.date}
-        onSelect={(date) => dispatch(setDate(date))}
+      <Input
+        placeholder={"Keleivių skaičius"}
+        icon={"people-outline"}
+        inputMode={"numeric"}
       />
     </View>
   );

@@ -8,3 +8,8 @@ export const getErrorState = (fields, errorMessage) => {
 
   return errors;
 };
+
+export const getFormatedTodaysDate = () => {
+  const date = new Date();
+  return date.toISOString().split("T")[0];
+};

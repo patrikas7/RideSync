@@ -9,7 +9,7 @@ import PublishInformationForm from "../../Components/Publish/PublishInformationF
 
 const PublishInformationScreen = () => {
   const navigation = useNavigation();
-  useScreenArrowBack(navigation, PageNames.PUBLISH_DESTINATION_SEARCH);
+  useScreenArrowBack(navigation, PageNames.PUBLISH_DATE_AND_TIME);
 
   return (
     <Container>

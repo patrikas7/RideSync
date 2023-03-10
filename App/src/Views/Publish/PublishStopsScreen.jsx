@@ -8,7 +8,7 @@ import Sizes from "../../Constants/sizes";
 import StopsList from "../../Components/StopsList/StopsList";
 import Button from "../../Components/Button/Button";
 import TextButton from "../../Components/Button/TextButton";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addStop } from "../../redux/publish/publishSlice";
 import FlashMessage from "react-native-flash-message";
@@ -69,7 +69,11 @@ const PublishStopsScreen = ({ mainNavigation, mainRoute }) => {
         <TextButton styling={{ marginTop: 18 }} onPress={handleOnPress} />
       </View>
 
-      <Button text="Toliau" styling={{ marginBottom: 32 }} />
+      <Button
+        text="Toliau"
+        styling={{ marginBottom: 32 }}
+        onClick={() => navigation.navigate(PageNames.PUBLISH_DATE_AND_TIME)}
+      />
       <FlashMessage ref={flashMessageRef} position={"bottom"} floating={true} />
     </Container>
   );
