@@ -41,19 +41,19 @@ const Publish = ({ navigation, route }) => {
           options={screenOptions}
         />
         <Stack.Screen
-          name={PageNames.PUBLISH_STOPS_SCREEN}
+          name={PageNames.PUBLISH_STOPS}
           children={() => (
-            <PublishStopsScreen navigation={navigation} route={route} />
+            <PublishStopsScreen mainNavigation={navigation} mainRoute={route} />
           )}
           options={screenOptions}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name={PageNames.PUBLISH_INFORMATION}
           children={() => (
             <PublishInformationScreen navigation={navigation} route={route} />
           )}
           options={screenOptions}
-        /> */}
+        />
       </Stack.Navigator>
     </Provider>
   );

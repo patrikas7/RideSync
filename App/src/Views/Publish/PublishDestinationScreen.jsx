@@ -39,7 +39,7 @@ const PublishDestinationScreen = ({ navigation, route }) => {
         mapHintText="Ar tai yra vieta į kurią atvykstate?"
         navigation={navigation}
         currentScreen={currentRoute.name}
-        nextScreen={PageNames.PUBLISH_DESTINATION_SEARCH}
+        nextScreen={PageNames.PUBLISH_STOPS}
         route={route}
         location={destination}
         onLocationChange={(destination) =>
