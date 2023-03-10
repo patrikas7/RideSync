@@ -5,10 +5,10 @@ import StopsListStyle from "./StopsListStyle";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
-const Stop = ({ stop }) => {
+const Stop = ({ stop, onPress }) => {
   return (
     <TouchableHighlight
-      onPress={() => console.log()}
+      onPress={onPress}
       activeOpacity={0.6}
       underlayColor={Colors.WHITE}
     >

@@ -22,8 +22,6 @@ const PublishDepartureScreen = ({ navigation, route }) => {
   const departure = useSelector((state) => state.publish.departure);
   const dispatch = useDispatch();
 
-  console.log(departure);
-
   useEffect(() => {
     if (!token || !id) return;
     fetchUsersVehicle();

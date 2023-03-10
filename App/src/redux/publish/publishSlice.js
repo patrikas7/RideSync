@@ -24,6 +24,9 @@ export const publishSlice = createSlice({
     setDate: (state, action) => {
       state.date = action.payload;
     },
+    addStop: (state, action) => {
+      state.stops.push(action.payload);
+    },
   },
 });
 
@@ -37,6 +40,7 @@ export const publishErrorsSlice = createSlice({
   },
 });
 
-export const { setDeparture, setDestination, setDate } = publishSlice.actions;
+export const { setDeparture, setDestination, setDate, addStop } =
+  publishSlice.actions;
 
 export const { setDestinationError } = publishErrorsSlice.actions;
