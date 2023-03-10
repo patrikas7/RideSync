@@ -15,6 +15,9 @@ const MapStyles = StyleSheet.create({
     top: 16,
     zIndex: 1,
   },
+  mapHintContainerError: {
+    backgroundColor: Colors.RED_TRANSPARENT,
+  },
   mapHintText: {
     color: Colors.WHITE,
     fontSize: 16,

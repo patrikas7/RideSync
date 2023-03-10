@@ -12,6 +12,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import NoResults from "../../Components/NoResults/NoResults";
 import { useDispatch, useSelector } from "react-redux";
 import { setDeparture } from "../../redux/publish/publishSlice";
+import PublishInformationScreen from "./PublishInformationScreen";
 
 const PublishDepartureScreen = ({ navigation, route }) => {
   const currentRoute = useRoute();
@@ -75,6 +76,7 @@ const PublishDepartureScreen = ({ navigation, route }) => {
       />
       {renderContent()}
     </Container>
+    // <PublishInformationScreen />
   );
 };
 

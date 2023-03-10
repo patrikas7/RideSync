@@ -3,6 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   departure: {},
   destination: {},
+  date: "",
+};
+
+const initialErrorState = {
+  destination: "",
 };
 
 export const publishSlice = createSlice({
@@ -15,9 +20,22 @@ export const publishSlice = createSlice({
     setDestination: (state, action) => {
       state.destination = action.payload;
     },
+    setDate: (state, action) => {
+      state.date = action.payload;
+    },
   },
 });
 
-export const { setDeparture, setDestination } = publishSlice.actions;
+export const publishErrorsSlice = createSlice({
+  name: "publishErrors",
+  initialState: initialErrorState,
+  reducers: {
+    setDestinationError: (state, action) => {
+      state.destination = action.payload;
+    },
+  },
+});
 
-export default publishSlice.reducer;
+export const { setDeparture, setDestination, setDate } = publishSlice.actions;
+
+export const { setDestinationError } = publishErrorsSlice.actions;

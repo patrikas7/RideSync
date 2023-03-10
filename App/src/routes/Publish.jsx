@@ -4,8 +4,19 @@ import PageNames from "../Constants/pageNames";
 import PublishDepartureScreen from "../Views/Publish/PublishDepartureScreen";
 import PublishDestinationScreen from "../Views/Publish/PublishDestinationScreen";
 import { publishStore } from "../redux/publish/publishStore";
+import PublishInformationScreen from "../Views/Publish/PublishInformationScreen";
+import PublishStopsScreen from "../Views/Publish/PublishStopsScreen";
 
 // ADD ERROR TO DESTINATION IF CYTIES ARE THE SAME
+
+const screenOptions = {
+  title: "",
+  headerStyle: {
+    elevation: 0,
+    shadowOpacity: 0,
+    borderBottomWidth: 0,
+  },
+};
 
 const Publish = ({ navigation, route }) => {
   const Stack = createStackNavigator();
@@ -27,15 +38,22 @@ const Publish = ({ navigation, route }) => {
           children={() => (
             <PublishDestinationScreen navigation={navigation} route={route} />
           )}
-          options={{
-            title: "",
-            headerStyle: {
-              elevation: 0,
-              shadowOpacity: 0,
-              borderBottomWidth: 0,
-            },
-          }}
+          options={screenOptions}
         />
+        <Stack.Screen
+          name={PageNames.PUBLISH_STOPS_SCREEN}
+          children={() => (
+            <PublishStopsScreen navigation={navigation} route={route} />
+          )}
+          options={screenOptions}
+        />
+        {/* <Stack.Screen
+          name={PageNames.PUBLISH_INFORMATION}
+          children={() => (
+            <PublishInformationScreen navigation={navigation} route={route} />
+          )}
+          options={screenOptions}
+        /> */}
       </Stack.Navigator>
     </Provider>
   );

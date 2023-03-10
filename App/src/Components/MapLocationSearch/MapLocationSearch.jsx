@@ -20,6 +20,7 @@ const MapLocationSearch = ({
   containerStyling,
   location,
   onLocationChange,
+  error,
 }) => {
   const [isMapVisible, setIsMapVisible] = useState(false);
   const currentRoute = useRoute();
@@ -64,6 +65,7 @@ const MapLocationSearch = ({
         <>
           <Map
             hintText={mapHintText}
+            error={error}
             latitude={location.latitude}
             longitude={location.longitude}
             onDrangEnd={({ latitude, longitude }) =>
@@ -74,11 +76,13 @@ const MapLocationSearch = ({
               })
             }
           />
-          <Button
-            text="Toliau"
-            styling={MapLocationSearchStyles.buttonContainer}
-            onClick={() => handleOnNextClick()}
-          />
+          {!error && (
+            <Button
+              text="Toliau"
+              styling={MapLocationSearchStyles.buttonContainer}
+              onClick={() => handleOnNextClick()}
+            />
+          )}
         </>
       )}
     </>

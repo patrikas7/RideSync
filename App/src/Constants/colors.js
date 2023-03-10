@@ -14,6 +14,7 @@ const Colors = {
   BLUE_400: "#1F54D3",
   PLACEHOLDER: "#C7C7CD",
   HIGHLIGHT_UNDERLAY: "#DDDDDD",
+  RED_TRANSPARENT: "rgba(255, 0, 0, 0.6)",
 };
 
 export default Colors;

@@ -3,7 +3,9 @@ import { View, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MapStyles from "./MapStyles";
 
-const Map = ({ hintText, latitude, longitude, onDragEnd }) => {
+const Map = ({ hintText, latitude, longitude, onDragEnd, error }) => {
+  const pillText = error || hintText;
+
   return (
     <View style={MapStyles.mapContainer}>
       <MapView
@@ -22,9 +24,14 @@ const Map = ({ hintText, latitude, longitude, onDragEnd }) => {
           onDragEnd={(e) => onDragEnd(e.nativeEvent.coordinate)}
         />
       </MapView>
-      {hintText && (
-        <View style={MapStyles.mapHintContainer}>
-          <Text style={MapStyles.mapHintText}>{hintText}</Text>
+      {pillText && (
+        <View
+          style={[
+            MapStyles.mapHintContainer,
+            error && MapStyles.mapHintContainerError,
+          ]}
+        >
+          <Text style={MapStyles.mapHintText}>{pillText}</Text>
         </View>
       )}
     </View>

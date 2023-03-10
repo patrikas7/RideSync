@@ -5,14 +5,31 @@ import MapLocationSearch from "../../Components/MapLocationSearch/MapLocationSea
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
-import { setDestination } from "../../redux/publish/publishSlice";
+import ErrorMessages from "../../Constants/errorMessages";
+import {
+  setDestination,
+  setDestinationError,
+} from "../../redux/publish/publishSlice";
+import { useEffect } from "react";
 
 const PublishDestinationScreen = ({ navigation, route }) => {
   const currentNavigation = useNavigation();
   const currentRoute = useRoute();
+  const departure = useSelector((state) => state.publish.departure);
   const destination = useSelector((state) => state.publish.destination);
+  const destinationError = useSelector(
+    (state) => state.publishErrors.destination
+  );
   const dispatch = useDispatch();
   useScreenArrowBack(currentNavigation, PageNames.PUBLISH_DEPARTURE_SEARCH);
+
+  useEffect(() => {
+    dispatch(
+      setDestinationError(
+        destination.city === departure.city ? ErrorMessages.SAME_CITIES : ""
+      )
+    );
+  }, [destination]);
 
   return (
     <Container>
@@ -28,6 +45,7 @@ const PublishDestinationScreen = ({ navigation, route }) => {
         onLocationChange={(destination) =>
           dispatch(setDestination(destination))
         }
+        error={destinationError}
       />
     </Container>
   );
