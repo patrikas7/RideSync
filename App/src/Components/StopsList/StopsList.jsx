@@ -15,13 +15,11 @@ const StopsList = ({
       <MainStop stop={firstStop} />
       <View style={StopsListStyle.separator}></View>
       {stops.map((stop, index) => (
-        <Stop
-          key={index}
-          stop={stop}
-          onPress={() => onStopPress(stop, index)}
-        />
+        <View key={index}>
+          <Stop stop={stop} onPress={() => onStopPress(stop, index)} />
+          <View style={StopsListStyle.separator}></View>
+        </View>
       ))}
-      <View style={StopsListStyle.separator}></View>
       <MainStop stop={lastStop} />
     </View>
   );

@@ -56,6 +56,13 @@ const PublishStopsScreen = ({ mainNavigation, mainRoute }) => {
     dispatch(addStop(location));
   };
 
+  const handleOnStopPress = (stop, index) => {
+    navigation.navigate(PageNames.PUBLISH_STOP_EDIT, {
+      stop,
+      index,
+    });
+  };
+
   return (
     <Container>
       <Header text="Pridėkite kelionės sustojimus" size={Sizes.HEADER_MEDIUM} />
@@ -65,8 +72,11 @@ const PublishStopsScreen = ({ mainNavigation, mainRoute }) => {
           firstStop={departure}
           lastStop={destination}
           stops={stops}
+          onStopPress={handleOnStopPress}
         />
-        <TextButton styling={{ marginTop: 18 }} onPress={handleOnPress} />
+        {stops.length < 3 && (
+          <TextButton styling={{ marginTop: 18 }} onPress={handleOnPress} />
+        )}
       </View>
 
       <Button

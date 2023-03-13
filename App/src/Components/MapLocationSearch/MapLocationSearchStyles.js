@@ -1,12 +1,17 @@
 import { StyleSheet } from "react-native";
+import Colors from "../../Constants/colors";
 
 const MapLocationSearchStyles = StyleSheet.create({
   inputContainer: {
     marginTop: 16,
   },
-  buttonContainer: {
+  buttonsContainer: {
     marginBottom: 32,
     marginHorizontal: 0,
+    flexDirection: "row",
+  },
+  button: {
+    flex: 1,
   },
 });
 

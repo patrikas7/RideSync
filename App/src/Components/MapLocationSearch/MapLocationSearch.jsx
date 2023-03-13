@@ -3,7 +3,7 @@ import Header from "../Form/Header";
 import Input from "../Form/Input";
 import Sizes from "../../Constants/sizes";
 import Map from "../Map/Map";
-import Button from "../Button/Button";
+import Button, { ButtonColor } from "../Button/Button";
 import MapLocationSearchStyles from "./MapLocationSearchStyles";
 import { useState, useEffect } from "react";
 import PageNames from "../../Constants/pageNames";
@@ -20,6 +20,7 @@ const MapLocationSearch = ({
   containerStyling,
   location,
   onLocationChange,
+  onLocationRemove,
   error,
 }) => {
   const [isMapVisible, setIsMapVisible] = useState(false);
@@ -46,6 +47,11 @@ const MapLocationSearch = ({
   };
 
   const handleOnNextClick = () => {
+    currentNavigation.navigate(nextScreen);
+  };
+
+  const handleOnRemoveClick = () => {
+    onLocationRemove();
     currentNavigation.navigate(nextScreen);
   };
 
@@ -77,11 +83,21 @@ const MapLocationSearch = ({
             }
           />
           {!error && (
-            <Button
-              text="Toliau"
-              styling={MapLocationSearchStyles.buttonContainer}
-              onClick={() => handleOnNextClick()}
-            />
+            <View style={MapLocationSearchStyles.buttonsContainer}>
+              {onLocationRemove && (
+                <Button
+                  text="Pašalinti"
+                  onClick={handleOnRemoveClick}
+                  styling={MapLocationSearchStyles.button}
+                  color={ButtonColor.WHITE}
+                />
+              )}
+              <Button
+                text="Toliau"
+                onClick={handleOnNextClick}
+                styling={MapLocationSearchStyles.button}
+              />
+            </View>
           )}
         </>
       )}

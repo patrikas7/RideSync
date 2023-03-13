@@ -7,6 +7,7 @@ import { publishStore } from "../redux/publish/publishStore";
 import PublishInformationScreen from "../Views/Publish/PublishInformationScreen";
 import PublishStopsScreen from "../Views/Publish/PublishStopsScreen";
 import PublishDateAndTimeScreen from "../Views/Publish/PublishDateAndTimeScreen";
+import PublishStopEditScreen from "../Views/Publish/PublishStopEditScreen";
 
 // ADD ERROR TO DESTINATION IF CYTIES ARE THE SAME
 
@@ -45,6 +46,16 @@ const Publish = ({ navigation, route }) => {
           name={PageNames.PUBLISH_STOPS}
           children={() => (
             <PublishStopsScreen mainNavigation={navigation} mainRoute={route} />
+          )}
+          options={screenOptions}
+        />
+        <Stack.Screen
+          name={PageNames.PUBLISH_STOP_EDIT}
+          children={() => (
+            <PublishStopEditScreen
+              mainNavigation={navigation}
+              mainRoute={route}
+            />
           )}
           options={screenOptions}
         />
