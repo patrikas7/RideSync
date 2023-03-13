@@ -8,12 +8,16 @@ const initialState = {
   date: getFormatedTodaysDate(),
   time: "00:00",
   personsCount: "",
+  price: "",
+  comments: "",
+  isTripFree: false,
+  isRoundTrip: false,
 };
 
 const initialErrorState = {
   destination: "",
-  date: "",
   personsCount: "",
+  price: "",
 };
 
 export const publishSlice = createSlice({
@@ -42,6 +46,18 @@ export const publishSlice = createSlice({
     removeStop: (state, action) => {
       state.stops.splice(action.payload, 1);
     },
+    setPrice: (state, action) => {
+      state.price = action.payload;
+    },
+    setComments: (state, action) => {
+      state.comments = action.payload;
+    },
+    toggleIsTripFree: (state) => {
+      state.isTripFree = !state.isTripFree;
+    },
+    toggleIsRoundTrip: (state) => {
+      state.isRoundTrip = !state.isRoundTrip;
+    },
   },
 });
 
@@ -52,11 +68,11 @@ export const publishErrorsSlice = createSlice({
     setDestinationError: (state, action) => {
       state.destination = action.payload;
     },
-    setDeteError: (state, action) => {
-      state.date = action.payload;
-    },
     setPersonsCountError: (state, action) => {
       state.personsCount = action.payload;
+    },
+    setPriceError: (state, action) => {
+      state.price = action.payload;
     },
   },
 });
@@ -64,10 +80,16 @@ export const publishErrorsSlice = createSlice({
 export const {
   setDeparture,
   setDestination,
+  setPersonsCount,
   setDate,
+  setPrice,
+  setComments,
   addStop,
   updateStop,
   removeStop,
+  toggleIsTripFree,
+  toggleIsRoundTrip,
 } = publishSlice.actions;
 
-export const { setDestinationError } = publishErrorsSlice.actions;
+export const { setDestinationError, setPersonsCountError, setPriceError } =
+  publishErrorsSlice.actions;

@@ -14,6 +14,9 @@ export const InputStyles = StyleSheet.create({
     fontSize: 16,
     marginLeft: 12,
   },
+  multiLineInput: {
+    height: 75,
+  },
   inputError: {
     borderBottomColor: Colors.RED,
   },
@@ -51,5 +54,17 @@ export const InputSearchStyles = StyleSheet.create({
     borderLeftColor: Colors.PLACEHOLDER,
     borderLeftWidth: 1,
     paddingLeft: 4,
+  },
+});
+
+export const InputSwitchStyles = StyleSheet.create({
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 8,
+  },
+  text: {
+    flex: 1,
+    fontSize: 16,
   },
 });
