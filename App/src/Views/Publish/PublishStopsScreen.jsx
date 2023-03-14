@@ -11,17 +11,13 @@ import TextButton from "../../Components/Button/TextButton";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addStop } from "../../redux/publish/publishSlice";
-import FlashMessage from "react-native-flash-message";
 import { showMessage } from "react-native-flash-message";
 import ErrorMessages from "../../Constants/errorMessages";
-
-// Prideti sustojimo taisymo istrinimo logika
 
 const PublishStopsScreen = ({ mainNavigation, mainRoute }) => {
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch = useDispatch();
-  const flashMessageRef = useRef();
   const { departure, destination, stops } = useSelector(
     (state) => state.publish
   );
@@ -84,7 +80,6 @@ const PublishStopsScreen = ({ mainNavigation, mainRoute }) => {
         styling={{ marginBottom: 32 }}
         onClick={() => navigation.navigate(PageNames.PUBLISH_DATE_AND_TIME)}
       />
-      <FlashMessage ref={flashMessageRef} position={"bottom"} floating={true} />
     </Container>
   );
 };
