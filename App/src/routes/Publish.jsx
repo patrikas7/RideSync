@@ -9,8 +9,6 @@ import PublishStopsScreen from "../Views/Publish/PublishStopsScreen";
 import PublishDateAndTimeScreen from "../Views/Publish/PublishDateAndTimeScreen";
 import PublishStopEditScreen from "../Views/Publish/PublishStopEditScreen";
 
-// ADD ERROR TO DESTINATION IF CYTIES ARE THE SAME
-
 const screenOptions = {
   title: "",
   headerStyle: {
@@ -61,19 +59,17 @@ const Publish = ({ navigation, route }) => {
         />
         <Stack.Screen
           name={PageNames.PUBLISH_DATE_AND_TIME}
-          children={() => (
-            <PublishDateAndTimeScreen
-              mainNavigation={navigation}
-              mainRoute={route}
-            />
-          )}
+          children={() => <PublishDateAndTimeScreen />}
           options={screenOptions}
         />
         <Stack.Screen
           name={PageNames.PUBLISH_INFORMATION}
-          children={() => (
-            <PublishInformationScreen navigation={navigation} route={route} />
-          )}
+          children={() => <PublishInformationScreen />}
+          options={screenOptions}
+        />
+        <Stack.Screen
+          name={PageNames.PUBLISH_RETURN_DATE_AND_TIME}
+          children={() => <PublishDateAndTimeScreen isReturn={true} />}
           options={screenOptions}
         />
       </Stack.Navigator>

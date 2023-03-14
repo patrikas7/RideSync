@@ -19,6 +19,8 @@ const Input = ({
   onBlur,
   focus,
   isMultiline,
+  disabled,
+  maxLength = 255,
   inputMode = "text",
   color = Colors.GREY,
   showSoftInputOnFocus = true,
@@ -52,6 +54,7 @@ const Input = ({
             { borderBottomColor: isFocused ? Colors.BLUE_500 : color },
             hasError && InputStyles.inputError,
             isMultiline && InputStyles.multiLineInput,
+            disabled && InputStyles.disabled,
           ]}
           secureTextEntry={secureTextEntry}
           value={value}
@@ -64,7 +67,8 @@ const Input = ({
           inputMode={inputMode}
           keyboardType={inputMode}
           multiline={isMultiline}
-          maxLength={isMultiline ? 1000 : 255}
+          maxLength={isMultiline ? 1000 : maxLength}
+          editable={!disabled}
         />
       </View>
       <View style={InputStyles.errorContainer}>

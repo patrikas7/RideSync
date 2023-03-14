@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import useUserData from "./src/hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import TripsSearchResults from "./src/Views/Trips/TripsSearchResults/TripsSearchResults";
+import FlashMessage from "react-native-flash-message";
 
 axios.defaults.baseURL = "http://localhost:5001";
 
@@ -102,6 +103,7 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       )}
+      <FlashMessage position={"bottom"} floating={true} />
     </SafeAreaView>
   );
 }

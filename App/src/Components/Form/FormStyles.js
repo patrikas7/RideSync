@@ -28,6 +28,9 @@ export const InputStyles = StyleSheet.create({
   errorText: {
     color: Colors.RED,
   },
+  disabled: {
+    color: Colors.GREY_600,
+  },
 });
 
 export const InputSearchStyles = StyleSheet.create({

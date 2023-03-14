@@ -8,6 +8,7 @@ const ErrorMessages = {
   SAME_CITIES: "Išvykimo ir atvykimo miestai turi skirtis",
   SAME_STOP_CITY:
     "Sustojimas negali vykti išvykimo, atvykimo ar kituose sustojimo miestuose",
+  EXCEEDING_PEOPLE_COUNT: "Keleivių skaičius negali viršyti 4 žmonių limito",
 };
 
 export default ErrorMessages;
