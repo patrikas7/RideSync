@@ -8,38 +8,29 @@ import Container from "../../Components/Container/Container";
 import Map from "../../Components/Map/Map";
 import Button from "../../Components/Button/Button";
 import PublishStyles from "./PublishStyles";
+import { generatePins } from "./PublishUtils";
 
 const PublishRouteConfirmationScreen = () => {
   const navigation = useNavigation();
-  const state = useSelector((state) => state.publish);
-  console.log(state);
-  const pins = [
-    {
-      latitude: state.departure.latitude,
-      longitude: state.departure.longitude,
-      draggable: false,
-    },
-    {
-      latitude: state.destination.latitude,
-      longitude: state.destination.longitude,
-      draggable: false,
-    },
-    ...state.stops.map((stop) => ({
-      latitude: stop.latitude,
-      longitude: stop.longitude,
-      draggable: false,
-    })),
-  ];
+  const { departure, destination, stops } = useSelector(
+    (state) => state.publish
+  );
   useScreenArrowBack(navigation, PageNames.PUBLISH_INFORMATION);
 
   return (
     <Container>
       <Header
-        text="Patvirtinkite kelionės maršrutą"
+        text="Patvirtinkite kelionės sustojimus"
         size={Sizes.HEADER_MEDIUM}
       />
-      <Map pins={pins} />
-      <Button text={"Toliau"} styling={PublishStyles.button} />
+      <Map pins={generatePins(departure, destination, stops)} />
+      <Button
+        text={"Toliau"}
+        styling={PublishStyles.button}
+        onClick={() =>
+          navigation.navigate(PageNames.PUBLISH_INFORMATION_CONFIRMATION)
+        }
+      />
     </Container>
   );
 };

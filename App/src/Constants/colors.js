@@ -16,6 +16,8 @@ const Colors = {
   PLACEHOLDER: "#C7C7CD",
   HIGHLIGHT_UNDERLAY: "#DDDDDD",
   RED_TRANSPARENT: "rgba(255, 0, 0, 0.6)",
+  PINK_100: "#f4f0fa",
+  LIGHT_BLUE: "#ddefff",
 };
 
 export default Colors;

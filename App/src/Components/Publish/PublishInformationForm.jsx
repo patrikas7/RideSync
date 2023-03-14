@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import PublishInformationFormStyles from "./PublishInformationFormStyles";
+import { PublishInformationFormStyles } from "./PublishStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -75,7 +75,7 @@ const PublishInformationForm = () => {
         />
 
         <Input
-          placeholder={"Kaina"}
+          placeholder={"Kaina vienam keleiviui"}
           icon={"cash-outline"}
           inputMode={"numeric"}
           value={state.price}
