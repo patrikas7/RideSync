@@ -1,9 +1,10 @@
-import PropTypes from "prop-types";
 import { View, Text } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MapStyles from "./MapStyles";
 
-const Map = ({ hintText, latitude, longitude, onDragEnd, error }) => {
+const LT_CENTER_COORDS = { latitude: 55.169438, longitude: 23.881275 };
+
+const Map = ({ hintText, onDragEnd, error, pins }) => {
   const pillText = error || hintText;
 
   return (
@@ -12,17 +13,22 @@ const Map = ({ hintText, latitude, longitude, onDragEnd, error }) => {
         style={MapStyles.map}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
-          latitude,
-          longitude,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.01,
+          latitude:
+            pins.length > 1 ? LT_CENTER_COORDS.latitude : pins[0].latitude,
+          longitude:
+            pins.length > 1 ? LT_CENTER_COORDS.longitude : pins[0].longitude,
+          latitudeDelta: pins.length > 1 ? 5 : 0.001,
+          longitudeDelta: pins.length > 1 ? 2 : 0.01,
         }}
       >
-        <Marker
-          draggable
-          coordinate={{ latitude, longitude }}
-          onDragEnd={(e) => onDragEnd(e.nativeEvent.coordinate)}
-        />
+        {pins.map((pin, index) => (
+          <Marker
+            key={index}
+            draggable={pin.draggable}
+            coordinate={{ latitude: pin.latitude, longitude: pin.longitude }}
+            onDragEnd={(e) => onDragEnd(e.nativeEvent.coordinate, index)}
+          />
+        ))}
       </MapView>
       {pillText && (
         <View
@@ -36,10 +42,6 @@ const Map = ({ hintText, latitude, longitude, onDragEnd, error }) => {
       )}
     </View>
   );
-};
-
-Map.propTypes = {
-  hintText: PropTypes.string,
 };
 
 export default Map;

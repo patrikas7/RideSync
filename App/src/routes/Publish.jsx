@@ -8,6 +8,7 @@ import PublishInformationScreen from "../Views/Publish/PublishInformationScreen"
 import PublishStopsScreen from "../Views/Publish/PublishStopsScreen";
 import PublishDateAndTimeScreen from "../Views/Publish/PublishDateAndTimeScreen";
 import PublishStopEditScreen from "../Views/Publish/PublishStopEditScreen";
+import PublishRouteConfirmationScreen from "../Views/Publish/PublishRouteConfirmationScreen";
 
 const screenOptions = {
   title: "",
@@ -70,6 +71,11 @@ const Publish = ({ navigation, route }) => {
         <Stack.Screen
           name={PageNames.PUBLISH_RETURN_DATE_AND_TIME}
           children={() => <PublishDateAndTimeScreen isReturn={true} />}
+          options={screenOptions}
+        />
+        <Stack.Screen
+          name={PageNames.PUBLISH_ROUTE_CONFIRMATION}
+          children={() => <PublishRouteConfirmationScreen />}
           options={screenOptions}
         />
       </Stack.Navigator>

@@ -1,4 +1,3 @@
-import { Text, View } from "react-native";
 import Container from "../../Components/Container/Container";
 import { useNavigation } from "@react-navigation/native";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";

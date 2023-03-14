@@ -8,6 +8,9 @@ const PublishStyles = StyleSheet.create({
     marginTop: 24,
     flex: 1,
   },
+  button: {
+    marginBottom: 32,
+  },
 });
 
 export default PublishStyles;

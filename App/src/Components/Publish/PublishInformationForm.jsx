@@ -56,7 +56,7 @@ const PublishInformationForm = () => {
     navigation.navigate(
       state.isRoundTrip
         ? PageNames.PUBLISH_RETURN_DATE_AND_TIME
-        : PageNames.CITY_SEARCH
+        : PageNames.PUBLISH_ROUTE_CONFIRMATION
     );
   };
 

@@ -72,9 +72,14 @@ const MapLocationSearch = ({
           <Map
             hintText={mapHintText}
             error={error}
-            latitude={location.latitude}
-            longitude={location.longitude}
-            onDrangEnd={({ latitude, longitude }) =>
+            pins={[
+              {
+                latitude: location.latitude,
+                longitude: location.longitude,
+                draggable: true,
+              },
+            ]}
+            onDragEnd={({ latitude, longitude }, index) =>
               onLocationChange({
                 ...location,
                 latitude,
