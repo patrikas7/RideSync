@@ -15,7 +15,7 @@ const PublishInformationConfirmationScreen = () => {
   return (
     <Container>
       <Header
-        text="Patvirtinkite kelionės informaciją"
+        text="Patvirtinkite kelionės dėtales"
         size={Sizes.HEADER_MEDIUM}
       />
       <PublishInformation />

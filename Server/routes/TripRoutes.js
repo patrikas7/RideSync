@@ -18,6 +18,7 @@ TripRouter.route("/")
     controller.getTrips
   )
   .post(
+    authMiddleware,
     validateIdMiddleware,
     userCheckMiddleware,
     ValidateSchema(Schemas.trip.create),
