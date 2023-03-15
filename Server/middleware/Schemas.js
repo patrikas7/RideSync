@@ -7,6 +7,14 @@ const getEligableDate = () => {
   return todaysDate.toISOString().slice(0, 10);
 };
 
+const citySchema = Joi.object().keys({
+  addressLine1: Joi.string().required(),
+  addressLine2: Joi.string().required(),
+  city: Joi.string().required(),
+  latitude: Joi.number().required(),
+  longitude: Joi.number().required(),
+});
+
 // Add password criteroa
 const Schemas = {
   basicUser: {
@@ -59,6 +67,21 @@ const Schemas = {
       destination: Joi.string().required(),
       date: Joi.date().required(),
       personsCount: Joi.string().allow(null, ""),
+    }),
+    create: Joi.object({
+      id: Joi.string().required(),
+      departure: citySchema.required(),
+      destination: citySchema.required(),
+      stops: Joi.array().items(citySchema).required(),
+      date: Joi.string().required(),
+      time: Joi.string().required(),
+      personsCount: Joi.string().required(),
+      price: Joi.string().required(),
+      comments: Joi.string().allow(null, ""),
+      isTripFree: Joi.boolean().required(),
+      isRoundTrip: Joi.boolean().required(),
+      returnDate: Joi.string(),
+      returnTime: Joi.string(),
     }),
   },
 };

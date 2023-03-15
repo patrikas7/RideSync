@@ -6,13 +6,22 @@ import {
   ValidateQuerySchema,
   ValidateSchema,
 } from "../middleware/SchemaValidator.js";
+import validateIdMiddleware from "../middleware/validateIdMiddleware.js";
+import userCheckMiddleware from "../middleware/userCheckMIddleware.js";
 
 const TripRouter = express.Router();
 
-TripRouter.route("/").get(
-  authMiddleware,
-  ValidateQuerySchema(Schemas.trip.get),
-  controller.getTrips
-);
+TripRouter.route("/")
+  .get(
+    authMiddleware,
+    ValidateQuerySchema(Schemas.trip.get),
+    controller.getTrips
+  )
+  .post(
+    validateIdMiddleware,
+    userCheckMiddleware,
+    ValidateSchema(Schemas.trip.create),
+    controller.postTrip
+  );
 
 export default TripRouter;

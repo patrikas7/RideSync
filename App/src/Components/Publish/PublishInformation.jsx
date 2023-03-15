@@ -7,6 +7,7 @@ import Button from "../Button/Button";
 const PublishInformation = () => {
   const state = useSelector((state) => state.publish);
 
+  console.log(state);
   return (
     <View style={PublishInformationStyles.container}>
       <View style={PublishInformationStyles.cardsContainer}>
