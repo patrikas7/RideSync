@@ -10,11 +10,34 @@ const getTrips = async (req, res) => {
 
   try {
     const trips = await Trip.find({
-      destination,
-      departure,
-      date,
-      ...(personsCount ? { personsCount } : {}),
+      $and: [
+        {
+          $or: [
+            {
+              "departure.city": departure,
+              "destination.city": destination,
+            },
+            {
+              "departure.city": departure,
+              "stops.city": { $in: [destination] },
+            },
+            {
+              "destination.city": destination,
+              "stops.city": { $in: [departure] },
+            },
+            {
+              stops: {
+                $elemMatch: { city: departure },
+                $elemMatch: { city: destination },
+              },
+            },
+          ],
+        },
+        { date: { $eq: date } },
+        { ...(personsCount ? { personsCount } : {}) },
+      ],
     });
+
     res.status(StatusCodes.OK).json({ trips });
   } catch (error) {
     Logging.error(error);
@@ -39,6 +62,8 @@ const postTrip = async (req, res) => {
     returnDate,
     returnTime,
   } = req.body;
+
+  console.log(req.body);
 
   const trip = new Trip({
     departure,

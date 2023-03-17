@@ -11,7 +11,7 @@ const PublishSuccessPage = () => {
       <Success
         primaryText="Kelionė buvo sukurta"
         secondaryText=" Kelionės informacija galite peržiūrėti būsimų kelionių skiltyje"
-        buttonText="Tęsti"
+        buttonText="Kurti naują kelionę"
         onPress={() => navigation.navigate(PageNames.PUBLISH_DEPARTURE_SEARCH)}
       />
     </Container>
