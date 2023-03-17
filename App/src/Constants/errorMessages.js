@@ -9,6 +9,10 @@ const ErrorMessages = {
   SAME_STOP_CITY:
     "Sustojimas negali vykti išvykimo, atvykimo ar kituose sustojimo miestuose",
   EXCEEDING_PEOPLE_COUNT: "Keleivių skaičius negali viršyti 4 žmonių limito",
+  AT_LEAST_ONE_HOUR_FROM_NOW:
+    "Kelionės pradžia negali prasidėti anksčiau nei už valandos nuo dabar",
+  AT_LEAST_HALF_AN_HOUR_FROM_DEPARTURE:
+    "Grįžimas negali būti mažiau nei 30 min. nuo kelionės pradžios",
 };
 
 export default ErrorMessages;

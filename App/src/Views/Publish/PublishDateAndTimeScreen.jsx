@@ -1,21 +1,30 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { showMessage } from "react-native-flash-message";
+import { useSelector, useDispatch } from "react-redux";
+import { setDate, setReturnDate } from "../../redux/publish/publishSlice";
+import { getFormatedTodaysDate } from "../../Utils/utils";
+import {
+  isAtLeastOneHourFromNow,
+  isTimeGapSufficient,
+  parseSelectedDate,
+} from "./PublishUtils";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import PageNames from "../../Constants/pageNames";
 import Container from "../../Components/Container/Container";
 import Header from "../../Components/Form/Header";
 import Sizes from "../../Constants/sizes";
 import DatePicker from "react-native-modern-datepicker";
-import { useSelector, useDispatch } from "react-redux";
-import { setDate, setReturnDate } from "../../redux/publish/publishSlice";
 import PublishStyles from "./PublishStyles";
 import Colors from "../../Constants/colors";
-import { getFormatedTodaysDate } from "../../Utils/utils";
 import Button from "../../Components/Button/Button";
+import ErrorMessages from "../../Constants/errorMessages";
 
 const PublishDateAndTimeScreen = ({ isReturn }) => {
   const navigation = useNavigation();
-  const { date, time } = useSelector((state) => state.publish);
+  const { date, time, returnDate, returnTime } = useSelector(
+    (state) => state.publish
+  );
   const dispatch = useDispatch();
 
   useScreenArrowBack(
@@ -24,23 +33,30 @@ const PublishDateAndTimeScreen = ({ isReturn }) => {
   );
 
   const handleOnDateChange = (selectedDate) => {
-    const dateAndTime = selectedDate.split(" ");
-    const date = dateAndTime[0].replaceAll("/", "-");
-    if (isReturn) {
-      validateReturnDate(date, dateAndTime[1]);
-      return;
-    }
-    dispatch(setDate({ date, time: dateAndTime[1] }));
+    const { date, time } = parseSelectedDate(selectedDate);
+    dispatch(
+      isReturn ? setReturnDate({ date, time }) : setDate({ date, time })
+    );
   };
 
-  // implement logic for same time departure and return
-  const validateReturnDate = (returnDate, returnTime) => {
-    if (returnDate === date && returnTime === time) {
-      console.log("error");
+  const handleOnNextClick = () => {
+    const errorMessage = isReturn
+      ? ErrorMessages.AT_LEAST_HALF_AN_HOUR_FROM_DEPARTURE
+      : ErrorMessages.AT_LEAST_ONE_HOUR_FROM_NOW;
+
+    if (
+      (isReturn && !isTimeGapSufficient(date, time, returnDate, returnTime)) ||
+      (!isReturn && !isAtLeastOneHourFromNow(date, time))
+    ) {
+      showMessage({
+        message: errorMessage,
+        type: "danger",
+        position: "top",
+      });
       return;
     }
 
-    dispatch(setReturnDate({ date: returnDate, time: returnTime }));
+    navigation.navigate(PageNames.PUBLISH_INFORMATION);
   };
 
   return (
@@ -60,12 +76,10 @@ const PublishDateAndTimeScreen = ({ isReturn }) => {
       <Button
         text="Toliau"
         styling={{ marginBottom: 32 }}
-        onClick={() => navigation.navigate(PageNames.PUBLISH_INFORMATION)}
+        onClick={handleOnNextClick}
       />
     </Container>
   );
 };
 
 export default PublishDateAndTimeScreen;
-
-const styles = StyleSheet.create({});
