@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -7,12 +8,16 @@ import TripsList from "../../../Components/TripsList/TripsList";
 import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 
-const TripsSearchResults = ({ navigation, route }) => {
-  const { destination, departure, date, personsCount, token } = route.params;
+const TripsSearchResults = ({ mainNavigation, mainRoute }) => {
+  const { destination, departure, date, personsCount, token } =
+    mainRoute.params;
+
+  const navigation = useNavigation();
   const [tripsList, setTripsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useScreenArrowBack(navigation, PageNames.SEARCH);
 
+  console.log(navigation.getState());
   useEffect(() => {
     fetchTrips();
   }, []);
@@ -45,7 +50,7 @@ const TripsSearchResults = ({ navigation, route }) => {
           <NoResults
             primaryText="Nerasta jokių kelionių pagal paieškos kriterijus"
             secondaryText="Atnaujinkite paiešką arba užprenumeruokite pranešimą, kai atitinkama kelionė bus galima"
-            buttonText="Užpenumeruoti kelionėss pranešimą"
+            buttonText="Užpenumeruoti kelionės pranešimą"
           />
         ) : (
           <TripsList tripsList={tripsList} />

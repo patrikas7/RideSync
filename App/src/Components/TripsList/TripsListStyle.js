@@ -27,9 +27,11 @@ const TripsListStyle = StyleSheet.create({
   time: {
     fontSize: 28,
     fontWeight: "bold",
+    textAlign: "center",
   },
   date: {
     marginTop: 8,
+    textAlign: "center",
   },
   cardLeft: {
     borderColor: Colors.WHITE,

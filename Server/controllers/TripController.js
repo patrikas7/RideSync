@@ -4,6 +4,7 @@ import Logging from "../library/Logging.js";
 import Trip from "../models/Trip.js";
 
 // PAGINATIONS
+// Add rating calculation
 
 const getTrips = async (req, res) => {
   const { destination, departure, date, personsCount } = req.query;
@@ -33,7 +34,7 @@ const getTrips = async (req, res) => {
             },
           ],
         },
-        { date: { $eq: date } },
+        // { date: { $eq: date } },
         { ...(personsCount ? { personsCount } : {}) },
       ],
     })
@@ -48,6 +49,8 @@ const getTrips = async (req, res) => {
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
 };
+
+const getUserRating = (reviews) => {};
 
 const postTrip = async (req, res) => {
   const {

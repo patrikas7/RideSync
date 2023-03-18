@@ -50,7 +50,7 @@ const TripSearchForm = ({ navigation, route }) => {
     saveTripSearchHistory();
 
     navigation.navigate({
-      name: PageNames.TRIP_SEARCH_RESULTS,
+      name: PageNames.TRIPS,
       params: {
         destination: formState.destination,
         departure: formState.departure,

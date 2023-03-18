@@ -4,7 +4,7 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack";
-import LoginScreen from "./src/Views/LoginScreen";
+import LoginScreen from "./src/Views/Login/LoginScreen";
 import RegistrationScreen from "./src/Views/Registration/RegistrationScreen";
 import PageNames from "./src/Constants/pageNames";
 import Colors from "./src/Constants/colors";
@@ -14,12 +14,20 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import useUserData from "./src/hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
-import TripsSearchResults from "./src/Views/Trips/TripsSearchResults/TripsSearchResults";
 import FlashMessage from "react-native-flash-message";
+import Trips from "./src/routes/Trips";
 
 axios.defaults.baseURL = "http://localhost:5001";
 
 const Stack = createStackNavigator();
+
+// Refactor registration into separate route
+// Refactor registration to use global redux state
+
+const defaulScreenOption = {
+  title: "",
+  headerShadowVisible: false,
+};
 
 export default function App() {
   const { id } = useUserData();
@@ -63,26 +71,17 @@ export default function App() {
             <Stack.Screen
               name={PageNames.REGISTRATION_NAME}
               component={RegistrationScreen}
-              options={{
-                title: "",
-                headerShadowVisible: false,
-              }}
+              options={defaulScreenOption}
             />
             <Stack.Screen
               name={PageNames.REGISTRATION_PASSWORD}
               component={RegistrationScreen}
-              options={{
-                title: "",
-                headerShadowVisible: false,
-              }}
+              options={defaulScreenOption}
             />
             <Stack.Screen
               name={PageNames.REGISTRATION_BIRTH}
               component={RegistrationScreen}
-              options={{
-                title: "",
-                headerShadowVisible: false,
-              }}
+              options={defaulScreenOption}
             />
             <Stack.Screen
               name={PageNames.CITY_SEARCH}
@@ -93,11 +92,10 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name={PageNames.TRIP_SEARCH_RESULTS}
-              component={TripsSearchResults}
+              name={PageNames.TRIPS}
+              component={Trips}
               options={{
-                title: "Paieškos rezultatai",
-                headerShadowVisible: false,
+                headerShown: false,
               }}
             />
           </Stack.Navigator>

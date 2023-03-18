@@ -1,15 +1,14 @@
-import { StyleSheet, Text, View, Image } from "react-native";
-import LoginForm from "../Components/Login/LoginForm";
-import Button, { ButtonColor } from "../Components/Button/Button";
-import Header from "../Components/Form/Header";
-import Colors from "../Constants/colors";
-import PageNames from "../Constants/pageNames";
+import { Text, View, Image } from "react-native";
+import LoginForm from "../../Components/Login/LoginForm";
+import Button, { ButtonColor } from "../../Components/Button/Button";
+import Header from "../../Components/Form/Header";
+import PageNames from "../../Constants/pageNames";
 import Spinner from "react-native-loading-spinner-overlay";
-import Sizes from "../Constants/sizes";
 import { useCallback, useState } from "react";
-import { getErrorState, hasObjectEmptyValues } from "../Utils/utils";
-import ErrorMessages from "../Constants/errorMessages";
+import { getErrorState, hasObjectEmptyValues } from "../../Utils/utils";
+import ErrorMessages from "../../Constants/errorMessages";
 import { useFocusEffect } from "@react-navigation/native";
+import LoginStyles from "./LoginStyles";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
@@ -65,12 +64,12 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.formContainer}>
+    <View style={LoginStyles.formContainer}>
       <Spinner visible={isLoading} />
-      <View style={styles.imageContainer}>
+      <View style={LoginStyles.imageContainer}>
         <Image
-          source={require("../../assets/pictures/login.jpeg")}
-          style={styles.image}
+          source={require("../../../assets/pictures/login.jpeg")}
+          style={LoginStyles.image}
         />
       </View>
       <Header text={"Prisijungimas"} />
@@ -79,12 +78,12 @@ const LoginScreen = ({ navigation }) => {
         setFormState={setFormState}
         errors={errors}
       />
-      <View style={styles.buttonsContainer}>
+      <View style={LoginStyles.buttonsContainer}>
         <Button text={"Prisijungti"} onClick={handleOnSubmit} />
-        <View style={styles.delimiterContainer}>
-          <View style={styles.delimiterLine} />
-          <Text style={styles.delimiterText}>Arba</Text>
-          <View style={styles.delimiterLine} />
+        <View style={LoginStyles.delimiterContainer}>
+          <View style={LoginStyles.delimiterLine} />
+          <Text style={LoginStyles.delimiterText}>Arba</Text>
+          <View style={LoginStyles.delimiterLine} />
         </View>
         <Button
           text={"Registruotis"}
@@ -102,33 +101,3 @@ const LoginScreen = ({ navigation }) => {
 };
 
 export default LoginScreen;
-
-const styles = StyleSheet.create({
-  formContainer: {
-    paddingHorizontal: 20,
-    paddingBottom: 25,
-  },
-  buttonsContainer: {
-    marginTop: 12,
-  },
-  delimiterContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 16,
-  },
-  delimiterLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: Colors.GREY,
-  },
-  delimiterText: {
-    color: Colors.GREY_500,
-    textAlign: "center",
-    width: 50,
-    fontSize: Sizes.DEFAULT_TEXT_SIZE,
-  },
-  image: {
-    height: 310,
-    width: "100%",
-  },
-});
