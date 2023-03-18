@@ -4,10 +4,10 @@ import TripsListStyle from "./TripsListStyle";
 import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
 
-const TripCard = ({ trip, containerStyling }) => {
+const TripCard = ({ trip, onPress, containerStyling }) => {
   return (
     <TouchableHighlight
-      onPress={() => console.log("")}
+      onPress={() => onPress(trip._id)}
       style={[TripsListStyle.touchableHighlight, containerStyling]}
       activeOpacity={0.9}
     >

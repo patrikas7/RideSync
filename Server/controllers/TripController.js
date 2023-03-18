@@ -52,6 +52,25 @@ const getTrips = async (req, res) => {
 
 const getUserRating = (reviews) => {};
 
+const getTripInformation = async (req, res) => {
+  const { id } = req.query;
+
+  try {
+    const trip = await Trip.findById(id);
+    if (!trip)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: ErrorMessages.TRIP_NOT_FOUND });
+
+    res.status(StatusCodes.OK).json({ trip });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 const postTrip = async (req, res) => {
   const {
     departure,
@@ -95,4 +114,4 @@ const postTrip = async (req, res) => {
   }
 };
 
-export default { getTrips, postTrip };
+export default { getTrips, postTrip, getTripInformation };

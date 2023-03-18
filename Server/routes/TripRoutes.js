@@ -25,4 +25,9 @@ TripRouter.route("/")
     controller.postTrip
   );
 
+TripRouter.route("/information").get(
+  validateIdMiddleware,
+  controller.getTripInformation
+);
+
 export default TripRouter;

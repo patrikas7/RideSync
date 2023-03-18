@@ -10,9 +10,7 @@ const Trips = ({ navigation, route }) => {
     <Stack.Navigator>
       <Stack.Screen
         name={PageNames.TRIP_SEARCH_RESULTS}
-        children={() => (
-          <TripsSearchResults mainNavigation={navigation} mainRoute={route} />
-        )}
+        children={() => <TripsSearchResults mainRoute={route} />}
         options={{
           title: "Paieškos rezultatai",
           headerShadowVisible: false,

@@ -4,13 +4,21 @@ import StopsListStyle from "./StopsListStyle";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
-const MainStop = ({ stop }) => {
+const MainStop = ({
+  stop,
+  primaryTextStyling,
+  secondaryTextStyling,
+  color = Colors.BLUE_500,
+  icon = "flag",
+}) => {
   return (
     <View style={StopsListStyle.stop}>
-      <Ionicons name="flag" color={Colors.BLUE_500} size={Sizes.ICON} />
+      <Ionicons name={icon} color={color} size={Sizes.ICON} />
       <View style={StopsListStyle.stopText}>
-        <Text style={StopsListStyle.stopPrimaryText}>{stop.addressLine1}</Text>
-        <Text style={StopsListStyle.stopSecondaryText}>
+        <Text style={[StopsListStyle.stopPrimaryText, primaryTextStyling]}>
+          {stop.addressLine1}
+        </Text>
+        <Text style={[StopsListStyle.stopSecondaryText, secondaryTextStyling]}>
           {stop.addressLine2}
         </Text>
       </View>

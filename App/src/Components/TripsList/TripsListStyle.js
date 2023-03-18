@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
+import StyleUtils from "../../Utils/styleUtils";
 
 const TripsListStyle = StyleSheet.create({
   touchableHighlight: {
@@ -8,15 +9,7 @@ const TripsListStyle = StyleSheet.create({
     overflow: "hidden",
   },
   cardContainer: {
-    backgroundColor: Colors.WHITE,
-    borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
-    borderColor: Colors.GREY,
-    borderWidth: 1,
-    padding: 16,
-    shadowColor: Colors.MIDNIGHT_BLACK,
-    shadowOffset: { width: -2, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
+    ...StyleUtils.card,
   },
   cardInformationWrapper: {
     flexDirection: "row",

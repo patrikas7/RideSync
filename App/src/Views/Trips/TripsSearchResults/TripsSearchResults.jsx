@@ -8,16 +8,14 @@ import TripsList from "../../../Components/TripsList/TripsList";
 import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 
-const TripsSearchResults = ({ mainNavigation, mainRoute }) => {
+const TripsSearchResults = ({ mainRoute }) => {
   const { destination, departure, date, personsCount, token } =
     mainRoute.params;
-
   const navigation = useNavigation();
   const [tripsList, setTripsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useScreenArrowBack(navigation, PageNames.SEARCH);
 
-  console.log(navigation.getState());
   useEffect(() => {
     fetchTrips();
   }, []);
@@ -53,7 +51,12 @@ const TripsSearchResults = ({ mainNavigation, mainRoute }) => {
             buttonText="Užpenumeruoti kelionės pranešimą"
           />
         ) : (
-          <TripsList tripsList={tripsList} />
+          <TripsList
+            tripsList={tripsList}
+            onPress={(id) =>
+              navigation.navigate(PageNames.TRIP_INFORMATION, { id })
+            }
+          />
         ))}
     </Container>
   );
