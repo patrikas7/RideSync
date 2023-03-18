@@ -4,34 +4,44 @@ import TripsListStyle from "./TripsListStyle";
 import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
 
-const TripCard = () => {
+const TripCard = ({ trip, containerStyling }) => {
   return (
-    <TouchableHighlight>
+    <TouchableHighlight
+      onPress={() => console.log("")}
+      style={[TripsListStyle.touchableHighlight, containerStyling]}
+      activeOpacity={0.9}
+    >
       <View style={TripsListStyle.cardContainer}>
         <View style={TripsListStyle.cardInformationWrapper}>
           <View style={TripsListStyle.cardLeft}>
-            <Text style={TripsListStyle.time}>18:20</Text>
-            <Text style={TripsListStyle.date}>2023-03-17</Text>
+            <Text style={TripsListStyle.time}>{trip.time}</Text>
+            <Text style={TripsListStyle.date}>{trip.date}</Text>
           </View>
           <View style={TripsListStyle.cardRight}>
             <View style={TripsListStyle.stops}>
-              <Text style={TripsListStyle.stopText}>Vilnius</Text>
+              <Text style={TripsListStyle.stopText}>{trip.departure.city}</Text>
               <Ionicons
                 name="arrow-forward-outline"
                 size={Sizes.ICON}
                 color={Colors.BLACK}
                 style={TripsListStyle.arrowIcon}
               />
-              <Text style={TripsListStyle.stopText}>Kaunas</Text>
+              <Text style={TripsListStyle.stopText}>
+                {trip.destination.city}
+              </Text>
             </View>
 
             <View style={TripsListStyle.detailsContainer}>
               <View>
-                <Text style={TripsListStyle.infomrationPrimary}>5€</Text>
+                <Text
+                  style={TripsListStyle.infomrationPrimary}
+                >{`${trip.price}€`}</Text>
                 <Text style={TripsListStyle.price}>Keleiviui</Text>
               </View>
               <View>
-                <Text style={TripsListStyle.infomrationPrimary}>2</Text>
+                <Text style={TripsListStyle.infomrationPrimary}>
+                  {trip.personsCount}
+                </Text>
                 <Text style={TripsListStyle.infomrationSecondary}>Vietos</Text>
               </View>
             </View>
@@ -42,7 +52,7 @@ const TripCard = () => {
             source={require("../../../assets/pictures/avatar.png")}
             style={TripsListStyle.avatar}
           />
-          <Text style={TripsListStyle.driverName}>Patrikas</Text>
+          <Text style={TripsListStyle.driverName}>{trip.driver.name}</Text>
           <View style={TripsListStyle.reviewContainer}>
             <Ionicons name="star" color={Colors.GOLD} size={Sizes.ICON_SMALL} />
             <Text style={TripsListStyle.review}>0</Text>

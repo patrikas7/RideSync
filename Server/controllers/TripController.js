@@ -36,7 +36,9 @@ const getTrips = async (req, res) => {
         { date: { $eq: date } },
         { ...(personsCount ? { personsCount } : {}) },
       ],
-    });
+    })
+      .select("departure.city destination.city date time personsCount price")
+      .populate("driver", "name");
 
     res.status(StatusCodes.OK).json({ trips });
   } catch (error) {

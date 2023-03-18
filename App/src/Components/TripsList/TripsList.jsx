@@ -1,12 +1,22 @@
-import { View } from "react-native";
+import { FlatList } from "react-native";
 import TripCard from "./TripCard";
 import TripsListStyle from "./TripsListStyle";
 
-const TripsList = () => {
+const TripsList = ({ tripsList }) => {
+  const renderItem = ({ item, index }) => (
+    <TripCard
+      trip={item}
+      containerStyling={index > 0 ? TripsListStyle.notFirstItem : ""}
+    />
+  );
+
   return (
-    <View style={TripsListStyle.tripsContainer}>
-      <TripCard />
-    </View>
+    <FlatList
+      data={tripsList}
+      renderItem={renderItem}
+      keyExtractor={(item) => item._id}
+      style={TripsListStyle.tripsContainer}
+    />
   );
 };
 

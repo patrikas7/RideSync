@@ -3,11 +3,15 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
 const TripsListStyle = StyleSheet.create({
+  touchableHighlight: {
+    borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
+    overflow: "hidden",
+  },
   cardContainer: {
     backgroundColor: Colors.WHITE,
+    borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
     borderColor: Colors.GREY,
     borderWidth: 1,
-    borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
     padding: 16,
     shadowColor: Colors.MIDNIGHT_BLACK,
     shadowOffset: { width: -2, height: 4 },
@@ -92,6 +96,9 @@ const TripsListStyle = StyleSheet.create({
   },
   reviewCount: {
     color: Colors.GREY_500,
+  },
+  notFirstItem: {
+    marginTop: 16,
   },
 });
 

@@ -48,7 +48,7 @@ const TripsSearchResults = ({ navigation, route }) => {
             buttonText="Užpenumeruoti kelionėss pranešimą"
           />
         ) : (
-          <TripsList />
+          <TripsList tripsList={tripsList} />
         ))}
     </Container>
   );

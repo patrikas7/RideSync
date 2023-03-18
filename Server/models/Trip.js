@@ -21,7 +21,7 @@ const TripSchema = new Schema({
   isRoundTrip: { type: Boolean, required: true },
   returnDate: { type: String },
   returnTime: { type: String },
-  driver: { type: Schema.Types.ObjectId, ref: "basicUser" },
+  driver: { type: Schema.Types.ObjectId, ref: "BasicUser" },
 });
 
 const Trip = mongoose.model("Trip", TripSchema);
