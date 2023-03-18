@@ -28,12 +28,7 @@ const initialState = {
   personCount: "",
 };
 
-const TripSearchForm = ({
-  navigation,
-  route,
-  setIsStarIconVisible,
-  setIsFavorite,
-}) => {
+const TripSearchForm = ({ navigation, route }) => {
   const [formState, setFormState] = useState(initialState);
   const [errors, setErrors] = useState({
     departure: "",
@@ -46,13 +41,6 @@ const TripSearchForm = ({
     if (!route.params || route.params.screen !== PageNames.SEARCH) return;
     setFormState((currentState) => ({ ...currentState, ...route.params }));
   }, [route.params]);
-
-  useEffect(() => {
-    setIsStarIconVisible(
-      formState.departure.addressLine1 && formState.destination.addressLine1
-    );
-    setIsFavorite(false);
-  }, [formState.departure.addressLine1, formState.destination.addressLine1]);
 
   const handleOnClick = () => {
     setErrors({ departure: "", destination: "" });
@@ -118,7 +106,6 @@ const TripSearchForm = ({
   };
 
   const handleOnFocus = (inputType, value) => {
-    setIsStarIconVisible(false);
     navigation.navigate(PageNames.CITY_SEARCH, {
       inputType,
       value,

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.BLUE,
-    fontSize: 16,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
     marginLeft: 4,
   },
 });

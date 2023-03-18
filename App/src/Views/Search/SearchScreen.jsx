@@ -13,9 +13,7 @@ import Colors from "../../Constants/colors";
 
 const SearchScreen = ({ route, navigation }) => {
   const [tripsSearchHistory, setTripsSearchHistory] = useState([]);
-  const [isStarIconVisible, setIsStarIconVisible] = useState(false);
   const [isFetched, setIsFetched] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
   const { name, id, token } = useUserData();
 
   useEffect(() => {
@@ -37,10 +35,6 @@ const SearchScreen = ({ route, navigation }) => {
     setIsFetched(true);
   };
 
-  const handleOnBookmarkPress = () => {
-    setIsFavorite((prevState) => !prevState);
-  };
-
   return (
     <View style={SearchStyles.screenContainer}>
       {!isFetched ? (
@@ -57,25 +51,8 @@ const SearchScreen = ({ route, navigation }) => {
               text={"Kur planuojate kelionę?"}
               size={Sizes.HEADER_SMALL}
             />
-            {isStarIconVisible && (
-              <TouchableOpacity
-                onPress={handleOnBookmarkPress}
-                activeOpacity={0.6}
-              >
-                <Ionicons
-                  name={isFavorite ? "star" : "star-outline"}
-                  size={Sizes.ICON}
-                  color={Colors.BLUE_500}
-                />
-              </TouchableOpacity>
-            )}
           </View>
-          <TripSearchForm
-            navigation={navigation}
-            route={route}
-            setIsStarIconVisible={setIsStarIconVisible}
-            setIsFavorite={setIsFavorite}
-          />
+          <TripSearchForm navigation={navigation} route={route} />
           <FlatList
             data={tripsSearchHistory}
             keyExtractor={(item) => item._id}

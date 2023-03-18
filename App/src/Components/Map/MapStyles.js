@@ -20,7 +20,7 @@ const MapStyles = StyleSheet.create({
   },
   mapHintText: {
     color: Colors.WHITE,
-    fontSize: 16,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
     padding: 8,
     textAlign: "center",
   },

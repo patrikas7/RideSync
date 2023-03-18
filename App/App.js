@@ -96,7 +96,7 @@ export default function App() {
               name={PageNames.TRIP_SEARCH_RESULTS}
               component={TripsSearchResults}
               options={{
-                title: "",
+                title: "Paieškos rezultatai",
                 headerShadowVisible: false,
               }}
             />

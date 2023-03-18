@@ -5,6 +5,7 @@ import Header from "../Components/Form/Header";
 import Colors from "../Constants/colors";
 import PageNames from "../Constants/pageNames";
 import Spinner from "react-native-loading-spinner-overlay";
+import Sizes from "../Constants/sizes";
 import { useCallback, useState } from "react";
 import { getErrorState, hasObjectEmptyValues } from "../Utils/utils";
 import ErrorMessages from "../Constants/errorMessages";
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     color: Colors.GREY_500,
     textAlign: "center",
     width: 50,
-    fontSize: 16,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
   },
   image: {
     height: 310,

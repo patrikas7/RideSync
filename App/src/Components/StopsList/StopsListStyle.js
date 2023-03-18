@@ -11,7 +11,7 @@ const StopsListStyle = StyleSheet.create({
     marginLeft: 12,
   },
   stopPrimaryText: {
-    fontSize: 16,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
     fontWeight: "bold",
   },
   stopSecondaryText: {

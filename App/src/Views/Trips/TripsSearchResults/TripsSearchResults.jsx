@@ -1,12 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
 import Spinner from "react-native-loading-spinner-overlay";
 import Container from "../../../Components/Container/Container";
 import NoResults from "../../../Components/NoResults/NoResults";
+import TripsList from "../../../Components/TripsList/TripsList";
 import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
-import TripsSearchResultsStyle from "./TripsSearchResultsStyle";
 
 const TripsSearchResults = ({ navigation, route }) => {
   const { destination, departure, date, personsCount, token } = route.params;
@@ -41,13 +40,16 @@ const TripsSearchResults = ({ navigation, route }) => {
   return (
     <Container>
       <Spinner visible={isLoading} />
-      {!isLoading && !tripsList.length && (
-        <NoResults
-          primaryText="Nerasta jokių kelionių pagal paieškos kriterijus"
-          secondaryText="Atnaujinkite paiešką arba užprenumeruokite pranešimą, kai atitinkama kelionė bus galima"
-          buttonText="Užpenumeruoti kelionėss pranešimą"
-        />
-      )}
+      {!isLoading &&
+        (!tripsList.length ? (
+          <NoResults
+            primaryText="Nerasta jokių kelionių pagal paieškos kriterijus"
+            secondaryText="Atnaujinkite paiešką arba užprenumeruokite pranešimą, kai atitinkama kelionė bus galima"
+            buttonText="Užpenumeruoti kelionėss pranešimą"
+          />
+        ) : (
+          <TripsList />
+        ))}
     </Container>
   );
 };

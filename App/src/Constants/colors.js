@@ -18,6 +18,8 @@ const Colors = {
   RED_TRANSPARENT: "rgba(255, 0, 0, 0.6)",
   PINK_100: "#f4f0fa",
   LIGHT_BLUE: "#ddefff",
+  GOLD: "#FFD700",
+  MIDNIGHT_BLACK: "#171717",
 };
 
 export default Colors;

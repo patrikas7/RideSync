@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import Colors from "../../Constants/colors";
+import Sizes from "../../Constants/sizes";
 
 const RegistrationStyles = StyleSheet.create({
   inputsContainer: {
@@ -14,7 +15,7 @@ const RegistrationStyles = StyleSheet.create({
     paddingVertical: 8,
   },
   genderText: {
-    fontSize: 16,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
     color: Colors.PLACEHOLDER,
     marginLeft: 12,
     borderBottomColor: Colors.GREY,

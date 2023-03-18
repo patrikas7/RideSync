@@ -11,7 +11,7 @@ export const InputStyles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 1,
     paddingVertical: 8,
-    fontSize: 16,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
     marginLeft: 12,
   },
   multiLineInput: {
@@ -68,6 +68,6 @@ export const InputSwitchStyles = StyleSheet.create({
   },
   text: {
     flex: 1,
-    fontSize: 16,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
   },
 });

@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import { StyleSheet, View, Text, Pressable } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import Colors from "../../Constants/colors";
+import Sizes from "../../Constants/sizes";
 
 const InputRadioButton = ({
   value,
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     height: 24,
   },
   radioButtonText: {
-    fontSize: 16,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
     marginLeft: 8,
   },
 });

@@ -63,8 +63,6 @@ const postTrip = async (req, res) => {
     returnTime,
   } = req.body;
 
-  console.log(req.body);
-
   const trip = new Trip({
     departure,
     destination,
