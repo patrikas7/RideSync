@@ -6,6 +6,15 @@ import StyleUtils from "../../Utils/styleUtils";
 const TripInformationStyles = StyleSheet.create({
   container: {
     marginTop: 24,
+    flex: 1,
+    paddingBottom: 150,
+  },
+  inforamtionWrapper: {
+    flex: 1,
+  },
+  scrollWrapper: {
+    flex: 1,
+    paddingBottom: 100,
   },
   infoCard: {
     ...StyleUtils.card,
@@ -33,10 +42,11 @@ const TripInformationStyles = StyleSheet.create({
   },
   separator: {
     ...StyleUtils.separator,
+    borderLeftColor: Colors.BLUE_500,
   },
   timeContainer: {
     marginTop: 16,
-    backgroundColor: Colors.BLACK,
+    backgroundColor: Colors.BLUE_500,
     paddingVertical: 4,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
@@ -112,6 +122,12 @@ const TripInformationStyles = StyleSheet.create({
   chatButton: {
     position: "absolute",
     bottom: 0,
+    right: 0,
+  },
+  button: {
+    position: "absolute",
+    bottom: 32,
+    left: 0,
     right: 0,
   },
 });

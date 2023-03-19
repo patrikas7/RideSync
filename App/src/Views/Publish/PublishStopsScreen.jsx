@@ -75,6 +75,7 @@ const PublishStopsScreen = ({ mainNavigation, mainRoute }) => {
             styling={{ marginTop: 18 }}
             text={"Pridėti sustojmą"}
             onPress={handleOnPress}
+            icon={"add-outline"}
           />
         )}
       </View>

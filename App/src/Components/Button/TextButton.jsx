@@ -5,7 +5,7 @@ import { TextButtonStyles } from "./ButtonStyles";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
-const TextButton = ({ styling, text, onPress, align = "center" }) => {
+const TextButton = ({ styling, text, onPress, icon, align = "center" }) => {
   return (
     <TouchableHighlight
       onPress={onPress}
@@ -14,7 +14,7 @@ const TextButton = ({ styling, text, onPress, align = "center" }) => {
       style={{ alignItems: align, ...styling }}
     >
       <View style={TextButtonStyles.buttonContainer}>
-        <Ionicons name="add-outline" size={Sizes.ICON} color={Colors.BLUE} />
+        <Ionicons name={icon} size={Sizes.ICON} color={Colors.BLUE} />
         <Text style={{ ...TextButtonStyles.text, textAlign: align }}>
           {text}
         </Text>

@@ -2,6 +2,7 @@ import ErrorMessages from "../enums/errorMessages.js";
 import StatusCodes from "../enums/statusCodes.js";
 import Logging from "../library/Logging.js";
 import Trip from "../models/Trip.js";
+import BasicUser from "../models/BasicUser.js";
 
 // PAGINATIONS
 // Add rating calculation
@@ -50,17 +51,56 @@ const getTrips = async (req, res) => {
   }
 };
 
-const getUserRating = (reviews) => {};
+const getUserRatingAndReviewCount = async (userId) => {
+  try {
+    const pipeline = [
+      { $match: { _id: userId } },
+      {
+        $lookup: {
+          from: "Review",
+          localField: "_id",
+          foreignField: "recipientId",
+          as: "reviews",
+        },
+      },
+      { $unwind: "$reviews" },
+      {
+        $group: {
+          _id: "$_id",
+          reviewCount: { $sum: 1 },
+          rating: { $sum: "$reviews.rating" },
+        },
+      },
+    ];
+
+    const userAggregate = await BasicUser.aggregate(pipeline);
+
+    Logging.info(userAggregate);
+
+    if (userAggregate.length > 0) {
+      const { rating, reviewCount } = userAggregate[0];
+      return { rating, reviewCount };
+    } else {
+      return { rating: 0, reviewCount: 0 };
+    }
+  } catch (error) {
+    Logging.error(error);
+  }
+};
 
 const getTripInformation = async (req, res) => {
   const { id } = req.query;
 
   try {
-    const trip = await Trip.findById(id);
+    const trip = await Trip.findById(id).populate("driver", "name surname");
     if (!trip)
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ error: ErrorMessages.TRIP_NOT_FOUND });
+
+    // const {rating, reviewCount} = getUserRatingAndReviewCount(trips.driver._id)
+
+    Logging.info(getUserRatingAndReviewCount(trip.driver._id));
 
     res.status(StatusCodes.OK).json({ trip });
   } catch (error) {

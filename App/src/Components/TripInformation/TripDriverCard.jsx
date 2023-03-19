@@ -5,7 +5,7 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 import IconButton from "../Button/IconButton";
 
-const TripDriverCard = () => {
+const TripDriverCard = ({ name, surname }) => {
   const handleOnChatPress = () => {};
 
   const handleOnProfilePress = () => {};
@@ -28,7 +28,9 @@ const TripDriverCard = () => {
               source={require("../../../assets/pictures/avatar.png")}
               style={TripInformationStyles.avatar}
             />
-            <Text style={TripInformationStyles.driverName}>Patrikas V.</Text>
+            <Text
+              style={TripInformationStyles.driverName}
+            >{`${name} ${surname.charAt(0)}.`}</Text>
           </View>
         </TouchableHighlight>
         <View style={TripInformationStyles.reviewContainer}>
@@ -52,6 +54,7 @@ const TripDriverCard = () => {
             name={"chatbox-outline"}
             size={38}
             onPress={handleOnChatPress}
+            backgroundColor={Colors.BLUE_500}
           />
         </View>
       </View>
