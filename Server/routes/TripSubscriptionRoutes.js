@@ -9,7 +9,7 @@ import Schemas from "../middleware/Schemas.js";
 const TripSubscriptionRouter = express.Router();
 
 TripSubscriptionRouter.route("/").post(
-  //   authMiddleware,
+  authMiddleware,
   validateIdMiddleware,
   userCheckMiddleware,
   ValidateSchema(Schemas.tripSubscription.create),

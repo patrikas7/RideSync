@@ -57,6 +57,7 @@ const TripSearchForm = ({ navigation, route }) => {
         date: formState.date,
         personsCount: formState.personCount,
         token,
+        id,
       },
     });
   };
