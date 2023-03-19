@@ -2,6 +2,7 @@ import { View } from "react-native";
 import TripInformationStyles from "./TripInformationStyle";
 import TripRoutesCard from "./TripRoutesCard";
 import TripDetailsCard from "./TripDetailsCard";
+import TripDriverCard from "./TripDriverCard";
 
 // Add stops
 
@@ -19,6 +20,8 @@ const TripInformation = ({ trip }) => {
         price={trip.price}
         comments={trip.comments}
       />
+
+      <TripDriverCard />
     </View>
   );
 };

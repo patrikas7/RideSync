@@ -71,7 +71,11 @@ const PublishStopsScreen = ({ mainNavigation, mainRoute }) => {
           onStopPress={handleOnStopPress}
         />
         {stops.length < 3 && (
-          <TextButton styling={{ marginTop: 18 }} onPress={handleOnPress} />
+          <TextButton
+            styling={{ marginTop: 18 }}
+            text={"Pridėti sustojmą"}
+            onPress={handleOnPress}
+          />
         )}
       </View>
 

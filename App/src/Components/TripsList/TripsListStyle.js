@@ -55,13 +55,7 @@ const TripsListStyle = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
   },
-  avatar: {
-    width: 30,
-    height: 30,
-    borderColor: Colors.BLACK,
-    borderWidth: 1,
-    borderRadius: 50,
-  },
+  avatar: { ...StyleUtils.avatar },
   driverName: {
     marginLeft: 12,
     fontWeight: "bold",

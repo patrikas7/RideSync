@@ -39,7 +39,7 @@ const TripDetailsCard = ({ personsCount, comments, price }) => {
       {comments && (
         <View style={TripInformationStyles.commentsContainer}>
           <Text>
-            <Text style={TripInformationStyles.comment}>Komentarai: </Text>
+            <Text style={TripInformationStyles.bold}>Komentarai: </Text>
             <Text>{comments}</Text>
           </Text>
         </View>

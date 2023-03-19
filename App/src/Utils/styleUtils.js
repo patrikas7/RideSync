@@ -19,6 +19,13 @@ const StyleUtils = {
     height: 20,
     marginLeft: 10,
   },
+  avatar: {
+    width: 30,
+    height: 30,
+    borderColor: Colors.BLACK,
+    borderWidth: 1,
+    borderRadius: 50,
+  },
 };
 
 export default StyleUtils;

@@ -1,10 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { TouchableHighlight } from "react-native-gesture-handler";
+import { TextButtonStyles } from "./ButtonStyles";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
-const TextButton = ({ styling, onPress, align = "center" }) => {
+const TextButton = ({ styling, text, onPress, align = "center" }) => {
   return (
     <TouchableHighlight
       onPress={onPress}
@@ -12,10 +13,10 @@ const TextButton = ({ styling, onPress, align = "center" }) => {
       activeOpacity={0.6}
       style={{ alignItems: align, ...styling }}
     >
-      <View style={styles.buttonContainer}>
+      <View style={TextButtonStyles.buttonContainer}>
         <Ionicons name="add-outline" size={Sizes.ICON} color={Colors.BLUE} />
-        <Text style={{ ...styles.text, textAlign: align }}>
-          Pridėti sustojmą
+        <Text style={{ ...TextButtonStyles.text, textAlign: align }}>
+          {text}
         </Text>
       </View>
     </TouchableHighlight>
@@ -23,15 +24,3 @@ const TextButton = ({ styling, onPress, align = "center" }) => {
 };
 
 export default TextButton;
-
-const styles = StyleSheet.create({
-  buttonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  text: {
-    color: Colors.BLUE,
-    fontSize: Sizes.DEFAULT_TEXT_SIZE,
-    marginLeft: 4,
-  },
-});
