@@ -22,6 +22,7 @@ const TripSchema = new Schema({
   returnDate: { type: String },
   returnTime: { type: String },
   driver: { type: Schema.Types.ObjectId, ref: "BasicUser" },
+  passengers: [{ type: Schema.Types.ObjectId, ref: "BasicUser" }],
 });
 
 const Trip = mongoose.model("Trip", TripSchema);

@@ -26,8 +26,15 @@ TripRouter.route("/")
   );
 
 TripRouter.route("/information").get(
+  authMiddleware,
   validateIdMiddleware,
   controller.getTripInformation
+);
+
+TripRouter.route("/my-trips/future-trips").get(
+  authMiddleware,
+  validateIdMiddleware,
+  controller.getUsersFutureTrips
 );
 
 export default TripRouter;

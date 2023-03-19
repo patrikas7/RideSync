@@ -154,4 +154,30 @@ const postTrip = async (req, res) => {
   }
 };
 
-export default { getTrips, postTrip, getTripInformation };
+const getUsersFutureTrips = async (req, res) => {
+  const { id } = req.query;
+  const now = new Date();
+
+  try {
+    const trips = await Trip.find({
+      $or: [{ driver: id }, { passengers: id }],
+      date: { $gte: now.toISOString().slice(0, 10) },
+      $or: [
+        { date: { $gt: now.toISOString().slice(0, 10) } },
+        {
+          date: now.toISOString().slice(0, 10),
+          time: { $gt: now.toISOString().slice(11, 5) },
+        },
+      ],
+    });
+
+    res.status(StatusCodes.OK).json({ trips });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+export default { getTrips, postTrip, getTripInformation, getUsersFutureTrips };
