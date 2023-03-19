@@ -84,6 +84,15 @@ const Schemas = {
       returnTime: Joi.string(),
     }),
   },
+  tripSubscription: {
+    create: Joi.object({
+      id: Joi.string().required(),
+      departureCity: Joi.string().required(),
+      destinationCity: Joi.string().required(),
+      date: Joi.date().required(),
+      personsCount: Joi.string().allow(null, ""),
+    }),
+  },
 };
 
 export default Schemas;

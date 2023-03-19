@@ -145,7 +145,7 @@ const postTrip = async (req, res) => {
 
   try {
     const newTrip = await trip.save();
-    res.status(StatusCodes.OK).json({ newTrip });
+    res.status(StatusCodes.CREATION_SUCCESS).json({ newTrip });
   } catch (error) {
     Logging.error(error);
     res

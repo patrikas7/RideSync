@@ -33,8 +33,7 @@ const MapLocationSearch = ({
   }, [route.params]);
 
   useEffect(() => {
-    if (!location.addressLine1) return;
-    setIsMapVisible(true);
+    setIsMapVisible(!!location.addressLine1);
   }, [location]);
 
   const handleOnFocus = () => {

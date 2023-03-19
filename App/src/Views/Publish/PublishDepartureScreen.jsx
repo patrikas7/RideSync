@@ -19,6 +19,8 @@ const PublishDepartureScreen = ({ navigation, route }) => {
   const [isUserEligebleToPost, setIsUserEligebleToPost] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const departure = useSelector((state) => state.publish.departure);
+  const state = useSelector((state) => state.publish);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,6 +42,8 @@ const PublishDepartureScreen = ({ navigation, route }) => {
 
     setIsLoading(false);
   };
+
+  console.log(state);
 
   const renderContent = () => {
     if (isLoading) return <Spinner visible={isLoading} />;

@@ -6,6 +6,7 @@ import AuthRouter from "./routes/AuthRoutes.js";
 import UserRouter from "./routes/UserRoutes.js";
 import SearchRouter from "./routes/SearchRoutes.js";
 import TripRouter from "./routes/TripRoutes.js";
+import TripSubscriptionRouter from "./routes/TripSubscriptionRoutes.js";
 import mongoose from "mongoose";
 
 const router = express();
@@ -69,4 +70,5 @@ const startServer = () => {
   router.use("/user", UserRouter);
   router.use("/search", SearchRouter);
   router.use("/trips", TripRouter);
+  router.use("/tripSubscriptions", TripSubscriptionRouter);
 };

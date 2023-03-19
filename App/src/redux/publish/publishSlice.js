@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getFormatedTodaysDate } from "../../Utils/utils";
 
-const initialEmptyState = {
+const initialState = {
   departure: {},
   destination: {},
   stops: [],
@@ -24,7 +24,7 @@ const initialErrorState = {
 
 export const publishSlice = createSlice({
   name: "publish",
-  initialState: initialEmptyState,
+  initialState: initialState,
   reducers: {
     setDeparture: (state, action) => {
       state.departure = action.payload;
@@ -64,9 +64,7 @@ export const publishSlice = createSlice({
     toggleIsRoundTrip: (state) => {
       state.isRoundTrip = !state.isRoundTrip;
     },
-    resetState: (state) => {
-      state = initialEmptyState;
-    },
+    resetState: () => initialState,
   },
 });
 
