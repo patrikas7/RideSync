@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, View } from "react-native";
 import Header from "../../Components/Form/Header";
 import SearchHistory from "../../Components/TripSearch/SearchHistory";
 import TripSearchForm from "../../Components/TripSearch/TripSearchForm";
@@ -8,8 +8,7 @@ import SearchStyles from "./SearchStyles";
 import useUserData from "../../hooks/useUserData";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay/lib";
-import { Ionicons } from "@expo/vector-icons";
-import Colors from "../../Constants/colors";
+import PageNames from "../../Constants/pageNames";
 
 const SearchScreen = ({ route, navigation }) => {
   const [tripsSearchHistory, setTripsSearchHistory] = useState([]);
@@ -33,6 +32,13 @@ const SearchScreen = ({ route, navigation }) => {
     }
 
     setIsFetched(true);
+  };
+
+  const handleOnHistoryPress = (departure, destination) => {
+    navigation.navigate(PageNames.SEARCH_DATE_AND_TIME_SELECTION, {
+      departure,
+      destination,
+    });
   };
 
   return (
@@ -60,6 +66,7 @@ const SearchScreen = ({ route, navigation }) => {
               <SearchHistory
                 departure={item.departure}
                 destination={item.destination}
+                onPress={handleOnHistoryPress}
               />
             )}
             style={SearchStyles.historyContainer}

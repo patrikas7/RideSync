@@ -4,13 +4,13 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 import TripSearchStyles from "./TripSearchStyles";
 
-const SearchHistory = ({ departure, destination }) => {
+const SearchHistory = ({ departure, destination, onPress }) => {
   return (
     <TouchableHighlight
       activeOpacity={0.6}
       underlayColor={Colors.HIGHLIGHT_UNDERLAY}
       style={TripSearchStyles.touchableHighlight}
-      onPress={() => console.log("tesr")}
+      onPress={() => onPress(departure, destination)}
     >
       <View style={TripSearchStyles.historyElement}>
         <Ionicons

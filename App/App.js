@@ -16,6 +16,7 @@ import useUserData from "./src/hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import FlashMessage from "react-native-flash-message";
 import Trips from "./src/routes/Trips";
+import SearchDateAndTimeScreen from "./src/Views/SearchDateAndTimeScreen/SearchDateAndTimeScreen";
 
 axios.defaults.baseURL = "http://localhost:5001";
 
@@ -96,6 +97,14 @@ export default function App() {
               component={Trips}
               options={{
                 headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name={PageNames.SEARCH_DATE_AND_TIME_SELECTION}
+              component={SearchDateAndTimeScreen}
+              options={{
+                title: "Kelionės data ir laikas",
+                headerShadowVisible: false,
               }}
             />
           </Stack.Navigator>
