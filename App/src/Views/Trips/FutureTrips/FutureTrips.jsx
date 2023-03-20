@@ -5,6 +5,7 @@ import NoResults from "../../../Components/NoResults/NoResults";
 import useUserData from "../../../hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import axios from "axios";
+import TripsList from "../../../Components/TripsList/TripsList";
 
 const FutureTrips = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,14 +32,20 @@ const FutureTrips = () => {
     }
   };
 
+  console.log(futureTrips.length);
+
   return (
     <Container>
       <Spinner visible={isLoading} />
-      <NoResults
-        primaryText="Jūs neturite jokių suplanuotų kelionių"
-        secondaryText="Sukurkite naują kelionę arba užsirezervuokite vietą per kelionių paiešką"
-        buttonText="Mano kelionių istorija"
-      />
+      {!isLoading && !futureTrips.length ? (
+        <NoResults
+          primaryText="Jūs neturite jokių suplanuotų kelionių"
+          secondaryText="Sukurkite naują kelionę arba užsirezervuokite vietą per kelionių paiešką"
+          buttonText="Mano kelionių istorija"
+        />
+      ) : (
+        <TripsList tripsList={futureTrips} />
+      )}
     </Container>
   );
 };

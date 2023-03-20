@@ -10,6 +10,11 @@ const TripsListStyle = StyleSheet.create({
   },
   cardContainer: {
     ...StyleUtils.card,
+    paddingBottom: 0,
+    paddingHorizontal: 0,
+  },
+  wrapper: {
+    paddingHorizontal: 16,
   },
   cardInformationWrapper: {
     flexDirection: "row",
@@ -55,6 +60,9 @@ const TripsListStyle = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
   },
+  driverInformationNoTime: {
+    paddingBottom: 16,
+  },
   avatar: { ...StyleUtils.avatar },
   driverName: {
     marginLeft: 12,
@@ -88,6 +96,18 @@ const TripsListStyle = StyleSheet.create({
   },
   notFirstItem: {
     marginTop: 16,
+  },
+  remainingTimeContainer: {
+    marginTop: 16,
+    backgroundColor: Colors.WARNING_YELLOW,
+    paddingVertical: 4,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  remainingTimeText: {
+    fontSize: 22,
+    textAlign: "center",
+    color: Colors.WHITE,
   },
 });
 

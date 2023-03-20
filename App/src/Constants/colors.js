@@ -20,6 +20,7 @@ const Colors = {
   LIGHT_BLUE: "#ddefff",
   GOLD: "#FFD700",
   MIDNIGHT_BLACK: "#171717",
+  WARNING_YELLOW: "#FBBF24",
 };
 
 export default Colors;

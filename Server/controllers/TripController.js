@@ -161,23 +161,48 @@ const getUsersFutureTrips = async (req, res) => {
   try {
     const trips = await Trip.find({
       $or: [{ driver: id }, { passengers: id }],
-      date: { $gte: now.toISOString().slice(0, 10) },
-      $or: [
-        { date: { $gt: now.toISOString().slice(0, 10) } },
-        {
-          date: now.toISOString().slice(0, 10),
-          time: { $gt: now.toISOString().slice(11, 5) },
-        },
-      ],
-    });
+      // date: { $gte: now.toISOString().slice(0, 10) },
+      // $or: [
+      //   { date: { $gt: now.toISOString().slice(0, 10) } },
+      //   {
+      //     date: now.toISOString().slice(0, 10),
+      //     time: { $gt: now.toISOString().slice(11, 5) },
+      //   },
+      // ],
+    }).populate("driver", "name surname");
 
-    res.status(StatusCodes.OK).json({ trips });
+    const tripsWithUserType = getTripsWithUserType(id, trips);
+
+    res.status(StatusCodes.OK).json({ trips: tripsWithUserType });
   } catch (error) {
     Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
+};
+
+const getTripsWithUserType = (id, trips) =>
+  trips.map((trip) => {
+    const isUserDriver = trip.driver._id.toString() === id;
+    const timeLeftUntilTrip = getRemainingTime();
+    return {
+      ...trip.toObject(),
+      isUserDriver,
+      timeLeftUntilTrip,
+    };
+  });
+
+const getRemainingTime = (dateStr, timeStr) => {
+  const inputDate = new Date(`${dateStr}T${timeStr}:00`);
+  const now = new Date();
+  const timeDiff = (inputDate.getTime() - now.getTime()) / (1000 * 60);
+  if (timeDiff < 120 && timeDiff > 0) {
+    const hours = Math.floor(timeDiff / 60);
+    const minutes = Math.floor(timeDiff % 60);
+    return { hours, minutes };
+  }
+  return null;
 };
 
 export default { getTrips, postTrip, getTripInformation, getUsersFutureTrips };
