@@ -1,7 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import { useEffect, useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
-import Colors from "../../Constants/colors";
+import { useState } from "react";
 import PageNames from "../../Constants/pageNames";
 import Header from "../../Components/Form/Header";
 import RegistrationForm from "../../Components/Registration/RegistrationForm";

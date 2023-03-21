@@ -2,11 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
 import { useSelector, useDispatch } from "react-redux";
 import { setDate, setReturnDate } from "../../redux/publish/publishSlice";
-import {
-  isAtLeastOneHourFromNow,
-  isTimeGapSufficient,
-  parseSelectedDate,
-} from "./PublishUtils";
+import { isAtLeastOneHourFromNow, isTimeGapSufficient } from "./PublishUtils";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import PageNames from "../../Constants/pageNames";
 import Container from "../../Components/Container/Container";

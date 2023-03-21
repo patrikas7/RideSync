@@ -42,7 +42,6 @@ const PublishInformation = () => {
     setIsLoading(false);
   };
 
-  console.log(state);
   return (
     <View style={PublishInformationStyles.container}>
       <Spinner visible={isLoading} />

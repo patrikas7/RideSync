@@ -26,9 +26,10 @@ const TripInformationScreen = ({ navigation, route }) => {
         headers: { Authorization: token },
       });
 
+      console.log(data);
       setTrip(data.trip);
     } catch (error) {
-      console.log(trip);
+      console.log(error.response.data);
     }
 
     setIsLoading(false);

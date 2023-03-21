@@ -6,8 +6,9 @@ import useUserData from "../../../hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import axios from "axios";
 import TripsList from "../../../Components/TripsList/TripsList";
+import PageNames from "../../../Constants/pageNames";
 
-const FutureTrips = () => {
+const FutureTrips = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [futureTrips, setFutureTrips] = useState([]);
   const { token, id } = useUserData();
@@ -32,7 +33,9 @@ const FutureTrips = () => {
     }
   };
 
-  console.log(futureTrips.length);
+  const handleOnTripPress = (id) => {
+    navigation.navigate(PageNames.TRIP_INFORMATION, { id });
+  };
 
   return (
     <Container>
@@ -44,7 +47,10 @@ const FutureTrips = () => {
           buttonText="Mano kelionių istorija"
         />
       ) : (
-        <TripsList tripsList={futureTrips} />
+        <TripsList
+          tripsList={futureTrips}
+          onPress={(id) => handleOnTripPress(id)}
+        />
       )}
     </Container>
   );

@@ -9,6 +9,7 @@ import BookmarksScreen from "../Views/Bookmarks/BookmarksScreen";
 import SearchScreen from "../Views/Search/SearchScreen";
 import FutureTrips from "../Views/Trips/FutureTrips/FutureTrips";
 import Publish from "./Publish";
+import MyRides from "./MyRides";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -47,7 +48,7 @@ const Tabs = ({ route, navigation }) => {
       />
       <Tab.Screen
         name={PageNames.MY_RIDES}
-        component={FutureTrips}
+        component={MyRides}
         options={{
           tabBarLabel: "Kelionės",
           tabBarIcon: ({ color }) => (

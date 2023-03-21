@@ -13,6 +13,7 @@ const ErrorMessages = {
     "Kelionės pradžia negali prasidėti anksčiau nei už valandos nuo dabar",
   AT_LEAST_HALF_AN_HOUR_FROM_DEPARTURE:
     "Grįžimas negali būti mažiau nei 30 min. nuo kelionės pradžios",
+  SEARCH_TIME_ERROR: "Pasirinktas laikas negali būti mažesnis už esamą laiką",
 };
 
 export default ErrorMessages;

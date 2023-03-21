@@ -68,7 +68,6 @@ const saveSearch = async (req, res) => {
 const getTripsSearchHistory = async (req, res) => {
   const user = req.user;
 
-  console.log(user);
   res
     .status(StatusCodes.OK)
     .json({ tripsSearchHistory: user.tripsSearchHistory.reverse() });

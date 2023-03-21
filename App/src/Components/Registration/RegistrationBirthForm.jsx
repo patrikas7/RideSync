@@ -8,7 +8,6 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
 const RegistrationBirthForm = ({ formState, setFormState, errors }) => {
-  console.log(formState);
   return (
     <>
       <InputDataPicker
