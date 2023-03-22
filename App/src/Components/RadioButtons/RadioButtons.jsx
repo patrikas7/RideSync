@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import RadioButtonGroup, { RadioButtonItem } from "expo-radio-button";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.BLUE_500,
   },
   radioButton: {
-    marginTop: 8,
+    marginTop: 12,
     marginRight: 4,
   },
   radioButtonText: {

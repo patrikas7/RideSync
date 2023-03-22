@@ -2,6 +2,12 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { View, TouchableHighlight, Text } from "react-native";
 import { TripFiltersStyles } from "./TripsSearchResultsStyle";
+import {
+  TripOptionsValues,
+  TripOptionsLabels,
+  departureTimeSlots,
+  availableSeatsSlots,
+} from "./TripSearchFiltersConstants";
 import Button from "../../../Components/Button/Button";
 import Container from "../../../Components/Container/Container";
 import PageNames from "../../../Constants/pageNames";
@@ -10,31 +16,32 @@ import Sizes from "../../../Constants/sizes";
 import Colors from "../../../Constants/colors";
 import RadioButtons from "../../../Components/RadioButtons/RadioButtons";
 import HorizontalSlider from "../../../Components/HorizontalSlider/HorizontalSlider";
-
-const TripOptionsValues = {
-  TRIP_WITH_STOPS: "TRIP_WITH_STOPS",
-  TRIP_WITHOUT_STOPS: "TRIP_WITHOUT_STOPS",
-  ALL_TRIPS: "ALL_TRIPS",
-};
-
-const TripOptionsLabels = [
-  "Kelionės su sustojimas",
-  "Kelionės be sustojimų",
-  "Visos kelionės",
-];
-
-const departureTimeSlots = [
-  "00:00-06:00",
-  "06:00-12:00",
-  "12:00-18:00",
-  "18:00-23:59",
-];
+import RangeSlider from "react-native-range-slider-expo";
 
 const TripSearchFiltersScreen = ({ navigation }) => {
   const [state, setState] = useState({
     tripOption: TripOptionsValues.ALL_TRIPS,
   });
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
+
+  const renderSliderSlot = ({ item, index }) => (
+    <View
+      style={[
+        TripFiltersStyles.sliderSlot,
+        index > 0 && TripFiltersStyles.sliderSlotNotFirst,
+        index === 1 && TripFiltersStyles.sliderSlotActive,
+      ]}
+    >
+      <Text
+        style={[
+          TripFiltersStyles.sliderSlotText,
+          index === 1 && TripFiltersStyles.sliderSlotTextActive,
+        ]}
+      >
+        {item}
+      </Text>
+    </View>
+  );
 
   return (
     <Container>
@@ -59,25 +66,43 @@ const TripSearchFiltersScreen = ({ navigation }) => {
           <Text style={TripFiltersStyles.headline}>Išvyimo laikas</Text>
           <HorizontalSlider
             data={departureTimeSlots}
-            renderItem={({ item, index }) => (
-              <View
-                style={[
-                  TripFiltersStyles.timeSlot,
-                  index > 0 && TripFiltersStyles.timeSlotNotFirst,
-                  index === 1 && TripFiltersStyles.timeSlotActive,
-                ]}
-              >
-                <Text
-                  style={[
-                    TripFiltersStyles.timeSlotText,
-                    index === 1 && TripFiltersStyles.timeSlotTextActive,
-                  ]}
-                >
-                  {item}
-                </Text>
-              </View>
-            )}
+            renderItem={renderSliderSlot}
           />
+        </View>
+
+        <View
+          style={[
+            TripFiltersStyles.filtersSection,
+            TripFiltersStyles.filtersSectionNotFirst,
+          ]}
+        >
+          <Text style={TripFiltersStyles.headline}>Laisvų vietų skaičius</Text>
+          <HorizontalSlider
+            data={availableSeatsSlots}
+            renderItem={renderSliderSlot}
+          />
+        </View>
+
+        <View
+          style={[
+            TripFiltersStyles.filtersSection,
+            TripFiltersStyles.filtersSectionNotFirst,
+          ]}
+        >
+          <Text style={TripFiltersStyles.headline}>Kelionės kaina žmogui</Text>
+          {/* <RangeSlider
+            min={0}
+            max={100}
+            step={1}
+            initialLowValue={20}
+            initialHighValue={80}
+            thumbBorderColor={Colors.BLUE_500}
+            trackBorderColor={Colors.GREY_600}
+            styleSize={"small"}
+            onValueChanged={(low, high) =>
+              console.log(`Low: ${low}, High: ${high}`)
+            }
+          /> */}
         </View>
 
         {/* <View style={TripFiltersStyles.addToFavorites}>

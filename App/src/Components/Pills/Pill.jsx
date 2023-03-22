@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { View, Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Text, TouchableOpacity } from "react-native";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 import PillsStyles from "./PillsStyles";

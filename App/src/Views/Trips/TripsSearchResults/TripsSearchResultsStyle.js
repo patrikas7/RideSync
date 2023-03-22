@@ -30,24 +30,26 @@ export const TripFiltersStyles = StyleSheet.create({
     fontSize: Sizes.DEFAULT_TEXT_SIZE,
     fontWeight: "bold",
   },
-  timeSlot: {
+  sliderSlot: {
     borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
     borderColor: Colors.GREY_600,
     borderWidth: 1,
     paddingVertical: 8,
     paddingHorizontal: 4,
+    minWidth: 96,
   },
-  timeSlotNotFirst: {
+  sliderSlotNotFirst: {
     marginLeft: 8,
   },
-  timeSlotActive: {
+  sliderSlotActive: {
     borderColor: Colors.BLUE_500,
     borderWidth: 2,
   },
-  timeSlotText: {
+  sliderSlotText: {
     color: Colors.GREY_600,
+    textAlign: "center",
   },
-  timeSlotTextActive: {
+  sliderSlotTextActive: {
     color: Colors.BLACK,
   },
 });

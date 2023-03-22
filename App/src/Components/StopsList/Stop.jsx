@@ -1,5 +1,4 @@
-import { View, Text } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { View, Text, TouchableHighlight } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import StopsListStyle from "./StopsListStyle";
 import Colors from "../../Constants/colors";

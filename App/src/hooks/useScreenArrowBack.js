@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableHighlight } from "react-native";
 import Colors from "../Constants/colors";
 import Sizes from "../Constants/sizes";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableHighlight } from "react-native-gesture-handler";
 
 const useScreenArrowBack = (navigation, prevPage) => {
   useEffect(() => {

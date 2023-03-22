@@ -1,8 +1,7 @@
-import { View, TouchableOpacity, Animated } from "react-native";
+import { View, TouchableOpacity, Animated, TextInput } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
-import { TextInput } from "react-native-gesture-handler";
 import { InputSearchStyles } from "./FormStyles";
 import { useEffect, useRef, useState } from "react";
 

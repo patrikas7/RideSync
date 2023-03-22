@@ -1,6 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { Text, View, TouchableHighlight } from "react-native";
 import { TextButtonStyles } from "./ButtonStyles";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
