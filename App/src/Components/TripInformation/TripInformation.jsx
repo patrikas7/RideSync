@@ -6,8 +6,6 @@ import TripDriverCard from "./TripDriverCard";
 import Button from "../Button/Button";
 import TextButton from "../Button/TextButton";
 
-// Add stops
-
 const TripInformation = ({ trip }) => {
   return (
     <View style={TripInformationStyles.inforamtionWrapper}>
@@ -27,18 +25,21 @@ const TripInformation = ({ trip }) => {
           <TripDriverCard
             name={trip.driver.name}
             surname={trip.driver.surname}
+            isUserDriver={trip.isUserDriver}
           />
 
-          <TextButton
-            text={"Pranešti apie kelionę"}
-            onPress={() => console.log()}
-            styling={{ marginTop: 32 }}
-            icon={"alert-outline"}
-          />
+          {!trip.isUserDriver && (
+            <TextButton
+              text={"Pranešti apie kelionę"}
+              onPress={() => console.log()}
+              styling={{ marginTop: 32 }}
+              icon={"alert-outline"}
+            />
+          )}
         </ScrollView>
 
         <Button
-          text={"Rezervuoti vietą"}
+          text={trip.isUserDriver ? "Atšaukti kelionę" : "Rezervuoti vietą"}
           styling={TripInformationStyles.button}
         />
       </View>

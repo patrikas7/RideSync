@@ -5,7 +5,7 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 import IconButton from "../Button/IconButton";
 
-const TripDriverCard = ({ name, surname }) => {
+const TripDriverCard = ({ name, surname, isUserDriver }) => {
   const handleOnChatPress = () => {};
 
   const handleOnProfilePress = () => {};
@@ -49,14 +49,16 @@ const TripDriverCard = ({ name, surname }) => {
             <Text style={TripInformationStyles.secondaryText}>MGD 331</Text>
           </View>
         </View>
-        <View style={TripInformationStyles.chatButton}>
-          <IconButton
-            name={"chatbox-outline"}
-            size={38}
-            onPress={handleOnChatPress}
-            backgroundColor={Colors.BLUE_500}
-          />
-        </View>
+        {!isUserDriver && (
+          <View style={TripInformationStyles.chatButton}>
+            <IconButton
+              name={"chatbox-outline"}
+              size={38}
+              onPress={handleOnChatPress}
+              backgroundColor={Colors.BLUE_500}
+            />
+          </View>
+        )}
       </View>
     </View>
   );

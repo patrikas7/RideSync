@@ -89,12 +89,9 @@ const getUserRatingAndReviewCount = async (userId) => {
 };
 
 const getTripInformation = async (req, res) => {
-  const user = req.user;
   const { id } = req.query;
+  const userId = req.userId;
 
-  Logging.info(req);
-  Logging.info(user);
-  Logging.info(user.id);
   try {
     const trip = await Trip.findById(id).populate("driver", "name surname");
     if (!trip)
@@ -107,7 +104,7 @@ const getTripInformation = async (req, res) => {
     res.status(StatusCodes.OK).json({
       trip: {
         ...trip.toObject(),
-        isUserDriver: user._id.toString() === trip.driver._id.toString(),
+        isUserDriver: userId === trip.driver._id.toString(),
       },
     });
   } catch (error) {

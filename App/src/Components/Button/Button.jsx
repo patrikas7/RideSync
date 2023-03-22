@@ -2,15 +2,12 @@ import { View, Text, Pressable } from "react-native";
 import { ButtonStyles } from "./ButtonStyles";
 
 export const ButtonColor = {
-  BLUE: "BLUE",
-  WHITE: "WHITE",
+  BLUE: "Blue",
+  WHITE: "Grey",
 };
 
 const Button = ({ text, onClick, styling, color = ButtonColor.BLUE }) => {
-  const buttonContainerColor =
-    color === ButtonColor.BLUE
-      ? ButtonStyles.buttonInnerContainerBlue
-      : ButtonStyles.buttonInnerContainerGrey;
+  const buttonContainerColor = ButtonStyles[`buttonInnerContainer${color}`];
 
   return (
     <View style={{ ...ButtonStyles.buttonOuterContainer, ...styling }}>
@@ -29,9 +26,7 @@ const Button = ({ text, onClick, styling, color = ButtonColor.BLUE }) => {
         <Text
           style={[
             ButtonStyles.buttonText,
-            color === ButtonColor.BLUE
-              ? ButtonStyles.buttonTextColorBlue
-              : ButtonStyles.buttonTextColorGrey,
+            ButtonStyles[`buttonTextColor${color}`],
           ]}
         >
           {text}

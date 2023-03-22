@@ -4,13 +4,15 @@ import { Ionicons } from "@expo/vector-icons";
 import Colors from "../Constants/colors";
 import Sizes from "../Constants/sizes";
 
-const useScreenIconRight = (
+const useScreenIconRight = ({
   navigation,
   icon,
   onPress,
-  color = Colors.GREY_700
-) => {
+  shouldRender = true,
+  color = Colors.GREY_700,
+}) => {
   useEffect(() => {
+    if (!shouldRender) return null;
     navigation.setOptions({
       headerRight: () => (
         <TouchableHighlight onPress={onPress} underlayColor={Colors.WHITE}>
@@ -23,7 +25,7 @@ const useScreenIconRight = (
         </TouchableHighlight>
       ),
     });
-  }, []);
+  }, [shouldRender]);
 };
 
 const styles = StyleSheet.create({
