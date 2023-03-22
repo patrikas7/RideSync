@@ -13,7 +13,7 @@ export const TripFiltersStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  addToFavoritesText: {
+  text: {
     fontSize: Sizes.DEFAULT_TEXT_SIZE,
     marginLeft: 8,
   },
@@ -24,6 +24,9 @@ export const TripFiltersStyles = StyleSheet.create({
   },
   filtersSectionNotFirst: {
     paddingTop: 24,
+  },
+  filtersSectionLast: {
+    borderBottomWidth: 0,
   },
   headline: {
     color: Colors.GREY_600,
@@ -51,5 +54,16 @@ export const TripFiltersStyles = StyleSheet.create({
   },
   sliderSlotTextActive: {
     color: Colors.BLACK,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 16,
+  },
+  slider: {
+    marginTop: 12,
+  },
+  trackMarkText: {
+    marginTop: 32,
   },
 });

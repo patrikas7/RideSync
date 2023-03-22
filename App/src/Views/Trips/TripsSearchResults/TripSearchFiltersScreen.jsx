@@ -8,6 +8,7 @@ import {
   departureTimeSlots,
   availableSeatsSlots,
 } from "./TripSearchFiltersConstants";
+import { Slider } from "@miblanchard/react-native-slider";
 import Button from "../../../Components/Button/Button";
 import Container from "../../../Components/Container/Container";
 import PageNames from "../../../Constants/pageNames";
@@ -16,11 +17,14 @@ import Sizes from "../../../Constants/sizes";
 import Colors from "../../../Constants/colors";
 import RadioButtons from "../../../Components/RadioButtons/RadioButtons";
 import HorizontalSlider from "../../../Components/HorizontalSlider/HorizontalSlider";
-import RangeSlider from "react-native-range-slider-expo";
+import Checkbox from "expo-checkbox";
 
 const TripSearchFiltersScreen = ({ navigation }) => {
   const [state, setState] = useState({
     tripOption: TripOptionsValues.ALL_TRIPS,
+    onlyFreeTrips: false,
+    isAddToFavouritesSelcted: false,
+    priceRange: [5, 50],
   });
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
 
@@ -90,35 +94,69 @@ const TripSearchFiltersScreen = ({ navigation }) => {
           ]}
         >
           <Text style={TripFiltersStyles.headline}>Kelionės kaina žmogui</Text>
-          {/* <RangeSlider
-            min={0}
-            max={100}
+          <Slider
+            thumbTintColor={Colors.BLUE_500}
+            maximumTrackTintColor={Colors.GREY_600}
+            minimumTrackTintColor={Colors.BLUE_500}
+            minimumValue={0}
+            maximumValue={100}
             step={1}
-            initialLowValue={20}
-            initialHighValue={80}
-            thumbBorderColor={Colors.BLUE_500}
-            trackBorderColor={Colors.GREY_600}
-            styleSize={"small"}
-            onValueChanged={(low, high) =>
-              console.log(`Low: ${low}, High: ${high}`)
+            containerStyle={TripFiltersStyles.slider}
+            renderTrackMarkComponent={(index) => (
+              <Text
+                style={TripFiltersStyles.trackMarkText}
+              >{`${state.priceRange[index]}€`}</Text>
+            )}
+            trackMarks={[1, 99]}
+            value={state.priceRange}
+            onValueChange={(priceRange) =>
+              setState((prevState) => ({ ...prevState, priceRange }))
             }
-          /> */}
-        </View>
-
-        {/* <View style={TripFiltersStyles.addToFavorites}>
-          <TouchableHighlight>
-            <Ionicons
-              name="star-outline"
-              size={Sizes.ICON}
-              color={Colors.GOLD}
+          />
+          <View style={TripFiltersStyles.checkboxContainer}>
+            <Checkbox
+              value={state.onlyFreeTrips}
+              onValueChange={() =>
+                setState((prevState) => ({
+                  ...prevState,
+                  onlyFreeTrips: !prevState.onlyFreeTrips,
+                }))
+              }
+              color={state.onlyFreeTrips ? Colors.BLUE_500 : undefined}
             />
-          </TouchableHighlight>
-          <Text style={TripFiltersStyles.addToFavoritesText}>
-            Pridėti paiešką prie favoritų
-          </Text>
-        </View> */}
+            <Text style={TripFiltersStyles.text}>Tik nemokamos kelionės</Text>
+          </View>
+        </View>
+        <View
+          style={[
+            TripFiltersStyles.filtersSection,
+            TripFiltersStyles.filtersSectionNotFirst,
+            TripFiltersStyles.filtersSectionLast,
+          ]}
+        >
+          <View style={TripFiltersStyles.addToFavorites}>
+            <TouchableHighlight
+              onPress={() =>
+                setState((prevState) => ({
+                  ...prevState,
+                  isAddToFavouritesSelcted: !prevState.isAddToFavouritesSelcted,
+                }))
+              }
+              underlayColor={Colors.WHITE}
+            >
+              <Ionicons
+                name={state.isAddToFavouritesSelcted ? "star" : "star-outline"}
+                size={Sizes.ICON}
+                color={Colors.GOLD}
+              />
+            </TouchableHighlight>
+            <Text style={TripFiltersStyles.text}>
+              Pridėti paiešką prie favoritų
+            </Text>
+          </View>
+        </View>
       </View>
-      <Button text={"Ieškoti"} styling={TripFiltersStyles.button} />
+      <Button text={"Išsaugoti"} styling={TripFiltersStyles.button} />
     </Container>
   );
 };
