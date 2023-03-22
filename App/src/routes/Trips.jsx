@@ -2,8 +2,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
 import TripsSearchResults from "../Views/Trips/TripsSearchResults/TripsSearchResults";
 import TripInformationScreen from "../Views/Trips/TripInformation/TripInformationScreen";
+import TripSearchFiltersScreen from "../Views/Trips/TripsSearchResults/TripSearchFiltersScreen";
 
-const Trips = ({ navigation, route }) => {
+const Trips = ({ route }) => {
   const Stack = createStackNavigator();
 
   return (
@@ -21,6 +22,14 @@ const Trips = ({ navigation, route }) => {
         component={TripInformationScreen}
         options={{
           title: "Kelionės informacija",
+          headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.TRIP_SEARCH_FILTERS}
+        component={TripSearchFiltersScreen}
+        options={{
+          title: "Paieškos filtrai",
           headerShadowVisible: false,
         }}
       />

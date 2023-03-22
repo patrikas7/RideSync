@@ -22,7 +22,11 @@ const TripsSearchResults = ({ mainRoute }) => {
   const [tripsList, setTripsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useScreenArrowBack(navigation, PageNames.SEARCH);
-  useScreenIconRight({ navigation, icon: "filter" });
+  useScreenIconRight({
+    navigation,
+    icon: "filter",
+    onPress: () => navigation.navigate(PageNames.TRIP_SEARCH_FILTERS),
+  });
 
   useEffect(() => {
     fetchTrips();
