@@ -1,5 +1,11 @@
 import Joi from "joi";
-import { Genders, SearchTypes } from "../enums/enums.js";
+import {
+  AvailableSeatsSlots,
+  DepartureTimeSlots,
+  Genders,
+  SearchTypes,
+  TripOptions,
+} from "../enums/enums.js";
 
 const getEligableDate = () => {
   const todaysDate = new Date();
@@ -82,6 +88,35 @@ const Schemas = {
       isRoundTrip: Joi.boolean().required(),
       returnDate: Joi.string(),
       returnTime: Joi.string(),
+    }),
+    filter: Joi.object({
+      tripOption: Joi.string().valid(
+        TripOptions.TRIP_WITH_STOPS,
+        TripOptions.TRIP_WITHOUT_STOPS,
+        TripOptions.ALL_TRIPS
+      ),
+      departureTime: Joi.string().valid(
+        DepartureTimeSlots.ALL_TIMES,
+        DepartureTimeSlots.FIRST_QUATER,
+        DepartureTimeSlots.SECOND_QUATER,
+        DepartureTimeSlots.THIRD_QUATER,
+        DepartureTimeSlots.FOURTH_QUATER
+      ),
+      availableSeats: Joi.string().valid(
+        AvailableSeatsSlots.DOES_NOT_MATTER,
+        AvailableSeatsSlots.ONE,
+        AvailableSeatsSlots.TWO,
+        AvailableSeatsSlots.THREE,
+        AvailableSeatsSlots.FOUR
+      ),
+      onlyFreeTrips: Joi.boolean(),
+      isAddToFavouritesSelcted: Joi.boolean(),
+      priceRangeRange: Joi.array()
+        .ordered(
+          Joi.number().integer().min(0).max(100),
+          Joi.number().integer().min(0).max(100)
+        )
+        .length(2),
     }),
   },
   tripSubscription: {

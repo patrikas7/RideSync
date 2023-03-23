@@ -10,17 +10,18 @@ export const TripOptionsLabels = [
   "Visos kelionės",
 ];
 
-export const departureTimeSlots = [
-  "00:00-06:00",
-  "06:00-12:00",
-  "12:00-18:00",
-  "18:00-23:59",
+export const DepartureTimeSlots = [
+  { key: "ALL_TIMES", value: "Nesvarbu" },
+  { key: "FIRST_QUATER", value: "00:00-06:00" },
+  { key: "SECOND_QUATER", value: "06:00-12:00" },
+  { key: "THIRD_QUATER", value: "12:00-18:00" },
+  { key: "FOURTH_QUATER", value: "18:00-23:59" },
 ];
 
-export const availableSeatsSlots = [
-  "Nesvarbu",
-  "1 vieta",
-  "2 vietos",
-  "3 vietos",
-  "4 vietos",
+export const AvailableSeatsSlots = [
+  { key: "DOES_NOT_MATTER", value: "Nesvarbu" },
+  { key: "1", value: "1 vieta" },
+  { key: "2", value: "2 vietos" },
+  { key: "3", value: "3 vietos" },
+  { key: "4", value: "4 vietos" },
 ];

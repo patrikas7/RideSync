@@ -209,4 +209,21 @@ const getRemainingTime = (dateStr, timeStr) => {
   return null;
 };
 
-export default { getTrips, postTrip, getTripInformation, getUsersFutureTrips };
+const filterTrips = async (req, res) => {
+  const {
+    tripOption,
+    departureTime,
+    availableSeats,
+    onlyFreeTrips,
+    isAddToFavouritesSelcted,
+    priceRange,
+  } = req.query;
+};
+
+export default {
+  getTrips,
+  postTrip,
+  getTripInformation,
+  getUsersFutureTrips,
+  filterTrips,
+};

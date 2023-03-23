@@ -5,8 +5,8 @@ import { TripFiltersStyles } from "./TripsSearchResultsStyle";
 import {
   TripOptionsValues,
   TripOptionsLabels,
-  departureTimeSlots,
-  availableSeatsSlots,
+  DepartureTimeSlots,
+  AvailableSeatsSlots,
 } from "./TripSearchFiltersConstants";
 import { Slider } from "@miblanchard/react-native-slider";
 import Button from "../../../Components/Button/Button";
@@ -22,29 +22,33 @@ import Checkbox from "expo-checkbox";
 const TripSearchFiltersScreen = ({ navigation }) => {
   const [state, setState] = useState({
     tripOption: TripOptionsValues.ALL_TRIPS,
+    departureTime: DepartureTimeSlots[0].key,
+    availableSeats: AvailableSeatsSlots[0].key,
     onlyFreeTrips: false,
     isAddToFavouritesSelcted: false,
     priceRange: [5, 50],
   });
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
 
-  const renderSliderSlot = ({ item, index }) => (
-    <View
+  const renderSliderSlot = (item, index, activeSlot, setActiveSlot) => (
+    <TouchableHighlight
       style={[
         TripFiltersStyles.sliderSlot,
         index > 0 && TripFiltersStyles.sliderSlotNotFirst,
-        index === 1 && TripFiltersStyles.sliderSlotActive,
+        item.key === activeSlot && TripFiltersStyles.sliderSlotActive,
       ]}
+      onPress={() => setActiveSlot(item.key)}
+      underlayColor={Colors.HIGHLIGHT_UNDERLAY}
     >
       <Text
         style={[
           TripFiltersStyles.sliderSlotText,
-          index === 1 && TripFiltersStyles.sliderSlotTextActive,
+          item.key === activeSlot && TripFiltersStyles.sliderSlotTextActive,
         ]}
       >
-        {item}
+        {item.value}
       </Text>
-    </View>
+    </TouchableHighlight>
   );
 
   return (
@@ -69,8 +73,12 @@ const TripSearchFiltersScreen = ({ navigation }) => {
         >
           <Text style={TripFiltersStyles.headline}>Išvyimo laikas</Text>
           <HorizontalSlider
-            data={departureTimeSlots}
-            renderItem={renderSliderSlot}
+            data={DepartureTimeSlots}
+            renderItem={({ item, index }) =>
+              renderSliderSlot(item, index, state.departureTime, (key) =>
+                setState((prevState) => ({ ...prevState, departureTime: key }))
+              )
+            }
           />
         </View>
 
@@ -82,8 +90,12 @@ const TripSearchFiltersScreen = ({ navigation }) => {
         >
           <Text style={TripFiltersStyles.headline}>Laisvų vietų skaičius</Text>
           <HorizontalSlider
-            data={availableSeatsSlots}
-            renderItem={renderSliderSlot}
+            data={AvailableSeatsSlots}
+            renderItem={({ item, index }) =>
+              renderSliderSlot(item, index, state.availableSeats, (key) =>
+                setState((prevState) => ({ ...prevState, availableSeats: key }))
+              )
+            }
           />
         </View>
 

@@ -25,7 +25,12 @@ const TripsSearchResults = ({ mainRoute }) => {
   useScreenIconRight({
     navigation,
     icon: "filter",
-    onPress: () => navigation.navigate(PageNames.TRIP_SEARCH_FILTERS),
+    onPress: () =>
+      navigation.navigate(PageNames.TRIP_SEARCH_FILTERS, {
+        departure,
+        destination,
+        token,
+      }),
   });
 
   useEffect(() => {
