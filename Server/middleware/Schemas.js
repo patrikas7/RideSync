@@ -90,6 +90,9 @@ const Schemas = {
       returnTime: Joi.string(),
     }),
     filter: Joi.object({
+      departure: Joi.string().required(),
+      destination: Joi.string().required(),
+      date: Joi.string().required(),
       tripOption: Joi.string().valid(
         TripOptions.TRIP_WITH_STOPS,
         TripOptions.TRIP_WITHOUT_STOPS,

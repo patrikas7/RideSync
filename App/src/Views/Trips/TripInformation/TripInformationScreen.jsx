@@ -21,7 +21,7 @@ const TripInformationScreen = ({ navigation, route }) => {
 
   useScreenIconRight({
     navigation,
-    icon: "create-outline",
+    icons: ["create-outline"],
     onPress: handleOnEditPress,
     shouldRender: trip.isUserDriver,
     color: Colors.BLACK,

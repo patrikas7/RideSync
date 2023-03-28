@@ -7,7 +7,12 @@ import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
 import DatePicker from "react-native-modern-datepicker";
 
-const DateAndTimePicker = ({ headline, handleOnDateChange, date }) => {
+const DateAndTimePicker = ({
+  headline,
+  handleOnDateChange,
+  date,
+  mode = "datepicker",
+}) => {
   const handleOnChange = (selectedDate) =>
     handleOnDateChange(parseSelectedDate(selectedDate));
 
@@ -20,6 +25,7 @@ const DateAndTimePicker = ({ headline, handleOnDateChange, date }) => {
           options={{ mainColor: Colors.BLUE_500 }}
           minimumDate={getFormatedTodaysDate()}
           selected={date}
+          mode={mode}
         />
       </View>
     </>

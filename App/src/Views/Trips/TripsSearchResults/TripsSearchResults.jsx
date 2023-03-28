@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
+import { Text, View } from "react-native";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { showMessage } from "react-native-flash-message";
 import Spinner from "react-native-loading-spinner-overlay";
 import ButtonsSwitch from "../../../Components/ButtonsSwitch/ButtonsSwitch";
@@ -11,9 +12,12 @@ import TripsList from "../../../Components/TripsList/TripsList";
 import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 import useScreenIconRight from "../../../hooks/useScreenIconRight";
+import SlidingUpPanel from "rn-sliding-up-panel";
 
 const TripsSearchResults = ({ mainRoute }) => {
   const [activeSearchType, setActiveSearchType] = useState(0);
+  const [panelVisible, setPanelVisible] = useState(false);
+  const ref = useRef(null);
   const [hasTripSubscriptionBeenMade, setHasTripSubscriptionBeenMade] =
     useState(false);
   const { destination, departure, date, personsCount, token, id } =
@@ -24,7 +28,7 @@ const TripsSearchResults = ({ mainRoute }) => {
   useScreenArrowBack(navigation, PageNames.SEARCH);
   useScreenIconRight({
     navigation,
-    icon: "filter",
+    icons: ["funnel-outline", "filter"],
     onPress: () =>
       navigation.navigate(PageNames.TRIP_SEARCH_FILTERS, {
         departure,
@@ -94,12 +98,26 @@ const TripsSearchResults = ({ mainRoute }) => {
         onPress={handleOnSubscriptionClick}
       />
     ) : (
-      <TripsList
-        tripsList={tripsList}
-        onPress={(id) =>
-          navigation.navigate(PageNames.TRIP_INFORMATION, { id })
-        }
-      />
+      <View style={{ flex: 1 }}>
+        <TripsList
+          tripsList={tripsList}
+          onPress={(id) =>
+            navigation.navigate(PageNames.TRIP_INFORMATION, { id })
+          }
+        />
+        <SlidingUpPanel
+          ref={ref}
+          visible={true}
+          height={200}
+          draggableRange={{ top: 200, bottom: 0 }}
+          friction={0.5}
+          snappingPoints={[0, 200]}
+        >
+          <View style={{ flex: 1, backgroundColor: "white" }}>
+            <Text style={{ fontSize: 24, padding: 16 }}>Sliding Up Panel</Text>
+          </View>
+        </SlidingUpPanel>
+      </View>
     );
 
   return (

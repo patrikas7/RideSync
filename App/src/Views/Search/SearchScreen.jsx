@@ -38,6 +38,8 @@ const SearchScreen = ({ route, navigation }) => {
     navigation.navigate(PageNames.SEARCH_DATE_AND_TIME_SELECTION, {
       departure,
       destination,
+      id,
+      token,
     });
   };
 

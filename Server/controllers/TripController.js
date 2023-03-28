@@ -3,6 +3,7 @@ import StatusCodes from "../enums/statusCodes.js";
 import Logging from "../library/Logging.js";
 import Trip from "../models/Trip.js";
 import BasicUser from "../models/BasicUser.js";
+// import TripBookmark from "../models/TripBookmark.js";
 
 // PAGINATIONS
 // Add rating calculation
@@ -211,6 +212,9 @@ const getRemainingTime = (dateStr, timeStr) => {
 
 const filterTrips = async (req, res) => {
   const {
+    destination,
+    departure,
+    date,
     tripOption,
     departureTime,
     availableSeats,
@@ -218,7 +222,66 @@ const filterTrips = async (req, res) => {
     isAddToFavouritesSelcted,
     priceRange,
   } = req.query;
+  const userId = req.userId;
+  const query = {};
+
+  if (destination) {
+    query.destination.city = destination;
+  }
+
+  if (departure) {
+    query.departure.city = departure;
+  }
+
+  if (date) {
+    query.date = date;
+  }
+
+  if (tripOption) {
+    query.tripOption = tripOption;
+  }
+
+  if (departureTime) {
+    query.departureTime = departureTime;
+  }
+
+  if (availableSeats) {
+    query.availableSeats = availableSeats;
+  }
+
+  if (onlyFreeTrips === "true") {
+    query.price = 0;
+  }
+
+  if (priceRange) {
+    const [minPrice, maxPrice] = priceRange.split("-");
+    query.price = { $gte: minPrice, $lte: maxPrice };
+  }
+
+  try {
+    // if (isAddToFavouritesSelcted) await addTripToFavorites(req.query, userId);
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
 };
+
+// const addTripToFavorites = async (query, userId) => {
+//   const tripBookmark = new TripBookmark({
+//     destination: query.destination,
+//     departure: query.departure,
+//     tripOption: query.tripOption,
+//     departureTime: query.departureTime,
+//     availableSeats: query.availableSeats,
+//     onlyFreeTrips: query.onlyFreeTrips,
+//     priceRange: query.priceRange,
+//     userId,
+//   });
+
+//   await tripBookmark.save();
+// };
 
 export default {
   getTrips,

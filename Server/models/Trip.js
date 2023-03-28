@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const cityType = {
+export const cityType = {
   addressLine1: { type: String, required: true },
   addressLine2: { type: String, required: true },
   city: { type: String, required: true },

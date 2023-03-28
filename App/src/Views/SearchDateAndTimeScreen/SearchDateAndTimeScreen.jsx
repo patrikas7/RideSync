@@ -1,36 +1,42 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { showMessage } from "react-native-flash-message";
-import { getFormatedDate } from "react-native-modern-datepicker";
 import Button from "../../Components/Button/Button";
 import Container from "../../Components/Container/Container";
 import DateAndTimePicker from "../../Components/TimeAndDatePicker/TimeAndDatePicker";
-import ErrorMessages from "../../Constants/errorMessages";
 import PageNames from "../../Constants/pageNames";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
-import { isTimeLaterOrEqual } from "../../Utils/utils";
+import { getFormatedTodaysDate } from "../../Utils/utils";
 
-const SearchDateAndTimeScreen = ({ navigation }) => {
-  const [selectedDate, setSelectedDate] = useState("");
+const SearchDateAndTimeScreen = ({ navigation, route }) => {
+  const [tripDate, setTripDate] = useState(getFormatedTodaysDate());
+  const { destination, departure, id, token } = route.params;
   useScreenArrowBack(navigation, PageNames.HOME);
 
   const handleOnNextPress = () => {
-    if (!isTimeLaterOrEqual(dateAndTime.time)) {
-      showMessage({
-        message: ErrorMessages.SEARCH_TIME_ERROR,
-        type: "danger",
-      });
-
-      return;
-    }
+    navigation.navigate(PageNames.TRIP_SEARCH_RESULTS, {
+      destination: {
+        city: destination,
+      },
+      departure: {
+        city: departure,
+      },
+      id,
+      token,
+    });
   };
 
   return (
     <Container>
-      <DateAndTimePicker handleOnDateChange={setSelectedDate} />
+      <DateAndTimePicker
+        date={tripDate}
+        handleOnDateChange={({ date }) => {
+          if (date !== tripDate) setTripDate(date);
+        }}
+        mode={"calendar"}
+      />
 
       <Button
-        text={"Toliau"}
+        text={"Ieškoti"}
         styling={{ marginBottom: 32 }}
         onClick={handleOnNextPress}
       />
