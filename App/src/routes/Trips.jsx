@@ -4,7 +4,7 @@ import TripsSearchResults from "../Views/Trips/TripsSearchResults/TripsSearchRes
 import TripInformationScreen from "../Views/Trips/TripInformation/TripInformationScreen";
 import TripSearchFiltersScreen from "../Views/Trips/TripsSearchResults/TripSearchFiltersScreen";
 
-const Trips = ({ route }) => {
+const Trips = ({ route, navigation }) => {
   const Stack = createStackNavigator();
 
   return (
@@ -19,7 +19,12 @@ const Trips = ({ route }) => {
       />
       <Stack.Screen
         name={PageNames.TRIP_INFORMATION}
-        component={TripInformationScreen}
+        children={() => (
+          <TripInformationScreen
+            mainRoute={route}
+            mainNavigation={navigation}
+          />
+        )}
         options={{
           title: "Kelionės informacija",
           headerShadowVisible: false,

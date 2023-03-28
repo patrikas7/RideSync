@@ -283,10 +283,25 @@ const filterTrips = async (req, res) => {
 //   await tripBookmark.save();
 // };
 
+const deleteTrip = async (req, res) => {
+  const { id } = req.query;
+
+  try {
+    await Trip.findByIdAndDelete(id);
+    res.status(StatusCodes.OK).json({ message: "deleted" });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   getTrips,
   postTrip,
   getTripInformation,
   getUsersFutureTrips,
   filterTrips,
+  deleteTrip,
 };

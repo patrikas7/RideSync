@@ -8,8 +8,11 @@ import useUserData from "../../../hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import useScreenIconRight from "../../../hooks/useScreenIconRight";
 import Colors from "../../../Constants/colors";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const TripInformationScreen = ({ navigation, route }) => {
+const TripInformationScreen = ({ mainNavigation, mainRoute }) => {
+  const navigation = useNavigation();
+  const route = useRoute();
   const [trip, setTrip] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { id } = route.params;
@@ -52,7 +55,12 @@ const TripInformationScreen = ({ navigation, route }) => {
       {isLoading ? (
         <Spinner visible={isLoading} />
       ) : (
-        <TripInformation trip={trip} navigation={navigation} />
+        <TripInformation
+          trip={trip}
+          id={id}
+          token={token}
+          navigation={navigation}
+        />
       )}
     </Container>
   );

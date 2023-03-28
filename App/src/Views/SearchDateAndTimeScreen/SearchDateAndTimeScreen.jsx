@@ -13,13 +13,14 @@ const SearchDateAndTimeScreen = ({ navigation, route }) => {
   useScreenArrowBack(navigation, PageNames.HOME);
 
   const handleOnNextPress = () => {
-    navigation.navigate(PageNames.TRIP_SEARCH_RESULTS, {
+    navigation.navigate(PageNames.TRIPS, {
       destination: {
         city: destination,
       },
       departure: {
         city: departure,
       },
+      date: tripDate,
       id,
       token,
     });

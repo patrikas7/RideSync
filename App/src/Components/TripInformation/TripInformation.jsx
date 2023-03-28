@@ -5,10 +5,36 @@ import TripDetailsCard from "./TripDetailsCard";
 import TripDriverCard from "./TripDriverCard";
 import Button from "../Button/Button";
 import TextButton from "../Button/TextButton";
+import { useState } from "react";
+import axios from "axios";
+import Spinner from "react-native-loading-spinner-overlay/lib";
+import PageNames from "../../Constants/pageNames";
 
-const TripInformation = ({ trip }) => {
+const TripInformation = ({ trip, id, token, navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const handleOnButtonClick = async () => {
+    if (trip.isUserDriver) await deleteTrip();
+  };
+
+  const deleteTrip = async () => {
+    setIsLoading(true);
+    try {
+      await axios.delete("/trips/information", {
+        params: { id },
+        headers: { Authorization: token },
+      });
+
+      navigation.navigate(PageNames.TRIP_SEARCH_RESULTS);
+    } catch (error) {
+      console.error(error.response.data);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={TripInformationStyles.inforamtionWrapper}>
+      <Spinner visible={isLoading} />
       <View style={TripInformationStyles.scrollWrapper}>
         <ScrollView style={TripInformationStyles.container}>
           <TripRoutesCard
@@ -41,6 +67,7 @@ const TripInformation = ({ trip }) => {
         <Button
           text={trip.isUserDriver ? "Atšaukti kelionę" : "Rezervuoti vietą"}
           styling={TripInformationStyles.button}
+          onClick={handleOnButtonClick}
         />
       </View>
     </View>
