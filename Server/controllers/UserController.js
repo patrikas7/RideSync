@@ -22,7 +22,22 @@ const getUserCars = async (req, res) => {
   res.status(StatusCodes.OK).json({ carsList: user.cars });
 };
 
+const getUserDetails = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const user = await User.findById(userId);
+    res.status(StatusCodes.OK).json({ user });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
+  getUserDetails,
 };

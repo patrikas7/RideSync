@@ -17,7 +17,6 @@ import Spinner from "react-native-loading-spinner-overlay";
 import FlashMessage from "react-native-flash-message";
 import Trips from "./src/routes/Trips";
 import SearchDateAndTimeScreen from "./src/Views/SearchDateAndTimeScreen/SearchDateAndTimeScreen";
-import ProfileScreen from "./src/Views/Profile/ProfileScreen";
 import Profile from "./src/routes/Profile";
 
 axios.defaults.baseURL = "http://localhost:5001";

@@ -6,6 +6,7 @@ import validateIdMiddleware from "../middleware/validateIdMiddleware.js";
 
 const UserRouter = express.Router();
 
+UserRouter.route("/").get(authMiddleware, controller.getUserDetails);
 UserRouter.route("/checkByEmail").get(controller.checkUserByEmail);
 UserRouter.route("/car").get(
   authMiddleware,
