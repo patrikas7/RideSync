@@ -9,6 +9,9 @@ const SearchStyles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   headerContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 16,
   },
   subHeaderContainer: {

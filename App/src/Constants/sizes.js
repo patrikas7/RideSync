@@ -1,4 +1,5 @@
 const Sizes = {
+  ICON_LARGE: 32,
   ICON: 24,
   ICON_SMALL: 16,
   HEADER_LARGE: 32,

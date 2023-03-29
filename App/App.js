@@ -17,6 +17,8 @@ import Spinner from "react-native-loading-spinner-overlay";
 import FlashMessage from "react-native-flash-message";
 import Trips from "./src/routes/Trips";
 import SearchDateAndTimeScreen from "./src/Views/SearchDateAndTimeScreen/SearchDateAndTimeScreen";
+import ProfileScreen from "./src/Views/Profile/ProfileScreen";
+import Profile from "./src/routes/Profile";
 
 axios.defaults.baseURL = "http://localhost:5001";
 
@@ -105,6 +107,13 @@ export default function App() {
               options={{
                 title: "Kelionės data ir laikas",
                 headerShadowVisible: false,
+              }}
+            />
+            <Stack.Screen
+              name={PageNames.PROFILE}
+              component={Profile}
+              options={{
+                headerShown: false,
               }}
             />
           </Stack.Navigator>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import Header from "../../Components/Form/Header";
 import SearchHistory from "../../Components/TripSearch/SearchHistory";
 import TripSearchForm from "../../Components/TripSearch/TripSearchForm";
@@ -9,6 +9,8 @@ import useUserData from "../../hooks/useUserData";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";
+import { Ionicons } from "@expo/vector-icons";
+import Colors from "../../Constants/colors";
 
 const SearchScreen = ({ route, navigation }) => {
   const [tripsSearchHistory, setTripsSearchHistory] = useState([]);
@@ -43,17 +45,32 @@ const SearchScreen = ({ route, navigation }) => {
     });
   };
 
+  const handleOnProfilePress = () => {
+    navigation.navigate(PageNames.PROFILE, { token });
+  };
+
   return (
     <View style={SearchStyles.screenContainer}>
       {!isFetched ? (
         <Spinner visible={!isFetched} />
       ) : (
         <>
-          <Header
-            text={`Labas ${name || ""}! 👋`}
-            size={Sizes.HEADER_MEDIUM}
-            containerStyling={SearchStyles.headerContainer}
-          />
+          <View style={SearchStyles.headerContainer}>
+            <Header
+              text={`Labas ${name || ""}! 👋`}
+              size={Sizes.HEADER_MEDIUM}
+            />
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={handleOnProfilePress}
+            >
+              <Ionicons
+                name="person-circle-outline"
+                size={Sizes.ICON_LARGE}
+                color={Colors.BLACK}
+              />
+            </TouchableOpacity>
+          </View>
           <View style={SearchStyles.subHeaderContainer}>
             <Header
               text={"Kur planuojate kelionę?"}
