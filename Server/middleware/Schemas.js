@@ -33,6 +33,10 @@ const Schemas = {
       phoneNumber: Joi.string(),
       gender: Joi.string().valid(Genders.MALE, Genders.FEMALE).required(),
     }),
+    update: Joi.object({
+      field: Joi.string().required(),
+      value: Joi.string().required(),
+    }),
   },
   login: Joi.object({
     email: Joi.string().email().required(),

@@ -1,7 +1,7 @@
 import { View, Image, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { ProfileScreenStyles } from "./ProfileStyles";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
@@ -10,6 +10,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import axios from "axios";
 
 const ProfileScreen = ({ token }) => {
+  const route = useRoute();
   const [user, setUser] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
@@ -19,6 +20,11 @@ const ProfileScreen = ({ token }) => {
     if (!token) return;
     fetchUserDetails();
   }, [token]);
+
+  useEffect(() => {
+    if (!route.params?.user) return;
+    setUser(route.params.user);
+  }, [route.params]);
 
   const fetchUserDetails = async () => {
     try {

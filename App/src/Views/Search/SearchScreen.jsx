@@ -15,7 +15,7 @@ import Colors from "../../Constants/colors";
 const SearchScreen = ({ route, navigation }) => {
   const [tripsSearchHistory, setTripsSearchHistory] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
-  const { name, id, token } = useUserData();
+  const { id, token } = useUserData();
 
   useEffect(() => {
     if (id && token) fetchTripsSearchHistory();
@@ -56,10 +56,7 @@ const SearchScreen = ({ route, navigation }) => {
       ) : (
         <>
           <View style={SearchStyles.headerContainer}>
-            <Header
-              text={`Labas ${name || ""}! 👋`}
-              size={Sizes.HEADER_MEDIUM}
-            />
+            <Header text={`Labas 👋`} size={Sizes.HEADER_MEDIUM} />
             <TouchableOpacity
               activeOpacity={0.6}
               onPress={handleOnProfilePress}

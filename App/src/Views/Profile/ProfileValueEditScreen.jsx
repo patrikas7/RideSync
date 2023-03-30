@@ -2,6 +2,7 @@ import { View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import { ProfileValueEditScreenStyles } from "./ProfileStyles";
+import { showMessage } from "react-native-flash-message";
 import Button from "../../Components/Button/Button";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
@@ -9,7 +10,9 @@ import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import Header from "../../Components/Form/Header";
 import Sizes from "../../Constants/sizes";
 import InputSearch from "../../Components/Form/InputSearch";
-import Spinner from "react-native-loading-spinner-overlay/lib";
+import Spinner from "react-native-loading-spinner-overlay";
+import axios from "axios";
+import ErrorMessages from "../../Constants/errorMessages";
 
 const ProfileValueEditScreen = ({ token }) => {
   const navigation = useNavigation();
@@ -24,11 +27,29 @@ const ProfileValueEditScreen = ({ token }) => {
     "close-outline"
   );
 
-  const handleOnSavePress = () => {
-    if (value === user[field]) redirectBack();
-    setIsLoading(true);
+  const handleOnSavePress = async () => {
+    if (value === user[field]) redirectBack(user);
+    if (!value) {
+      showMessage({
+        message: ErrorMessages.EMPTY_FIELD,
+        type: "danger",
+      });
 
+      return;
+    }
+
+    setIsLoading(true);
     try {
+      const { data } = await axios.put(
+        "/user",
+        {
+          field,
+          value,
+        },
+        { headers: { Authorization: token } }
+      );
+
+      redirectBack(data.user);
     } catch (error) {
       console.error(error.response.data);
     } finally {
@@ -36,13 +57,13 @@ const ProfileValueEditScreen = ({ token }) => {
     }
   };
 
-  const redirectBack = () => {
-    navigation.navigate(PageNames.PROFILE_DETAILS, { user });
+  const redirectBack = (userDetails) => {
+    navigation.navigate(PageNames.PROFILE_DETAILS, { user: userDetails });
   };
 
   return (
     <Container>
-      <Spinner isLoading={isLoading} />
+      <Spinner visible={isLoading} />
       <View style={ProfileValueEditScreenStyles.container}>
         <Header text={title} size={Sizes.HEADER_MEDIUM} />
         <InputSearch

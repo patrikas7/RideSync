@@ -26,7 +26,7 @@ const useScreenArrowBack = (
         </TouchableHighlight>
       ),
     });
-  }, []);
+  }, [props]);
 };
 
 const styles = StyleSheet.create({

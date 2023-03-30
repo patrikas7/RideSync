@@ -36,12 +36,8 @@ export const ProfileScreenStyles = StyleSheet.create({
 });
 
 export const ProfileDetailsScreenStyles = StyleSheet.create({
-  detailsContainer: { flex: 1 },
   listItem: {
     paddingVertical: 8,
-  },
-  button: {
-    marginBottom: 32,
   },
 });
 

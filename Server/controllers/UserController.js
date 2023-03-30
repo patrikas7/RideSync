@@ -36,8 +36,28 @@ const getUserDetails = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const userId = req.userId;
+  const { field, value } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    user[field] = value;
+
+    await user.save();
+
+    res.status(StatusCodes.OK).json({ user });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
   getUserDetails,
+  updateUser,
 };
