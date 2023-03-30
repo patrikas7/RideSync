@@ -1,6 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
 import useUserData from "../hooks/useUserData";
+import ProfileDetailsScreen from "../Views/Profile/ProfileDetailsScreen";
 import ProfileScreen from "../Views/Profile/ProfileScreen";
 
 const Profile = () => {
@@ -14,6 +15,14 @@ const Profile = () => {
         children={() => <ProfileScreen token={token} />}
         options={{
           title: "Profilis",
+          headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.PROFILE_DETAILS}
+        children={() => <ProfileDetailsScreen token={token} />}
+        options={{
+          title: "Profilio detalės",
           headerShadowVisible: false,
         }}
       />

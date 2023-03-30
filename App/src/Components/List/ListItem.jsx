@@ -4,7 +4,7 @@ import { ListItemStyles } from "./ListStyles";
 import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
 
-const ListItem = ({ icon, text, onPress }) => {
+const ListItem = ({ icon, text, secondaryText, onPress, itemStyling }) => {
   return (
     <TouchableHighlight
       onPress={onPress}
@@ -12,9 +12,24 @@ const ListItem = ({ icon, text, onPress }) => {
       underlayColor={Colors.HIGHLIGHT_UNDERLAY}
       style={ListItemStyles.touchableHighlight}
     >
-      <View style={ListItemStyles.listItem}>
+      <View style={[ListItemStyles.listItem, itemStyling]}>
         <Ionicons name={icon} size={Sizes.ICON} color={Colors.BLACK} />
-        <Text style={ListItemStyles.listItemText}>{text}</Text>
+        <View style={ListItemStyles.textContainer}>
+          <Text
+            style={
+              secondaryText
+                ? ListItemStyles.listItemTextFirst
+                : ListItemStyles.listItemText
+            }
+          >
+            {text}
+          </Text>
+          {secondaryText && (
+            <Text style={ListItemStyles.listItemSecondaryText}>
+              {secondaryText}
+            </Text>
+          )}
+        </View>
         <Ionicons
           name="chevron-forward-outline"
           size={20}

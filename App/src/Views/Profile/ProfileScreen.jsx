@@ -1,13 +1,13 @@
 import { View, Image, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { ProfileScreenStyles } from "./ProfileStyles";
+import { useNavigation } from "@react-navigation/native";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import ListItem from "../../Components/List/ListItem";
 import Spinner from "react-native-loading-spinner-overlay";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native";
 
 const ProfileScreen = ({ token }) => {
   const [user, setUser] = useState();
@@ -34,6 +34,10 @@ const ProfileScreen = ({ token }) => {
     }
   };
 
+  const handleOnListItemPess = (screen) => {
+    navigation.navigate(screen, { user });
+  };
+
   return (
     <Container>
       {isLoading ? (
@@ -53,9 +57,21 @@ const ProfileScreen = ({ token }) => {
             </View>
           </View>
           <View style={ProfileScreenStyles.optionsList}>
-            <ListItem icon={"person-outline"} text={"Profilio detalės"} />
-            <ListItem icon={"settings-outline"} text={"Nustatymai"} />
-            <ListItem icon={"car-outline"} text={"Pridėti automobilį"} />
+            <ListItem
+              icon={"person-outline"}
+              text={"Profilio detalės"}
+              onPress={() => handleOnListItemPess(PageNames.PROFILE_DETAILS)}
+            />
+            <ListItem
+              icon={"settings-outline"}
+              text={"Nustatymai"}
+              onPress={() => handleOnListItemPess(PageNames.PROFILE_SETTINGS)}
+            />
+            <ListItem
+              icon={"car-outline"}
+              text={"Pridėti automobilį"}
+              onPress={() => handleOnListItemPess(PageNames.PROFILE_VEHICLE)}
+            />
           </View>
         </>
       )}
