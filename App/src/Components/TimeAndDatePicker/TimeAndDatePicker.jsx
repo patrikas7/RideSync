@@ -11,6 +11,9 @@ const DateAndTimePicker = ({
   headline,
   handleOnDateChange,
   date,
+  maximumDate,
+  isPastDatesAllowed,
+  current,
   mode = "datepicker",
 }) => {
   const handleOnChange = (selectedDate) =>
@@ -23,9 +26,11 @@ const DateAndTimePicker = ({
         <DatePicker
           onSelectedChange={handleOnChange}
           options={{ mainColor: Colors.BLUE_500 }}
-          minimumDate={getFormatedTodaysDate()}
+          minimumDate={isPastDatesAllowed ? "" : getFormatedTodaysDate()}
+          maximumDate={maximumDate}
           selected={date}
           mode={mode}
+          current={current}
         />
       </View>
     </>

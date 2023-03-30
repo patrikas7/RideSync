@@ -4,6 +4,7 @@ import {
 } from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
 import useUserData from "../hooks/useUserData";
+import ProfileDateEditScreen from "../Views/Profile/ProfileDateEditScreen";
 import ProfileDetailsScreen from "../Views/Profile/ProfileDetailsScreen";
 import ProfileScreen from "../Views/Profile/ProfileScreen";
 import ProfileValueEditScreen from "../Views/Profile/ProfileValueEditScreen";
@@ -33,6 +34,15 @@ const Profile = () => {
       <Stack.Screen
         name={PageNames.PROFILE_VALUE_EDIT}
         children={() => <ProfileValueEditScreen token={token} />}
+        options={{
+          ...TransitionPresets.ModalSlideFromBottomIOS,
+          headerShadowVisible: false,
+          title: "",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.PROFILE_BIRTHDATE_EDIT}
+        children={() => <ProfileDateEditScreen token={token} />}
         options={{
           ...TransitionPresets.ModalSlideFromBottomIOS,
           headerShadowVisible: false,

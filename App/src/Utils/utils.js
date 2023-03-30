@@ -27,3 +27,11 @@ export const isTimeLaterOrEqual = (time) => {
 
   return targetTime >= now;
 };
+
+export const count18YearsInThePast = () => {
+  const today = new Date();
+  const pastYear = today.getFullYear() - 18;
+  const pastDate = new Date(pastYear, today.getMonth(), today.getDate());
+  const formattedDate = pastDate.toISOString().slice(0, 10);
+  return formattedDate;
+};

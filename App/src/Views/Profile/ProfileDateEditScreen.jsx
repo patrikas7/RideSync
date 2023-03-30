@@ -1,24 +1,23 @@
-import { View } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState } from "react";
+import { count18YearsInThePast } from "../../Utils/utils";
 import { ProfileValueEditScreenStyles } from "./ProfileStyles";
-import { showMessage } from "react-native-flash-message";
-import Button from "../../Components/Button/Button";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
-import Header from "../../Components/Form/Header";
-import Sizes from "../../Constants/sizes";
-import InputSearch from "../../Components/Form/InputSearch";
+import ErrorMessages from "../../Constants/errorMessages";
 import Spinner from "react-native-loading-spinner-overlay";
 import axios from "axios";
-import ErrorMessages from "../../Constants/errorMessages";
+import Header from "../../Components/Form/Header";
+import Sizes from "../../Constants/sizes";
+import DateAndTimePicker from "../../Components/TimeAndDatePicker/TimeAndDatePicker";
+import Button from "../../Components/Button/Button";
 
-const ProfileValueEditScreen = ({ token }) => {
+const ProfileDateEditScreen = ({ token }) => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { title, user, placeholder, field } = route.params;
-  const [value, setValue] = useState(user[field]);
+  const { title, user } = route.params;
+  const [value, setValue] = useState(user.dateOfBirth.slice(0, 10));
   const [isLoading, setIsLoading] = useState(false);
   useScreenArrowBack(
     navigation,
@@ -28,7 +27,7 @@ const ProfileValueEditScreen = ({ token }) => {
   );
 
   const handleOnSavePress = async () => {
-    if (value === user[field]) {
+    if (value === user.dateOfBirth.slice(0, 10)) {
       redirectBack(user);
       return;
     }
@@ -47,7 +46,7 @@ const ProfileValueEditScreen = ({ token }) => {
       const { data } = await axios.put(
         "/user",
         {
-          field,
+          field: "dateOfBirth",
           value,
         },
         { headers: { Authorization: token } }
@@ -68,15 +67,16 @@ const ProfileValueEditScreen = ({ token }) => {
   return (
     <Container>
       <Spinner visible={isLoading} />
-      <View style={ProfileValueEditScreenStyles.container}>
-        <Header text={title} size={Sizes.HEADER_MEDIUM} />
-        <InputSearch
-          placeholder={placeholder}
-          value={value}
-          onChange={setValue}
-          styling={ProfileValueEditScreenStyles.input}
-        />
-      </View>
+      <Header text={title} size={Sizes.HEADER_MEDIUM} />
+      <DateAndTimePicker
+        date={value}
+        mode={"calendar"}
+        handleOnDateChange={({ date }) => setValue(date)}
+        isPastDatesAllowed={true}
+        maximumDate={count18YearsInThePast()}
+        current={user.dateOfBirth.slice(0, 10)}
+      />
+
       <Button
         text={"Išsaugoti"}
         styling={ProfileValueEditScreenStyles.button}
@@ -86,4 +86,4 @@ const ProfileValueEditScreen = ({ token }) => {
   );
 };
 
-export default ProfileValueEditScreen;
+export default ProfileDateEditScreen;

@@ -14,19 +14,13 @@ const ProfileDetailsScreen = ({ token }) => {
     user,
   });
 
-  const handleOnProfileStringValueEditPress = (
-    value,
-    title,
-    placeholder,
-    field
-  ) => {
-    navigation.navigate(PageNames.PROFILE_VALUE_EDIT, {
-      value,
-      title,
-      user,
-      placeholder,
-      field,
-    });
+  const handleOnEditPress = (props) => {
+    if (props.field === "dateOfBirth") {
+      navigation.navigate(PageNames.PROFILE_BIRTHDATE_EDIT, { ...props, user });
+      return;
+    }
+
+    navigation.navigate(PageNames.PROFILE_VALUE_EDIT, { ...props, user });
   };
 
   return (
@@ -37,12 +31,11 @@ const ProfileDetailsScreen = ({ token }) => {
         secondaryText={user.name}
         itemStyling={ProfileDetailsScreenStyles.listItem}
         onPress={() =>
-          handleOnProfileStringValueEditPress(
-            user.name,
-            "Įveskite savo vardą",
-            "Vardas",
-            "name"
-          )
+          handleOnEditPress({
+            title: "Įveskite savo vardą",
+            placeholder: "Vardas",
+            field: "name",
+          })
         }
       />
 
@@ -52,12 +45,11 @@ const ProfileDetailsScreen = ({ token }) => {
         secondaryText={user.surname}
         itemStyling={ProfileDetailsScreenStyles.listItem}
         onPress={() =>
-          handleOnProfileStringValueEditPress(
-            user.surname,
-            "Įveskite savo pavardę",
-            "Pavardė",
-            "surname"
-          )
+          handleOnEditPress({
+            title: "Įveskite savo pavardę",
+            placeholder: "Pavardė",
+            field: "surname",
+          })
         }
       />
 
@@ -66,20 +58,26 @@ const ProfileDetailsScreen = ({ token }) => {
         text={"Gimimo data"}
         secondaryText={user.dateOfBirth.slice(0, 10)}
         itemStyling={ProfileDetailsScreenStyles.listItem}
+        onPress={() =>
+          handleOnEditPress({
+            title: "Pasirinkite savo gimimo datą",
+            field: "dateOfBirth",
+          })
+        }
       />
 
       <ListItem
         icon={"mail-outline"}
-        text={"Gimimo data"}
+        text={"El. Paštas"}
         secondaryText={user.email}
         itemStyling={ProfileDetailsScreenStyles.listItem}
         onPress={() =>
-          handleOnProfileStringValueEditPress(
-            user.email,
-            "Įveskite savo el. paštą",
-            "El. Paštas",
-            "email"
-          )
+          handleOnEditPress({
+            value: user.email,
+            title: "Įveskite savo el. paštą",
+            placeholder: "El. Paštas",
+            field: "email",
+          })
         }
       />
 
