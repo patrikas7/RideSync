@@ -37,6 +37,10 @@ const Schemas = {
       field: Joi.string().required(),
       value: Joi.string().required(),
     }),
+    password: Joi.object({
+      password: Joi.string().required(),
+      newPassword: Joi.string().required(),
+    }),
   },
   login: Joi.object({
     email: Joi.string().email().required(),

@@ -104,6 +104,15 @@ const ProfileDetailsScreen = ({ token }) => {
         icon={"lock-closed-outline"}
         text={"Slaptažodis"}
         itemStyling={ProfileDetailsScreenStyles.listItem}
+        onPress={() =>
+          handleOnEditPress({
+            title: "Pasirinkite naują slaptažodį",
+            field: "password",
+            placeholder: "Dabartinis slaptažodis",
+            placeholder1: "Naujas slaptažodis",
+            placeholder2: "Pakartokite naują slaptažodį",
+          })
+        }
       />
     </Container>
   );

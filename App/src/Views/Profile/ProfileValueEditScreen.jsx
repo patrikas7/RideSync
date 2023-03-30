@@ -17,8 +17,12 @@ import ErrorMessages from "../../Constants/errorMessages";
 const ProfileValueEditScreen = ({ token }) => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { title, user, placeholder, field } = route.params;
-  const [value, setValue] = useState(user[field]);
+  const { title, user, placeholder, placeholder1, placeholder2, field } =
+    route.params;
+  const isPasswordEdit = field === "password";
+  const [value, setValue] = useState(isPasswordEdit ? "" : user[field]);
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   useScreenArrowBack(
     navigation,
@@ -34,11 +38,7 @@ const ProfileValueEditScreen = ({ token }) => {
     }
 
     if (!value) {
-      showMessage({
-        message: ErrorMessages.EMPTY_FIELD,
-        type: "danger",
-      });
-
+      displayError(ErrorMessages.EMPTY_FIELD);
       return;
     }
 
@@ -61,6 +61,60 @@ const ProfileValueEditScreen = ({ token }) => {
     }
   };
 
+  const handleOnPasswordEditSave = async () => {
+    if (!value || !newPassword || !newPasswordRepeat) {
+      displayError(ErrorMessages.ALL_FIELDS_ARE_REQUIRED);
+      return;
+    }
+
+    if (newPassword !== newPasswordRepeat) {
+      displayError(ErrorMessages.NOT_MATCHING_PASSWORDS);
+      return;
+    }
+
+    if (newPassword.length < 8 || newPassword.length > 20) {
+      displayError(ErrorMessages.PASSWORD_FORMAT);
+      return;
+    }
+
+    await updatePassword();
+  };
+
+  const updatePassword = async () => {
+    setIsLoading(true);
+
+    try {
+      const { data } = await axios.put(
+        "/user/password",
+        {
+          password: value,
+          newPassword,
+        },
+        { headers: { Authorization: token } }
+      );
+
+      showMessage({
+        message: "Naujas slaptažodis buvo išsaugotas",
+        type: "success",
+      });
+
+      redirectBack(data.user);
+    } catch (error) {
+      if (error.response) {
+        displayError(error.response.data.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const displayError = (message) => {
+    showMessage({
+      message: message,
+      type: "danger",
+    });
+  };
+
   const redirectBack = (userDetails) => {
     navigation.navigate(PageNames.PROFILE_DETAILS, { user: userDetails });
   };
@@ -75,12 +129,32 @@ const ProfileValueEditScreen = ({ token }) => {
           value={value}
           onChange={setValue}
           styling={ProfileValueEditScreenStyles.input}
+          secureTextEntry={isPasswordEdit}
         />
+
+        {isPasswordEdit && (
+          <>
+            <InputSearch
+              placeholder={placeholder1}
+              value={newPassword}
+              onChange={setNewPassword}
+              styling={ProfileValueEditScreenStyles.input}
+              secureTextEntry={true}
+            />
+            <InputSearch
+              placeholder={placeholder2}
+              value={newPasswordRepeat}
+              onChange={setNewPasswordRepeat}
+              styling={ProfileValueEditScreenStyles.input}
+              secureTextEntry={true}
+            />
+          </>
+        )}
       </View>
       <Button
         text={"Išsaugoti"}
         styling={ProfileValueEditScreenStyles.button}
-        onClick={handleOnSavePress}
+        onClick={isPasswordEdit ? handleOnPasswordEditSave : handleOnSavePress}
       />
     </Container>
   );

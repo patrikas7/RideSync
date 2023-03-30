@@ -5,6 +5,8 @@ const ErrorMessages = {
   SUBSCRIPTION_ALREADY_MADE:
     "Kelionės pranešimas su šiais kriterijais jau yra užprenumeruotas",
   EMAIL_IS_UNAVAILABLE: "Įvestas el. pašto yra negalimas",
+  WRONG_PASSWORD: "Įvestas netinkamas slaptažodis ",
+  SAME_NEW_PASSWORD: "Naujas slaptažodis negali sutapti su senu",
 };
 
 export default ErrorMessages;

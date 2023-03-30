@@ -22,5 +22,10 @@ UserRouter.route("/car").get(
   userCheckMiddleware,
   controller.getUserCars
 );
+UserRouter.route("/password").put(
+  authMiddleware,
+  ValidateSchema(Schemas.basicUser.password),
+  controller.changePassword
+);
 
 export default UserRouter;

@@ -15,6 +15,7 @@ const ErrorMessages = {
     "Grįžimas negali būti mažiau nei 30 min. nuo kelionės pradžios",
   SEARCH_TIME_ERROR: "Pasirinktas laikas negali būti mažesnis už esamą laiką",
   EMPTY_FIELD: "Laukas negali būti tuščias",
+  ALL_FIELDS_ARE_REQUIRED: "Visi laukai yra privalomi",
 };
 
 export default ErrorMessages;

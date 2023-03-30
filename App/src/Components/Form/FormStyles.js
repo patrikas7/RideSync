@@ -51,6 +51,7 @@ export const InputSearchStyles = StyleSheet.create({
   input: {
     fontSize: Sizes.DEFAULT_TEXT_SIZE,
     overflow: "hidden",
+    flex: 1,
   },
   deleteIcon: {
     marginLeft: "auto",

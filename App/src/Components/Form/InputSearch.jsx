@@ -5,7 +5,14 @@ import Colors from "../../Constants/colors";
 import { InputSearchStyles } from "./FormStyles";
 import { useEffect, useRef, useState } from "react";
 
-const InputSearch = ({ onBack, placeholder, value, onChange, styling }) => {
+const InputSearch = ({
+  onBack,
+  placeholder,
+  value,
+  onChange,
+  styling,
+  secureTextEntry,
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputContainer = useRef(new Animated.Value(1)).current;
 
@@ -44,6 +51,7 @@ const InputSearch = ({ onBack, placeholder, value, onChange, styling }) => {
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           maxLength={30}
+          secureTextEntry={secureTextEntry}
         />
 
         {value && (

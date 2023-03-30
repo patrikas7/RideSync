@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
+import bcrypt from "bcryptjs";
 
 const checkUserByEmail = async (req, res) => {
   const { email } = req.query;
@@ -65,9 +66,40 @@ const updateUser = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const userId = req.userId;
+  const { password, newPassword } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: ErrorMessages.WRONG_PASSWORD });
+
+    const isNewPasswordSame = await bcrypt.compare(password, newPassword);
+    if (isNewPasswordSame)
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: ErrorMessages.SAME_NEW_PASSWORD });
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(StatusCodes.OK).json({ user });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
   getUserDetails,
   updateUser,
+  changePassword,
 };
