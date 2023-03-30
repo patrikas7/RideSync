@@ -42,8 +42,18 @@ const updateUser = async (req, res) => {
 
   try {
     const user = await User.findById(userId);
-    user[field] = value;
+    if (field === "email") {
+      const userWithSameEmail = await User.find({
+        email: email?.toLowerCase(),
+      });
+      if (userWithSameEmail.length > 1)
+        return res.status(
+          StatusCodes.BAD_REQUEST,
+          json({ message: ErrorMessages.EMAIL_IS_UNAVAILABLE })
+        );
+    }
 
+    user[field] = value;
     await user.save();
 
     res.status(StatusCodes.OK).json({ user });

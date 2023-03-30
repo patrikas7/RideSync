@@ -4,6 +4,7 @@ const ErrorMessages = {
   UNEXPECTED_ERROR: "Įvyko netikėta klaida, bandykite vėliau",
   SUBSCRIPTION_ALREADY_MADE:
     "Kelionės pranešimas su šiais kriterijais jau yra užprenumeruotas",
+  EMAIL_IS_UNAVAILABLE: "Įvestas el. pašto yra negalimas",
 };
 
 export default ErrorMessages;

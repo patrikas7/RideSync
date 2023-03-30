@@ -20,6 +20,11 @@ const ProfileDetailsScreen = ({ token }) => {
       return;
     }
 
+    if (props.field === "gender") {
+      navigation.navigate(PageNames.PROFILE_GENDER_EDIT, { ...props, user });
+      return;
+    }
+
     navigation.navigate(PageNames.PROFILE_VALUE_EDIT, { ...props, user });
   };
 
@@ -86,6 +91,13 @@ const ProfileDetailsScreen = ({ token }) => {
         text={"Lytis"}
         secondaryText={user.gender === "MALE" ? "Vyras" : "Moteris"}
         itemStyling={ProfileDetailsScreenStyles.listItem}
+        onPress={() =>
+          handleOnEditPress({
+            value: user.gender,
+            title: "Pasirinkite savo lytį",
+            field: "gender",
+          })
+        }
       />
 
       <ListItem

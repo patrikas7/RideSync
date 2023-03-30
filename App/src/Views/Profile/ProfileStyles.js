@@ -51,4 +51,29 @@ export const ProfileValueEditScreenStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  imagesContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 32,
+    gap: 16,
+  },
+  imageCard: {
+    ...StyleUtils.card,
+  },
+  imageCardActive: {
+    backgroundColor: Colors.HIGHLIGHT_UNDERLAY,
+  },
+  imageCardLeft: {
+    marginLeft: 16,
+  },
+  image: {
+    width: 125,
+    height: 125,
+  },
+  imageText: {
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 16,
+  },
 });

@@ -32,15 +32,6 @@ const ProfileDateEditScreen = ({ token }) => {
       return;
     }
 
-    if (!value) {
-      showMessage({
-        message: ErrorMessages.EMPTY_FIELD,
-        type: "danger",
-      });
-
-      return;
-    }
-
     setIsLoading(true);
     try {
       const { data } = await axios.put(

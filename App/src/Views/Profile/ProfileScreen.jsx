@@ -47,7 +47,7 @@ const ProfileScreen = ({ token }) => {
   return (
     <Container>
       {isLoading ? (
-        <Spinner isLoading={isLoading} />
+        <Spinner visible={isLoading} />
       ) : (
         <>
           <View style={ProfileScreenStyles.headerContainer}>
