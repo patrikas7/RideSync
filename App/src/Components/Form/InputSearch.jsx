@@ -5,7 +5,7 @@ import Colors from "../../Constants/colors";
 import { InputSearchStyles } from "./FormStyles";
 import { useEffect, useRef, useState } from "react";
 
-const InputSearch = ({ onBack, placeholder, value, onChange }) => {
+const InputSearch = ({ onBack, placeholder, value, onChange, styling }) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputContainer = useRef(new Animated.Value(1)).current;
 
@@ -22,15 +22,18 @@ const InputSearch = ({ onBack, placeholder, value, onChange }) => {
       style={{
         ...InputSearchStyles.inputSearchContainer,
         borderWidth: inputContainer,
+        ...styling,
       }}
     >
-      <TouchableOpacity onPress={onBack}>
-        <Ionicons
-          name="chevron-back-outline"
-          size={Sizes.ICON}
-          color={Colors.BLACK_100}
-        />
-      </TouchableOpacity>
+      {onBack && (
+        <TouchableOpacity onPress={onBack}>
+          <Ionicons
+            name="chevron-back-outline"
+            size={Sizes.ICON}
+            color={Colors.BLACK_100}
+          />
+        </TouchableOpacity>
+      )}
 
       <View style={InputSearchStyles.inputContainer}>
         <TextInput

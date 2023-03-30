@@ -44,3 +44,15 @@ export const ProfileDetailsScreenStyles = StyleSheet.create({
     marginBottom: 32,
   },
 });
+
+export const ProfileValueEditScreenStyles = StyleSheet.create({
+  input: {
+    marginTop: 16,
+  },
+  button: {
+    marginBottom: 32,
+  },
+  container: {
+    flex: 1,
+  },
+});

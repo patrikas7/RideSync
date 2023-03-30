@@ -7,13 +7,26 @@ import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import ListItem from "../../Components/List/ListItem";
 import Button from "../../Components/Button/Button";
 
-const Genders = { MALE: "Vyras", FEMALE: "Moteris" };
-
 const ProfileDetailsScreen = ({ token }) => {
   const navigation = useNavigation();
   const route = useRoute();
   const { user } = route.params;
   useScreenArrowBack(navigation, PageNames.PROFILE_OVERVIEW);
+
+  const handleOnProfileStringValueEditPress = (
+    value,
+    title,
+    placeholder,
+    field
+  ) => {
+    navigation.navigate(PageNames.PROFILE_VALUE_EDIT, {
+      value,
+      title,
+      user,
+      placeholder,
+      field,
+    });
+  };
 
   return (
     <Container>
@@ -23,6 +36,14 @@ const ProfileDetailsScreen = ({ token }) => {
           text={"Vardas"}
           secondaryText={user.name}
           itemStyling={ProfileDetailsScreenStyles.listItem}
+          onPress={() =>
+            handleOnProfileStringValueEditPress(
+              user.name,
+              "Įveskite savo vardą",
+              "Vardas",
+              "name"
+            )
+          }
         />
 
         <ListItem
@@ -30,6 +51,14 @@ const ProfileDetailsScreen = ({ token }) => {
           text={"Pavardė"}
           secondaryText={user.surname}
           itemStyling={ProfileDetailsScreenStyles.listItem}
+          onPress={() =>
+            handleOnProfileStringValueEditPress(
+              user.surname,
+              "Įveskite savo pavardę",
+              "Pavardė",
+              "surname"
+            )
+          }
         />
 
         <ListItem
@@ -44,6 +73,14 @@ const ProfileDetailsScreen = ({ token }) => {
           text={"Gimimo data"}
           secondaryText={user.email}
           itemStyling={ProfileDetailsScreenStyles.listItem}
+          onPress={() =>
+            handleOnProfileStringValueEditPress(
+              user.email,
+              "Įveskite savo el. paštą",
+              "El. Paštas",
+              "email"
+            )
+          }
         />
 
         <ListItem

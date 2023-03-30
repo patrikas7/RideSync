@@ -4,16 +4,21 @@ import Colors from "../Constants/colors";
 import Sizes from "../Constants/sizes";
 import { Ionicons } from "@expo/vector-icons";
 
-const useScreenArrowBack = (navigation, prevPage) => {
+const useScreenArrowBack = (
+  navigation,
+  prevPage,
+  props,
+  icon = "arrow-back-outline"
+) => {
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
         <TouchableHighlight
-          onPress={() => navigation.navigate(prevPage)}
+          onPress={() => navigation.navigate(prevPage, { ...props })}
           underlayColor={Colors.WHITE}
         >
           <Ionicons
-            name="arrow-back-outline"
+            name={icon}
             size={Sizes.ICON}
             color={Colors.GREY_700}
             style={styles.arrowIcon}
