@@ -20,7 +20,7 @@ const ProfilePictureEditScren = ({ token }) => {
   const [hasCameraRollPermission, setHasCameraRollPermission] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const cameraRef = useRef(null);
   const navigation = useNavigation();
   const route = useRoute();
@@ -49,6 +49,10 @@ const ProfilePictureEditScren = ({ token }) => {
     getPermissions();
   }, []);
 
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
+
   const takePicture = async () => {
     if (cameraRef.current) {
       try {
@@ -63,7 +67,7 @@ const ProfilePictureEditScren = ({ token }) => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -75,19 +79,41 @@ const ProfilePictureEditScren = ({ token }) => {
     }
   };
 
+  const fetchUserDetails = async () => {
+    try {
+      const { data } = await axios.get("/user", {
+        headers: { Authorization: token },
+      });
+
+      setSelectedImage({
+        uri: `data:${data.user.profilePicture.type};base64,${data.user.profilePicture.buffer}`,
+      });
+    } catch (error) {
+      console.error(error.response.data);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const savePicture = async () => {
     setIsLoading(true);
+    const type = `image/${selectedImage?.uri.split(".").pop().toLowerCase()}`;
     try {
-      const { data } = await axios.post(
+      await axios.post(
         "/user/profilePicture",
         {
-          file: selectedImage?.base64,
+          buffer: selectedImage?.base64,
+          type,
         },
         { headers: { Authorization: token } }
       );
 
-      console.log(data.user);
-      navigation.navigate(PageNames.PROFILE_SETTINGS);
+      navigation.navigate(PageNames.PROFILE_OVERVIEW, {
+        user: {
+          ...user,
+          profilePicture: selectedImage.uri,
+        },
+      });
     } catch (error) {
       if (error.response) {
         console.error(error.response.data);

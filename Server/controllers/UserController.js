@@ -20,6 +20,7 @@ const checkUserByEmail = async (req, res) => {
 
 const getUserCars = async (req, res) => {
   const user = req.user;
+
   res.status(StatusCodes.OK).json({ carsList: user.cars });
 };
 
@@ -28,7 +29,17 @@ const getUserDetails = async (req, res) => {
 
   try {
     const user = await User.findById(userId);
-    res.status(StatusCodes.OK).json({ user });
+
+    delete user.password;
+    res.status(StatusCodes.OK).json({
+      user: {
+        ...user.toObject(),
+        profilePicture: {
+          type: user.profilePicture.type,
+          buffer: user.profilePicture.buffer.toString("base64"),
+        },
+      },
+    });
   } catch (error) {
     Logging.error(error);
     return res
@@ -98,12 +109,15 @@ const changePassword = async (req, res) => {
 
 const uploadPicture = async (req, res) => {
   const userId = req.userId;
-  const { file } = req.body;
+  const { buffer, type } = req.body;
 
   try {
     const user = await User.findById(userId);
-    const decodedFile = Buffer.from(file, "base64");
-    user.profilePicture = decodedFile;
+    const decodedFile = Buffer.from(buffer, "base64");
+    user.profilePicture = {
+      buffer: decodedFile,
+      type,
+    };
 
     await user.save();
 

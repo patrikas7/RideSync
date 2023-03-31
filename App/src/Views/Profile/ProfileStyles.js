@@ -6,8 +6,8 @@ import StyleUtils from "../../Utils/styleUtils";
 export const ProfileScreenStyles = StyleSheet.create({
   avatar: {
     ...StyleUtils.avatar,
-    width: 35,
-    height: 35,
+    width: 40,
+    height: 40,
     marginRight: 16,
   },
   headerContainer: {

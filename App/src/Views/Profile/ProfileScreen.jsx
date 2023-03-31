@@ -12,6 +12,7 @@ import axios from "axios";
 const ProfileScreen = ({ token }) => {
   const route = useRoute();
   const [user, setUser] = useState();
+  const [profilePicture, setProfilePicture] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
   useScreenArrowBack(navigation, PageNames.SEARCH);
@@ -23,6 +24,8 @@ const ProfileScreen = ({ token }) => {
 
   useEffect(() => {
     if (!route.params?.user) return;
+    if (route.params.user.profilePicture)
+      setProfilePicture(route.params.user.profilePicture);
     setUser(route.params.user);
   }, [route.params]);
 
@@ -33,6 +36,9 @@ const ProfileScreen = ({ token }) => {
       });
 
       setUser(data.user);
+      setProfilePicture(
+        `data:${data.user.profilePicture.type};base64,${data.user.profilePicture.buffer}`
+      );
     } catch (error) {
       console.error(error.response.data);
     } finally {
@@ -41,7 +47,7 @@ const ProfileScreen = ({ token }) => {
   };
 
   const handleOnListItemPess = (screen) => {
-    navigation.navigate(screen, { user });
+    navigation.navigate(screen, { user: { ...user, profilePicture: "" } });
   };
 
   return (
@@ -52,7 +58,13 @@ const ProfileScreen = ({ token }) => {
         <>
           <View style={ProfileScreenStyles.headerContainer}>
             <Image
-              source={require("../../../assets/pictures/avatar.png")}
+              source={
+                profilePicture
+                  ? {
+                      uri: profilePicture,
+                    }
+                  : require("../../../assets/pictures/avatar.png")
+              }
               style={ProfileScreenStyles.avatar}
             />
             <View>
