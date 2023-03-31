@@ -45,7 +45,6 @@ const LoginScreen = ({ navigation }) => {
     try {
       await SecureStore.setItemAsync("token", token);
       await SecureStore.setItemAsync("id", id);
-      await SecureStore.setItemAsync("name", name);
       navigation.navigate(PageNames.HOME);
     } catch (error) {
       console.log(error);

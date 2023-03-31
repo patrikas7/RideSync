@@ -7,10 +7,9 @@ const useUserData = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const name = await SecureStore.getItemAsync("name");
         const id = await SecureStore.getItemAsync("id");
         const token = await SecureStore.getItemAsync("token");
-        setUserData({ name, id, token });
+        setUserData({ id, token });
       } catch (error) {
         console.log(error);
       }

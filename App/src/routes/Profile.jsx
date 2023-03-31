@@ -12,9 +12,11 @@ import ProfileValueEditScreen from "../Views/Profile/ProfileValueEditScreen";
 import ProfileSettingsScreen from "../Views/Profile/ProfileSettingsScreen";
 import ProfilePictureEditScren from "../Views/Profile/ProfilePictureEditScreen";
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const Stack = createStackNavigator();
   const { token } = useUserData();
+
+  console.log(navigation.getState());
 
   return (
     <Stack.Navigator>
@@ -36,7 +38,7 @@ const Profile = () => {
       />
       <Stack.Screen
         name={PageNames.PROFILE_SETTINGS}
-        children={() => <ProfileSettingsScreen token={token} />}
+        children={() => <ProfileSettingsScreen mainNavigation={navigation} />}
         options={{
           title: "Nustatymai",
           headerShadowVisible: false,
