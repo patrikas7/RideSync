@@ -14,10 +14,7 @@ const UserSchema = new Schema({
     enum: [Genders.MALE, Genders.FEMALE],
     required: true,
   },
-  profilePicture: {
-    data: Buffer,
-    contentType: String,
-  },
+  profilePicture: { type: Buffer },
 });
 
 const User = mongoose.model("User", UserSchema);

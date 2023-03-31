@@ -32,7 +32,7 @@ const ProfileValueEditScreen = ({ token }) => {
   );
 
   const handleOnSavePress = async () => {
-    if (value === user[field]) {
+    if (value && value === user[field]) {
       redirectBack(user);
       return;
     }

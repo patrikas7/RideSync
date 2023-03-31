@@ -9,6 +9,8 @@ import ProfileDetailsScreen from "../Views/Profile/ProfileDetailsScreen";
 import ProfileGenderEditScreen from "../Views/Profile/ProfileGenderEditScreen";
 import ProfileScreen from "../Views/Profile/ProfileScreen";
 import ProfileValueEditScreen from "../Views/Profile/ProfileValueEditScreen";
+import ProfileSettingsScreen from "../Views/Profile/ProfileSettingsScreen";
+import ProfilePictureEditScren from "../Views/Profile/ProfilePictureEditScreen";
 
 const Profile = () => {
   const Stack = createStackNavigator();
@@ -26,10 +28,27 @@ const Profile = () => {
       />
       <Stack.Screen
         name={PageNames.PROFILE_DETAILS}
-        children={() => <ProfileDetailsScreen token={token} />}
+        component={ProfileDetailsScreen}
         options={{
           title: "Profilio detalės",
           headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.PROFILE_SETTINGS}
+        children={() => <ProfileSettingsScreen token={token} />}
+        options={{
+          title: "Nustatymai",
+          headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.PROFILE_PICTURE_EDIT}
+        children={() => <ProfilePictureEditScren token={token} />}
+        options={{
+          ...TransitionPresets.ModalSlideFromBottomIOS,
+          headerShadowVisible: false,
+          title: "",
         }}
       />
       <Stack.Screen

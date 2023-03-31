@@ -1,15 +1,11 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { ProfileDetailsScreenStyles } from "./ProfileStyles";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import ListItem from "../../Components/List/ListItem";
 
-const ProfileDetailsScreen = ({ token }) => {
-  const navigation = useNavigation();
-  const route = useRoute();
+const ProfileDetailsScreen = ({ navigation, route }) => {
   const { user } = route.params;
-
   useScreenArrowBack(navigation, PageNames.PROFILE_OVERVIEW, {
     user,
   });
@@ -96,6 +92,21 @@ const ProfileDetailsScreen = ({ token }) => {
             value: user.gender,
             title: "Pasirinkite savo lytį",
             field: "gender",
+          })
+        }
+      />
+
+      <ListItem
+        icon={"call-outline"}
+        text={"Telefono numeris"}
+        secondaryText={user?.phoneNumber ? user.phoneNumber : "-"}
+        itemStyling={ProfileDetailsScreenStyles.listItem}
+        onPress={() =>
+          handleOnEditPress({
+            value: user?.phoneNumber || "",
+            title: "Įveskite savo tel. numerį",
+            placeholder: "Telefono numeris",
+            field: "phoneNumber",
           })
         }
       />

@@ -9,7 +9,10 @@ import TripRouter from "./routes/TripRoutes.js";
 import TripSubscriptionRouter from "./routes/TripSubscriptionRoutes.js";
 import mongoose from "mongoose";
 
-const router = express();
+const app = express();
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb" }));
 
 mongoose
   .connect(config.mongo.url)
@@ -23,7 +26,7 @@ mongoose
   });
 
 const startServer = () => {
-  router.use((req, res, next) => {
+  app.use((req, res, next) => {
     Logging.info(
       `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
     );
@@ -37,10 +40,7 @@ const startServer = () => {
     next();
   });
 
-  router.use(express.urlencoded({ extended: true }));
-  router.use(express.json());
-
-  router.use((req, res, next) => {
+  app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
       "Access-Control-Allow-Headers",
@@ -59,16 +59,16 @@ const startServer = () => {
   });
 
   http
-    .createServer(router)
+    .createServer(app)
     .listen(config.server.port, () =>
       Logging.info(
         `⚡️[server]: Server is running at http://localhost:${config.server.port}`
       )
     );
 
-  router.use("/auth", AuthRouter);
-  router.use("/user", UserRouter);
-  router.use("/search", SearchRouter);
-  router.use("/trips", TripRouter);
-  router.use("/tripSubscriptions", TripSubscriptionRouter);
+  app.use("/auth", AuthRouter);
+  app.use("/user", UserRouter);
+  app.use("/search", SearchRouter);
+  app.use("/trips", TripRouter);
+  app.use("/tripSubscriptions", TripSubscriptionRouter);
 };

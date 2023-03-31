@@ -28,4 +28,9 @@ UserRouter.route("/password").put(
   controller.changePassword
 );
 
+UserRouter.route("/profilePicture").post(
+  authMiddleware,
+  controller.uploadPicture
+);
+
 export default UserRouter;

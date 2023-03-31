@@ -96,10 +96,33 @@ const changePassword = async (req, res) => {
   }
 };
 
+const uploadPicture = async (req, res) => {
+  const userId = req.userId;
+  const { file } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    const decodedFile = Buffer.from(file, "base64");
+    user.profilePicture = decodedFile;
+
+    await user.save();
+
+    delete user.password;
+    delete user.profilePicture;
+    res.status(StatusCodes.OK).json({ user });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
   getUserDetails,
   updateUser,
   changePassword,
+  uploadPicture,
 };

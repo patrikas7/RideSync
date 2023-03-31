@@ -77,3 +77,25 @@ export const ProfileValueEditScreenStyles = StyleSheet.create({
     marginTop: 16,
   },
 });
+
+export const ProfileSettingsStyles = StyleSheet.create({
+  imageWrapper: {
+    flex: 1,
+    marginTop: 64,
+  },
+  avatar: {
+    width: 250,
+    height: 250,
+    borderRadius: 125,
+    borderColor: Colors.BLACK,
+    borderWidth: 2,
+    alignSelf: "center",
+  },
+  buttonsContainer: {
+    marginBottom: 32,
+  },
+
+  firstButton: {
+    marginBottom: 32,
+  },
+});
