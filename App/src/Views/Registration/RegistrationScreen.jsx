@@ -1,53 +1,53 @@
-import { StyleSheet, View } from "react-native";
 import { useState } from "react";
-import PageNames from "../../Constants/pageNames";
-import Header from "../../Components/Form/Header";
-import RegistrationForm from "../../Components/Registration/RegistrationForm";
-import Button from "../../Components/Button/Button";
-import { Genders, isEligableAge } from "./RegistrationUtils";
-import ErrorMessages from "../../Constants/errorMessages";
+import { useDispatch, useSelector } from "react-redux";
+import { getPrevPage, isEligableAge } from "./RegistrationUtils";
+import { useNavigation } from "@react-navigation/native";
 import { getErrorState, hasObjectEmptyValues } from "../../Utils/utils";
 import {
   getHeaderLabel,
   getNextPageName,
   getScreenFieldsState,
 } from "./RegistrationUtils";
+import {
+  resetErrors,
+  resetState,
+  setErrors,
+} from "../../redux/registration/registrationSlices";
+import { showMessage } from "react-native-flash-message";
+import PageNames from "../../Constants/pageNames";
+import Header from "../../Components/Form/Header";
+import RegistrationForm from "../../Components/Registration/RegistrationForm";
+import Button from "../../Components/Button/Button";
+import ErrorMessages from "../../Constants/errorMessages";
 import axios from "axios";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
+import Container from "../../Components/Container/Container";
+import Spinner from "react-native-loading-spinner-overlay";
 
-const initialState = {
-  name: "",
-  lastname: "",
-  email: "",
-  password: "",
-  passwordRepeat: "",
-  dateOfBirth: "",
-};
-
-const RegistrationScreen = ({ route, navigation }) => {
-  const [formState, setFormState] = useState({
-    ...initialState,
-    gender: Genders[0].value,
-  });
-  const [errors, setErrors] = useState(initialState);
-  useScreenArrowBack(navigation, route.params.prevPage);
+const RegistrationScreen = ({ route, mainNavigation }) => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const formState = useSelector((state) => state.registration);
+  const [isLoading, setIsLoading] = useState(false);
+  useScreenArrowBack(navigation, getPrevPage(route.name));
 
   const handleOnClick = async () => {
-    setErrors(initialState);
+    dispatch(resetErrors());
+
     if (
       hasEmptyValues() ||
-      (!passwordsMatch() && route.name === PageNames.REGISTRATION_PASSWORD)
+      (route.name === PageNames.REGISTRATION_PASSWORD && !passwordsMatch())
     )
       return;
     if (route.name === PageNames.REGISTRATION_NAME && (await userExists())) {
-      setErrorFields("email", ErrorMessages.EXISTING_EMAIL);
+      dispatch(setErrors({ ["email"]: ErrorMessages.EXISTING_EMAIL }));
       return;
     }
     if (
-      !isEligableAge(formState.dateOfBirth) &&
-      route.name === PageNames.REGISTRATION_BIRTH
+      route.name === PageNames.REGISTRATION_BIRTH &&
+      !isEligableAge(formState.dateOfBirth)
     ) {
-      setErrorFields("dateOfBirth", ErrorMessages.NOT_ELIGABLE_AGE);
+      dispatch(setErrors({ ["dateOfBirth"]: ErrorMessages.NOT_ELIGABLE_AGE }));
       return;
     }
 
@@ -56,34 +56,31 @@ const RegistrationScreen = ({ route, navigation }) => {
 
   const hasEmptyValues = () => {
     const screenFieldsState = getScreenFieldsState(route.name, formState);
-
     if (hasObjectEmptyValues(screenFieldsState)) {
-      setErrors((currentState) => ({
-        ...currentState,
-        ...getErrorState(screenFieldsState, ErrorMessages.REQUIRED_FIELD),
-      }));
+      dispatch(
+        setErrors(
+          getErrorState(screenFieldsState, ErrorMessages.REQUIRED_FIELD)
+        )
+      );
       return true;
     }
   };
 
   const passwordsMatch = () => {
     if (formState.password !== formState.passwordRepeat) {
-      setErrorFields("passwordRepeat", ErrorMessages.NOT_MATCHING_PASSWORDS);
+      dispatch(
+        setErrors({ ["passwordRepeat"]: ErrorMessages.NOT_MATCHING_PASSWORDS })
+      );
       return false;
     }
     if (formState.password.length < 8 || formState.password.length > 20) {
-      setErrorFields("passwordRepeat", ErrorMessages.PASSWORD_FORMAT);
+      dispatch(
+        setErrors({ ["passwordRepeat"]: ErrorMessages.PASSWORD_FORMAT })
+      );
       return false;
     }
 
     return true;
-  };
-
-  const setErrorFields = (key, error) => {
-    setErrors({
-      ...initialState,
-      [key]: error,
-    });
   };
 
   const userExists = async () => {
@@ -99,12 +96,20 @@ const RegistrationScreen = ({ route, navigation }) => {
   };
 
   const register = async () => {
-    console.log(route);
+    setIsLoading(true);
+
     try {
-      const response = await axios.post("/auth/register/basicUser", formState);
-      console.log(response);
+      await axios.post("/auth/register/basicUser", formState);
+      showMessage({
+        message: "Buvote sėkmingai užregistruotas, dabar galite prisijungti",
+        type: "success",
+      });
+      dispatch(resetState());
+      mainNavigation.navigate(PageNames.LOGIN);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -112,19 +117,14 @@ const RegistrationScreen = ({ route, navigation }) => {
     navigation.navigate(getNextPageName(route.name), {
       prevPage: route.name,
       nextPage: getNextPageName(getNextPageName(route.name)),
-      formState,
     });
   };
 
   return (
-    <View style={styles.formContainer}>
+    <Container>
+      <Spinner visible={isLoading} />
       <Header text={getHeaderLabel(route.name)} />
-      <RegistrationForm
-        pageName={route.name}
-        formState={formState}
-        setFormState={setFormState}
-        errors={errors}
-      />
+      <RegistrationForm pageName={route.name} />
       <Button
         text={
           route.name === PageNames.REGISTRATION_BIRTH
@@ -133,15 +133,8 @@ const RegistrationScreen = ({ route, navigation }) => {
         }
         onClick={handleOnClick}
       />
-    </View>
+    </Container>
   );
 };
 
 export default RegistrationScreen;
-
-const styles = StyleSheet.create({
-  formContainer: {
-    paddingHorizontal: 25,
-    paddingBottom: 25,
-  },
-});

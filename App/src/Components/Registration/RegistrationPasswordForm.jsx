@@ -1,7 +1,16 @@
 import Input from "../Form/Input";
 import RegistrationStyles from "./RegistrationFormStyles";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setPassword,
+  setPasswordRepeat,
+} from "../../redux/registration/registrationSlices";
 
-const RegistrationPasswordForm = ({ formState, setFormState, errors }) => {
+const RegistrationPasswordForm = () => {
+  const formState = useSelector((state) => state.registration);
+  const errors = useSelector((state) => state.registrationErrors);
+  const dispatch = useDispatch();
+
   return (
     <>
       <Input
@@ -11,12 +20,7 @@ const RegistrationPasswordForm = ({ formState, setFormState, errors }) => {
         secureTextEntry={true}
         autoFocus={true}
         value={formState.password}
-        onChange={(value) =>
-          setFormState((currentState) => ({
-            ...currentState,
-            password: value,
-          }))
-        }
+        onChange={(value) => dispatch(setPassword(value))}
         hasError={!!errors.password}
         errorText={errors.password}
       />
@@ -26,12 +30,7 @@ const RegistrationPasswordForm = ({ formState, setFormState, errors }) => {
         containerStyling={RegistrationStyles.input}
         secureTextEntry={true}
         value={formState.passwordRepeat}
-        onChange={(value) =>
-          setFormState((currentState) => ({
-            ...currentState,
-            passwordRepeat: value,
-          }))
-        }
+        onChange={(value) => dispatch(setPasswordRepeat(value))}
         hasError={!!errors.passwordRepeat}
         errorText={errors.passwordRepeat}
       />

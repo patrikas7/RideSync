@@ -32,7 +32,7 @@ const Schemas = {
       dateOfBirth: Joi.date().max(getEligableDate()).required(),
       phoneNumber: Joi.string(),
       gender: Joi.string().valid(Genders.MALE, Genders.FEMALE).required(),
-    }),
+    }).options({ allowUnknown: true }),
     update: Joi.object({
       field: Joi.string().required(),
       value: Joi.string().required(),

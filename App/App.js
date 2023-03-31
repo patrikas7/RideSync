@@ -6,7 +6,6 @@ import {
 } from "@react-navigation/stack";
 
 import LoginScreen from "./src/Views/Login/LoginScreen";
-import RegistrationScreen from "./src/Views/Registration/RegistrationScreen";
 import PageNames from "./src/Constants/pageNames";
 import Colors from "./src/Constants/colors";
 import Tabs from "./src/routes/Tabs";
@@ -17,18 +16,11 @@ import Trips from "./src/routes/Trips";
 import SearchDateAndTimeScreen from "./src/Views/SearchDateAndTimeScreen/SearchDateAndTimeScreen";
 import Profile from "./src/routes/Profile";
 import SplashScreen from "./src/Views/SplashScreen";
+import Registration from "./src/routes/Registration";
 
 axios.defaults.baseURL = "http://localhost:5001";
 
 const Stack = createStackNavigator();
-
-// Refactor registration into separate route
-// Refactor registration to use global redux state
-
-const defaulScreenOption = {
-  title: "",
-  headerShadowVisible: false,
-};
 
 export default function App() {
   return (
@@ -56,26 +48,18 @@ export default function App() {
             }}
           />
           <Stack.Screen
-            name={PageNames.HOME}
-            component={Tabs}
+            name={PageNames.REGISTRATION}
+            component={Registration}
             options={{
               headerShown: false,
             }}
           />
           <Stack.Screen
-            name={PageNames.REGISTRATION_NAME}
-            component={RegistrationScreen}
-            options={defaulScreenOption}
-          />
-          <Stack.Screen
-            name={PageNames.REGISTRATION_PASSWORD}
-            component={RegistrationScreen}
-            options={defaulScreenOption}
-          />
-          <Stack.Screen
-            name={PageNames.REGISTRATION_BIRTH}
-            component={RegistrationScreen}
-            options={defaulScreenOption}
+            name={PageNames.HOME}
+            component={Tabs}
+            options={{
+              headerShown: false,
+            }}
           />
           <Stack.Screen
             name={PageNames.CITY_SEARCH}
@@ -109,7 +93,7 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-      <FlashMessage position={"bottom"} floating={true} />
+      <FlashMessage position={"bottom"} floating={true} duration={2500} />
     </SafeAreaView>
   );
 }

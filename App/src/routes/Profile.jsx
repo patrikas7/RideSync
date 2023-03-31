@@ -16,8 +16,6 @@ const Profile = ({ navigation }) => {
   const Stack = createStackNavigator();
   const { token } = useUserData();
 
-  console.log(navigation.getState());
-
   return (
     <Stack.Navigator>
       <Stack.Screen

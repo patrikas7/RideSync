@@ -1,4 +1,5 @@
 import { View, Text } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import InputDataPicker from "../Form/InputDatePicker";
 import InputRadioButton from "../Form/InputRadioButton";
 import RegistrationStyles from "./RegistrationFormStyles";
@@ -6,18 +7,21 @@ import { Genders } from "../../Views/Registration/RegistrationUtils";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
+import {
+  setDateOfBirth,
+  setGender,
+} from "../../redux/registration/registrationSlices";
 
-const RegistrationBirthForm = ({ formState, setFormState, errors }) => {
+const RegistrationBirthForm = () => {
+  const formState = useSelector((state) => state.registration);
+  const errors = useSelector((state) => state.registrationErrors);
+  const dispatch = useDispatch();
+
   return (
     <>
       <InputDataPicker
         value={formState.dateOfBirth}
-        onSelect={(value) =>
-          setFormState((currentState) => ({
-            ...currentState,
-            dateOfBirth: value,
-          }))
-        }
+        onSelect={(value) => dispatch(setDateOfBirth(value))}
         hasError={!!errors.dateOfBirth}
         errorText={errors.dateOfBirth}
         placeholder={"Gimino data"}
@@ -39,12 +43,7 @@ const RegistrationBirthForm = ({ formState, setFormState, errors }) => {
               key={index}
               value={gender.label}
               isChecked={formState.gender === gender.value}
-              onPress={() =>
-                setFormState((currentState) => ({
-                  ...currentState,
-                  gender: gender.value,
-                }))
-              }
+              onPress={() => dispatch(setGender(gender.value))}
             />
           ))}
         </View>

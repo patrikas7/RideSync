@@ -15,8 +15,8 @@ const UserSchema = new Schema({
     required: true,
   },
   profilePicture: {
-    buffer: { type: Buffer, required: true },
-    type: { type: String, required: true },
+    buffer: { type: Buffer },
+    type: { type: String },
   },
 });
 

@@ -88,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
           text={"Registruotis"}
           color={ButtonColor.WHITE}
           onClick={() =>
-            navigation.navigate(PageNames.REGISTRATION_NAME, {
+            navigation.navigate(PageNames.REGISTRATION, {
               prevPage: PageNames.LOGIN,
               nextPage: PageNames.REGISTRATION_PASSWORD,
             })

@@ -5,30 +5,14 @@ import RegistrationPasswordForm from "./RegistrationPasswordForm";
 import RegistrationBirthForm from "./RegistrationBirthForm";
 import RegistrationStyles from "./RegistrationFormStyles";
 
-const RegistrationForm = ({ pageName, formState, setFormState, errors }) => {
+const RegistrationForm = ({ pageName }) => {
   return (
     <View style={RegistrationStyles.inputsContainer}>
-      {pageName === PageNames.REGISTRATION_NAME && (
-        <RegistrationNameForm
-          formState={formState}
-          setFormState={setFormState}
-          errors={errors}
-        />
-      )}
+      {pageName === PageNames.REGISTRATION_NAME && <RegistrationNameForm />}
       {pageName === PageNames.REGISTRATION_PASSWORD && (
-        <RegistrationPasswordForm
-          formState={formState}
-          setFormState={setFormState}
-          errors={errors}
-        />
+        <RegistrationPasswordForm />
       )}
-      {pageName === PageNames.REGISTRATION_BIRTH && (
-        <RegistrationBirthForm
-          formState={formState}
-          setFormState={setFormState}
-          errors={errors}
-        />
-      )}
+      {pageName === PageNames.REGISTRATION_BIRTH && <RegistrationBirthForm />}
     </View>
   );
 };
