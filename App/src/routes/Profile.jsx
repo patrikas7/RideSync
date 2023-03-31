@@ -36,7 +36,9 @@ const Profile = ({ navigation }) => {
       />
       <Stack.Screen
         name={PageNames.PROFILE_SETTINGS}
-        children={() => <ProfileSettingsScreen mainNavigation={navigation} />}
+        children={() => (
+          <ProfileSettingsScreen mainNavigation={navigation} token={token} />
+        )}
         options={{
           title: "Nustatymai",
           headerShadowVisible: false,

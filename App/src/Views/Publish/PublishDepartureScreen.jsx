@@ -19,7 +19,6 @@ const PublishDepartureScreen = ({ navigation, route }) => {
   const [isUserEligebleToPost, setIsUserEligebleToPost] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const departure = useSelector((state) => state.publish.departure);
-  const state = useSelector((state) => state.publish);
 
   const dispatch = useDispatch();
 
@@ -43,12 +42,10 @@ const PublishDepartureScreen = ({ navigation, route }) => {
     setIsLoading(false);
   };
 
-  console.log(state);
-
   const renderContent = () => {
     if (isLoading) return <Spinner visible={isLoading} />;
 
-    return true ? (
+    return isUserEligebleToPost ? (
       <MapLocationSearch
         headerText="Pasirinkite kelionės pradžios tašką 🏁"
         inputPlaceholder="Išvykimo vieta"
@@ -66,6 +63,11 @@ const PublishDepartureScreen = ({ navigation, route }) => {
         primaryText="Jus neturite jokių užregistruotų automobilių"
         secondaryText="Užregistruokite automobilį, kad galėtumėt skelbti kėlionę"
         buttonText="Automobilio registracija"
+        onPress={() =>
+          navigation.navigate(PageNames.PROFILE, {
+            screen: PageNames.PROFILE_OVERVIEW,
+          })
+        }
       />
     );
   };

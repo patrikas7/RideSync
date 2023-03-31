@@ -14,7 +14,9 @@ UserRouter.route("/")
     authMiddleware,
     ValidateSchema(Schemas.basicUser.update),
     controller.updateUser
-  );
+  )
+  .delete(authMiddleware, controller.deleteUser);
+
 UserRouter.route("/checkByEmail").get(controller.checkUserByEmail);
 UserRouter.route("/car").get(
   authMiddleware,

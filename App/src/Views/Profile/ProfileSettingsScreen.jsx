@@ -1,6 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ProfileDetailsScreenStyles } from "./ProfileStyles";
 import { useState } from "react";
+import { Alert } from "react-native";
 import Container from "../../Components/Container/Container";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import PageNames from "../../Constants/pageNames";
@@ -8,8 +9,9 @@ import ListItem from "../../Components/List/ListItem";
 import Spinner from "react-native-loading-spinner-overlay";
 import * as SecureStore from "expo-secure-store";
 import useUserData from "../../hooks/useUserData";
+import axios from "axios";
 
-const ProfileSettingsScreen = ({ mainNavigation }) => {
+const ProfileSettingsScreen = ({ mainNavigation, token }) => {
   const [isLoading, setIsLoading] = useState(false);
   const dd = useUserData();
   const route = useRoute();
@@ -31,7 +33,27 @@ const ProfileSettingsScreen = ({ mainNavigation }) => {
     }
   };
 
-  console.log(dd);
+  const onDeleteAccountPress = () => {
+    Alert.alert("Ar esate tikri?", "Ar tikrai norite ištrinti paskyrą", [
+      {
+        text: "Ne",
+      },
+      {
+        text: "Taip",
+        onPress: () => deleleteUser(),
+      },
+    ]);
+  };
+
+  const deleleteUser = async () => {
+    setIsLoading(true);
+    try {
+      await axios.delete("/user", { headers: { Authorization: token } });
+      await logout();
+    } catch (error) {
+      console.error(error.response.data);
+    }
+  };
 
   return (
     <Container>
@@ -56,6 +78,7 @@ const ProfileSettingsScreen = ({ mainNavigation }) => {
         icon={"trash-outline"}
         text={"Naikinti profilį"}
         itemStyling={ProfileDetailsScreenStyles.listItem}
+        onPress={() => onDeleteAccountPress()}
       />
     </Container>
   );

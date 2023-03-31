@@ -31,13 +31,16 @@ const getUserDetails = async (req, res) => {
     const user = await User.findById(userId);
 
     delete user.password;
+
     res.status(StatusCodes.OK).json({
       user: {
         ...user.toObject(),
-        profilePicture: {
-          type: user.profilePicture.type,
-          buffer: user.profilePicture.buffer.toString("base64"),
-        },
+        ...(user.profilePicture?.buffer && {
+          profilePicture: {
+            type: user.profilePicture.type,
+            buffer: user.profilePicture.buffer.toString("base64"),
+          },
+        }),
       },
     });
   } catch (error) {
@@ -132,6 +135,20 @@ const uploadPicture = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    await User.findByIdAndDelete(userId);
+    res.status(StatusCodes.OK).json({ message: "deleted" });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
@@ -139,4 +156,5 @@ export default {
   updateUser,
   changePassword,
   uploadPicture,
+  deleteUser,
 };

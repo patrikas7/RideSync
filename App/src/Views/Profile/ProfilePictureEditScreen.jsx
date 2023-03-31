@@ -85,9 +85,10 @@ const ProfilePictureEditScren = ({ token }) => {
         headers: { Authorization: token },
       });
 
-      setSelectedImage({
-        uri: `data:${data.user.profilePicture.type};base64,${data.user.profilePicture.buffer}`,
-      });
+      if (data.user.profilePicture)
+        setSelectedImage({
+          uri: `data:${data.user.profilePicture.type};base64,${data.user.profilePicture.buffer}`,
+        });
     } catch (error) {
       console.error(error.response.data);
     } finally {

@@ -36,9 +36,10 @@ const ProfileScreen = ({ token }) => {
       });
 
       setUser(data.user);
-      setProfilePicture(
-        `data:${data.user.profilePicture.type};base64,${data.user.profilePicture.buffer}`
-      );
+      if (data.user.profilePicture)
+        setProfilePicture(
+          `data:${data.user.profilePicture.type};base64,${data.user.profilePicture.buffer}`
+        );
     } catch (error) {
       console.error(error.response.data);
     } finally {
