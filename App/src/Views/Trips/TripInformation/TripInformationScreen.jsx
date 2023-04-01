@@ -66,6 +66,7 @@ const TripInformationScreen = ({}) => {
           id={id}
           token={token}
           navigation={navigation}
+          setTrip={setTrip}
         />
       )}
     </Container>

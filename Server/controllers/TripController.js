@@ -110,6 +110,9 @@ const getTripInformation = async (req, res) => {
       trip: {
         ...trip.toObject(),
         isUserDriver: userId === trip.driver._id.toString(),
+        isUserPassenger: trip.passengers.some(
+          (passenger) => passenger.passenger._id.toString() === userId
+        ),
       },
     });
   } catch (error) {
@@ -302,12 +305,14 @@ const deleteTrip = async (req, res) => {
 };
 
 const seatBooking = async (req, res) => {
-  const userId = req.userId;
-  const { passengersCount, tripId } = req.body;
+  const {
+    userId,
+    body: { passengersCount, tripId },
+  } = req;
   const today = new Date().toISOString().slice(0, 10);
 
   try {
-    const trip = await Trip.findById(tripId).populate("driver", "name surname");
+    const trip = await Trip.findById(tripId);
 
     if (!trip)
       return res
@@ -317,7 +322,7 @@ const seatBooking = async (req, res) => {
     if (passengersCount > trip.personsCount)
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .send(ErrorMessages.TRIP_NOT_FOUND);
+        .send(ErrorMessages.EXCEEDS_SEATS_COUNT);
 
     // if (today > trip.date)
     //   return res
@@ -329,7 +334,57 @@ const seatBooking = async (req, res) => {
 
     await trip.save();
 
-    res.status(StatusCodes.OK).json({ trip });
+    const updatedTrip = await Trip.findById(tripId)
+      .populate("driver", "name surname")
+      .populate("passengers.passenger", "name surname");
+
+    res
+      .status(StatusCodes.OK)
+      .json({ trip: { ...updatedTrip.toObject(), isUserPassenger: true } });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+const cancelBooking = async (req, res) => {
+  const {
+    userId,
+    query: { id },
+  } = req;
+
+  try {
+    const trip = await Trip.findById(id)
+      .populate("driver", "name surname")
+      .populate("passengers.passenger", "name surname");
+
+    if (!trip)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send(ErrorMessages.TRIP_NOT_FOUND);
+
+    const passenger = trip.passengers.find(
+      ({ passenger }) => passenger._id.toString() === userId
+    );
+
+    if (!passenger)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send(ErrorMessages.PASSENGER_NOT_FOUND);
+
+    trip.personsCount += passenger.seatsBooked;
+    trip.passengers.pull(passenger._id);
+
+    await trip.save();
+
+    const tripObject = trip.toObject();
+    const { passengers, ...tripData } = tripObject;
+
+    res
+      .status(StatusCodes.OK)
+      .json({ trip: { ...tripData, isUserPassenger: false } });
   } catch (error) {
     Logging.error(error);
     res
@@ -346,4 +401,5 @@ export default {
   filterTrips,
   deleteTrip,
   seatBooking,
+  cancelBooking,
 };

@@ -1,4 +1,5 @@
 import { ScrollView, View } from "react-native";
+import { showMessage } from "react-native-flash-message";
 import TripInformationStyles from "./TripInformationStyle";
 import TripRoutesCard from "./TripRoutesCard";
 import TripDetailsCard from "./TripDetailsCard";
@@ -11,11 +12,12 @@ import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";
 import TripPassengersCard from "./TripPassengersCard";
 
-const TripInformation = ({ trip, id, token, navigation }) => {
+const TripInformation = ({ trip, id, token, navigation, setTrip }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnButtonClick = async () => {
     if (trip.isUserDriver) await deleteTrip();
+    else if (trip.isUserPassenger) await cancelReservation();
     else
       navigation.navigate(PageNames.TRIP_PASSENGERS_COUNT_SELECT, {
         availableSeats: trip.personsCount,
@@ -38,6 +40,34 @@ const TripInformation = ({ trip, id, token, navigation }) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const cancelReservation = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.delete("/trips/bookings", {
+        params: { id },
+        headers: { Authorization: token },
+      });
+
+      showMessage({
+        message: "Rezervacija buvo sėkmingai atšaukta",
+        type: "success",
+      });
+
+      setTrip(data.trip);
+    } catch (error) {
+      if (error.response) console.error(error.response.data);
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getButtonText = () => {
+    if (trip.isUserDriver) return "Atšaukti kelionę";
+    if (trip.isUserPassenger) return "Atšaukti rezervaciją";
+    return "Rezervuoti vietą";
   };
 
   return (
@@ -77,7 +107,7 @@ const TripInformation = ({ trip, id, token, navigation }) => {
         </ScrollView>
 
         <Button
-          text={trip.isUserDriver ? "Atšaukti kelionę" : "Rezervuoti vietą"}
+          text={getButtonText()}
           styling={TripInformationStyles.button}
           onClick={handleOnButtonClick}
         />
