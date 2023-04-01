@@ -3,6 +3,7 @@ import PageNames from "../Constants/pageNames";
 import TripsSearchResults from "../Views/Trips/TripsSearchResults/TripsSearchResults";
 import TripInformationScreen from "../Views/Trips/TripInformation/TripInformationScreen";
 import TripSearchFiltersScreen from "../Views/Trips/TripsSearchResults/TripSearchFiltersScreen";
+import TripPassengersCount from "../Views/Trips/TripInformation/TripPassengersCountSelect";
 
 const Trips = ({ route, navigation }) => {
   const Stack = createStackNavigator();
@@ -36,6 +37,14 @@ const Trips = ({ route, navigation }) => {
         options={{
           title: "Paieškos filtrai",
           headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.TRIP_PASSENGERS_COUNT_SELECT}
+        component={TripPassengersCount}
+        options={{
+          headerShadowVisible: false,
+          title: "",
         }}
       />
     </Stack.Navigator>

@@ -21,6 +21,7 @@ const Colors = {
   GOLD: "#FFD700",
   MIDNIGHT_BLACK: "#171717",
   WARNING_YELLOW: "#FBBF24",
+  DISABLED: "#BDBDBD",
 };
 
 export default Colors;
