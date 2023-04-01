@@ -14,7 +14,7 @@ const TripSchema = new Schema({
   stops: [{ type: cityType }],
   date: { type: String, required: true },
   time: { type: String, required: true },
-  personsCount: { type: String, required: true },
+  personsCount: { type: Number, required: true },
   price: { type: String, required: true },
   comments: { type: String },
   isTripFree: { type: Boolean, required: true },
@@ -23,6 +23,12 @@ const TripSchema = new Schema({
   returnTime: { type: String },
   driver: { type: Schema.Types.ObjectId, ref: "BasicUser" },
   passengers: [{ type: Schema.Types.ObjectId, ref: "BasicUser" }],
+  passengers: [
+    {
+      passengerId: { type: Schema.Types.ObjectId, ref: "BasicUser" },
+      seatsBooked: { type: Number },
+    },
+  ],
 });
 
 const Trip = mongoose.model("Trip", TripSchema);

@@ -12,11 +12,14 @@ import PageNames from "../../Constants/pageNames";
 
 const TripInformation = ({ trip, id, token, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
+
   const handleOnButtonClick = async () => {
     if (trip.isUserDriver) await deleteTrip();
     else
       navigation.navigate(PageNames.TRIP_PASSENGERS_COUNT_SELECT, {
         availableSeats: trip.personsCount,
+        token,
+        tripId: id,
       });
   };
 

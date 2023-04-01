@@ -139,6 +139,12 @@ const Schemas = {
       personsCount: Joi.string().allow(null, ""),
     }),
   },
+  booking: {
+    create: Joi.object({
+      tripId: Joi.string().required(),
+      passengersCount: Joi.number().integer().min(1).required(),
+    }),
+  },
 };
 
 export default Schemas;

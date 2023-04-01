@@ -10,7 +10,7 @@ import useScreenIconRight from "../../../hooks/useScreenIconRight";
 import Colors from "../../../Constants/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-const TripInformationScreen = ({ mainNavigation, mainRoute }) => {
+const TripInformationScreen = ({}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const [trip, setTrip] = useState({});
@@ -18,6 +18,7 @@ const TripInformationScreen = ({ mainNavigation, mainRoute }) => {
   const { id } = route.params;
   const { token } = useUserData();
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
+
   const handleOnEditPress = () => {
     console.log("test");
   };
@@ -34,6 +35,11 @@ const TripInformationScreen = ({ mainNavigation, mainRoute }) => {
     if (!id || !token) return;
     fetchTrip();
   }, [id, token]);
+
+  useEffect(() => {
+    if (!route.params?.trip) return;
+    setTrip(route.params?.trip);
+  }, [route.params?.trip]);
 
   const fetchTrip = async () => {
     try {

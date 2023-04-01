@@ -3,6 +3,7 @@ import StatusCodes from "../enums/statusCodes.js";
 import Logging from "../library/Logging.js";
 import Trip from "../models/Trip.js";
 import BasicUser from "../models/BasicUser.js";
+import User from "../models/User.js";
 // import TripBookmark from "../models/TripBookmark.js";
 
 // PAGINATIONS
@@ -34,6 +35,7 @@ const getTrips = async (req, res) => {
                 $elemMatch: { city: destination },
               },
             },
+            { personsCount: { $gt: 0 } },
           ],
         },
         // { date: { $eq: date } },
@@ -297,6 +299,43 @@ const deleteTrip = async (req, res) => {
   }
 };
 
+const seatBooking = async (req, res) => {
+  const userId = req.userId;
+  const { passengersCount, tripId } = req.body;
+  const today = new Date().toISOString().slice(0, 10);
+
+  try {
+    const trip = await Trip.findById(tripId).populate("driver", "name surname");
+
+    if (!trip)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send(ErrorMessages.TRIP_NOT_FOUND);
+
+    if (passengersCount > trip.personsCount)
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send(ErrorMessages.TRIP_NOT_FOUND);
+
+    // if (today > trip.date)
+    //   return res
+    //     .status(StatusCodes.BAD_REQUEST)
+    //     .send(ErrorMessages.TRIP_BOOKING_DATE);
+
+    trip.personsCount -= passengersCount;
+    trip.passengers.push({ passengerId: userId, seatsBooked: passengersCount });
+
+    await trip.save();
+
+    res.status(StatusCodes.OK).json({ trip });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   getTrips,
   postTrip,
@@ -304,4 +343,5 @@ export default {
   getUsersFutureTrips,
   filterTrips,
   deleteTrip,
+  seatBooking,
 };

@@ -35,4 +35,10 @@ TripRouter.route("/my-trips/future-trips").get(
   controller.getUsersFutureTrips
 );
 
+TripRouter.route("/bookings").post(
+  authMiddleware,
+  ValidateSchema(Schemas.booking.create),
+  controller.seatBooking
+);
+
 export default TripRouter;
