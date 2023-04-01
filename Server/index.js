@@ -7,6 +7,7 @@ import UserRouter from "./routes/UserRoutes.js";
 import SearchRouter from "./routes/SearchRoutes.js";
 import TripRouter from "./routes/TripRoutes.js";
 import TripSubscriptionRouter from "./routes/TripSubscriptionRoutes.js";
+import CarServiceRouter from "./routes/CarServiceRoutes.js";
 import mongoose from "mongoose";
 
 const app = express();
@@ -71,4 +72,5 @@ const startServer = () => {
   app.use("/search", SearchRouter);
   app.use("/trips", TripRouter);
   app.use("/tripSubscriptions", TripSubscriptionRouter);
+  app.use("/cars", CarServiceRouter);
 };

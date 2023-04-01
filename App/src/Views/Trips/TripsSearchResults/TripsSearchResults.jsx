@@ -29,6 +29,7 @@ const TripsSearchResults = ({ mainRoute }) => {
   useScreenIconRight({
     navigation,
     icons: ["funnel-outline", "filter"],
+    shouldRender: true,
     onPress: () =>
       navigation.navigate(PageNames.TRIP_SEARCH_FILTERS, {
         departure,

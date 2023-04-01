@@ -8,11 +8,11 @@ const useScreenIconRight = ({
   navigation,
   icons,
   onPress,
-  shouldRender = true,
+  shouldRender,
   color = Colors.GREY_700,
 }) => {
   useEffect(() => {
-    if (!shouldRender) return null;
+    if (!shouldRender) return;
     navigation.setOptions({
       headerRight: () => (
         <View style={styles.container}>
