@@ -40,3 +40,10 @@ export const generatePictureUri = (profilePicture) => {
   if (!profilePicture?.buffer) return undefined;
   return `data:${profilePicture.type};base64,${profilePicture.buffer}`;
 };
+
+export const calculateAge = (dateString) => {
+  var birthday = new Date(dateString);
+  var ageDifMs = Date.now() - birthday.getTime();
+  var ageDate = new Date(ageDifMs);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+};

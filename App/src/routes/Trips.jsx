@@ -4,6 +4,7 @@ import TripsSearchResults from "../Views/Trips/TripsSearchResults/TripsSearchRes
 import TripInformationScreen from "../Views/Trips/TripInformation/TripInformationScreen";
 import TripSearchFiltersScreen from "../Views/Trips/TripsSearchResults/TripSearchFiltersScreen";
 import TripPassengersCount from "../Views/Trips/TripInformation/TripPassengersCountSelect";
+import UserInformation from "../Views/Trips/TripInformation/UserInformation";
 
 const Trips = ({ route, navigation }) => {
   const Stack = createStackNavigator();
@@ -45,6 +46,14 @@ const Trips = ({ route, navigation }) => {
         options={{
           headerShadowVisible: false,
           title: "",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.USER_INFORMATION}
+        component={UserInformation}
+        options={{
+          headerShadowVisible: false,
+          title: "Profilis",
         }}
       />
     </Stack.Navigator>

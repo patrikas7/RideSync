@@ -97,8 +97,14 @@ const getTripInformation = async (req, res) => {
 
   try {
     const trip = await Trip.findById(id)
-      .populate("driver", "name surname profilePicture")
-      .populate("passengers.passenger", "name surname profilePicture");
+      .populate(
+        "driver",
+        "name surname gender dateOfBirth phoneNumber profilePicture"
+      )
+      .populate(
+        "passengers.passenger",
+        "name surname gender dateOfBirth phoneNumber profilePicture"
+      );
     if (!trip)
       return res
         .status(StatusCodes.NOT_FOUND)

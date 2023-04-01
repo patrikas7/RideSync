@@ -7,12 +7,18 @@ import TripPersonRating from "./TripPersonRating";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 import IconButton from "../Button/IconButton";
+import PageNames from "../../Constants/pageNames";
 
-const TripDriverCard = ({ driver, isUserDriver }) => {
+const TripDriverCard = ({ driver, isUserDriver, navigation }) => {
   const profilePictureUri = generatePictureUri(driver.profilePicture);
   const handleOnChatPress = () => {};
 
-  const handleOnProfilePress = () => {};
+  const handleOnProfilePress = () => {
+    navigation.navigate(PageNames.USER_INFORMATION, {
+      user: driver,
+      profilePictureUri,
+    });
+  };
 
   return (
     <View

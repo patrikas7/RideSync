@@ -13,7 +13,7 @@ const PassengerInformation = ({ styling, onPress, passenger, seatsBooked }) => {
   return (
     <TouchableHighlight
       style={[TripInformationStyles.passengerHighlight, styling]}
-      onPress={onPress}
+      onPress={() => onPress(profilePictureUri)}
       underlayColor={Colors.HIGHLIGHT_UNDERLAY}
       activeOpacity={0.8}
     >

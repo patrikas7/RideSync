@@ -89,10 +89,14 @@ const TripInformation = ({ trip, id, token, navigation, setTrip }) => {
           <TripDriverCard
             driver={trip.driver}
             isUserDriver={trip.isUserDriver}
+            navigation={navigation}
           />
 
           {trip?.passengers?.length > 0 && (
-            <TripPassengersCard passengers={trip.passengers} />
+            <TripPassengersCard
+              passengers={trip.passengers}
+              navigation={navigation}
+            />
           )}
 
           {!trip.isUserDriver && (

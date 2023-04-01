@@ -1,8 +1,9 @@
 import { Text, View } from "react-native";
 import TripInformationStyles from "./TripInformationStyle";
 import PassengerInformation from "./PassengerInformation";
+import PageNames from "../../Constants/pageNames";
 
-const TripPassengersCard = ({ passengers }) => {
+const TripPassengersCard = ({ passengers, navigation }) => {
   return (
     <View
       style={[
@@ -18,7 +19,12 @@ const TripPassengersCard = ({ passengers }) => {
             key={index}
             passenger={passenger.passenger}
             seatsBooked={passenger.seatsBooked}
-            onPress={() => console.log()}
+            onPress={(profilePictureUri) =>
+              navigation.navigate(PageNames.USER_INFORMATION, {
+                user: passenger.passenger,
+                profilePictureUri,
+              })
+            }
             styling={
               index > 0 ? TripInformationStyles.passengerInfoNotFirst : {}
             }

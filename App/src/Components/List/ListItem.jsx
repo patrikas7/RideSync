@@ -30,12 +30,15 @@ const ListItem = ({ icon, text, secondaryText, onPress, itemStyling }) => {
             </Text>
           )}
         </View>
-        <Ionicons
-          name="chevron-forward-outline"
-          size={20}
-          color={Colors.GREY_600}
-          style={ListItemStyles.arrowIcon}
-        />
+
+        {onPress && (
+          <Ionicons
+            name="chevron-forward-outline"
+            size={20}
+            color={Colors.GREY_600}
+            style={ListItemStyles.arrowIcon}
+          />
+        )}
       </View>
     </TouchableHighlight>
   );
