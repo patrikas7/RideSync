@@ -1,6 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Image, Text, TouchableHighlight, View } from "react-native";
 import TripInformationStyles from "./TripInformationStyle";
+import TripPersonRating from "./TripPersonRating";
+
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 import IconButton from "../Button/IconButton";
@@ -33,11 +35,7 @@ const TripDriverCard = ({ name, surname, isUserDriver }) => {
             >{`${name} ${surname.charAt(0)}.`}</Text>
           </View>
         </TouchableHighlight>
-        <View style={TripInformationStyles.reviewContainer}>
-          <Ionicons name="star" color={Colors.GOLD} size={Sizes.ICON_SMALL} />
-          <Text style={TripInformationStyles.primaryText}>0</Text>
-          <Text style={TripInformationStyles.reviewCount}>- 0 įvertinimų</Text>
-        </View>
+        <TripPersonRating />
       </View>
       <View>
         <View style={TripInformationStyles.vehicleDetails}>

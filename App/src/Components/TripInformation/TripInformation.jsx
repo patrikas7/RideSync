@@ -9,6 +9,7 @@ import { useState } from "react";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";
+import TripPassengersCard from "./TripPassengersCard";
 
 const TripInformation = ({ trip, id, token, navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +61,10 @@ const TripInformation = ({ trip, id, token, navigation }) => {
             surname={trip.driver.surname}
             isUserDriver={trip.isUserDriver}
           />
+
+          {trip?.passengers?.length > 0 && (
+            <TripPassengersCard passengers={trip.passengers} />
+          )}
 
           {!trip.isUserDriver && (
             <TextButton

@@ -96,7 +96,9 @@ const getTripInformation = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const trip = await Trip.findById(id).populate("driver", "name surname");
+    const trip = await Trip.findById(id)
+      .populate("driver", "name surname")
+      .populate("passengers.passenger", "name surname");
     if (!trip)
       return res
         .status(StatusCodes.NOT_FOUND)
@@ -323,7 +325,7 @@ const seatBooking = async (req, res) => {
     //     .send(ErrorMessages.TRIP_BOOKING_DATE);
 
     trip.personsCount -= passengersCount;
-    trip.passengers.push({ passengerId: userId, seatsBooked: passengersCount });
+    trip.passengers.push({ passenger: userId, seatsBooked: passengersCount });
 
     await trip.save();
 

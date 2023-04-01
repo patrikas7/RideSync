@@ -73,10 +73,20 @@ const TripInformationStyles = StyleSheet.create({
     fontSize: 24,
     marginLeft: 4,
   },
+  infomrationPrimarySmall: {
+    fontWeight: "bold",
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
+    marginLeft: 4,
+  },
   infomrationSecondary: {
     textAlign: "center",
     color: Colors.GREY_500,
     fontWeight: "bold",
+    marginTop: 4,
+  },
+  infomrationSecondarySamll: {
+    textAlign: "center",
+    color: Colors.GREY_500,
     marginTop: 4,
   },
   commentsContainer: {
@@ -98,6 +108,9 @@ const TripInformationStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 8,
+  },
+  reviewContainerPassenger: {
+    marginTop: 16,
   },
   primaryText: {
     marginLeft: 8,
@@ -129,6 +142,37 @@ const TripInformationStyles = StyleSheet.create({
     bottom: 32,
     left: 0,
     right: 0,
+  },
+  passengersCard: {
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
+  passengersHeadline: {
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  passengersList: {
+    marginTop: 16,
+  },
+  passengerInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingBottom: 12,
+  },
+  passengerInfoNotFirst: {
+    paddingTop: 8,
+    borderTopColor: Colors.GREY_600,
+    borderTopWidth: 1,
+  },
+  passengerName: {
+    marginLeft: 16,
+  },
+  arrow: {
+    marginLeft: "auto",
+  },
+  passengersCount: {
+    marginLeft: "auto",
   },
 });
 
