@@ -22,7 +22,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip }) => {
       navigation.navigate(PageNames.TRIP_PASSENGERS_COUNT_SELECT, {
         availableSeats: trip.personsCount,
         token,
-        tripId: id,
+        tripId: trip._id,
       });
   };
 
@@ -46,7 +46,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip }) => {
     setIsLoading(true);
     try {
       const { data } = await axios.delete("/trips/bookings", {
-        params: { id },
+        params: { id: trip._id },
         headers: { Authorization: token },
       });
 
@@ -87,8 +87,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip }) => {
             comments={trip.comments}
           />
           <TripDriverCard
-            name={trip.driver.name}
-            surname={trip.driver.surname}
+            driver={trip.driver}
             isUserDriver={trip.isUserDriver}
           />
 

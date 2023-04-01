@@ -35,3 +35,8 @@ export const count18YearsInThePast = () => {
   const formattedDate = pastDate.toISOString().slice(0, 10);
   return formattedDate;
 };
+
+export const generatePictureUri = (profilePicture) => {
+  if (!profilePicture?.buffer) return undefined;
+  return `data:${profilePicture.type};base64,${profilePicture.buffer}`;
+};

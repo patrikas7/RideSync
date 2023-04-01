@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Text, View } from "react-native";
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { showMessage } from "react-native-flash-message";
 import Spinner from "react-native-loading-spinner-overlay";
 import ButtonsSwitch from "../../../Components/ButtonsSwitch/ButtonsSwitch";

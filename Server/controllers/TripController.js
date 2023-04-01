@@ -97,19 +97,30 @@ const getTripInformation = async (req, res) => {
 
   try {
     const trip = await Trip.findById(id)
-      .populate("driver", "name surname")
-      .populate("passengers.passenger", "name surname");
+      .populate("driver", "name surname profilePicture")
+      .populate("passengers.passenger", "name surname profilePicture");
     if (!trip)
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ error: ErrorMessages.TRIP_NOT_FOUND });
+
+    const { driver, passengers } = trip;
+
+    if (driver.profilePicture?.buffer)
+      driver.profilePicture = driver.profilePicture.buffer.toString("base64");
+
+    passengers.forEach((passenger) => {
+      if (passenger.profilePicture?.buffer)
+        passenger.profilePicture =
+          passenger.profilePicture.buffer.toString("base64");
+    });
 
     // const {rating, reviewCount} = getUserRatingAndReviewCount(trips.driver._id)
 
     res.status(StatusCodes.OK).json({
       trip: {
         ...trip.toObject(),
-        isUserDriver: userId === trip.driver._id.toString(),
+        isUserDriver: userId === driver._id.toString(),
         isUserPassenger: trip.passengers.some(
           (passenger) => passenger.passenger._id.toString() === userId
         ),

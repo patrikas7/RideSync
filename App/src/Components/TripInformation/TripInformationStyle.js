@@ -101,8 +101,8 @@ const TripInformationStyles = StyleSheet.create({
   },
   avatar: {
     ...StyleUtils.avatar,
-    width: 35,
-    height: 35,
+    width: 40,
+    height: 40,
   },
   reviewContainer: {
     flexDirection: "row",
@@ -144,7 +144,6 @@ const TripInformationStyles = StyleSheet.create({
     right: 0,
   },
   passengersCard: {
-    paddingHorizontal: 16,
     paddingBottom: 16,
   },
   passengersHeadline: {
@@ -173,6 +172,10 @@ const TripInformationStyles = StyleSheet.create({
   },
   passengersCount: {
     marginLeft: "auto",
+  },
+  passengerHighlight: {
+    paddingHorizontal: 16,
+    borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
   },
 });
 

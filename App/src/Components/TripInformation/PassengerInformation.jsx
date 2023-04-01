@@ -5,24 +5,31 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 import TripInformationStyles from "./TripInformationStyle";
 import TripPersonRating from "./TripPersonRating";
+import { generatePictureUri } from "../../Utils/utils";
 
-const PassengerInformation = ({ styling, onPress, passenger }) => {
+const PassengerInformation = ({ styling, onPress, passenger, seatsBooked }) => {
+  const profilePictureUri = generatePictureUri(passenger.profilePicture);
+
   return (
     <TouchableHighlight
-      style={styling}
+      style={[TripInformationStyles.passengerHighlight, styling]}
       onPress={onPress}
       underlayColor={Colors.HIGHLIGHT_UNDERLAY}
       activeOpacity={0.8}
     >
       <View style={TripInformationStyles.passengerInfo}>
         <Image
-          source={require("../../../assets/pictures/avatar.png")}
+          source={
+            profilePictureUri
+              ? { uri: profilePictureUri }
+              : require("../../../assets/pictures/avatar.png")
+          }
           style={TripInformationStyles.avatar}
         />
         <View style={TripInformationStyles.passengerName}>
           <Text style={TripInformationStyles.driverName}>{`${
             passenger.name
-          } ${passenger.surname.charAt(0)}`}</Text>
+          } ${passenger.surname.charAt(0)}.`}</Text>
           <TripPersonRating
             styling={TripInformationStyles.reviewContainerPassenger}
           />
@@ -31,7 +38,7 @@ const PassengerInformation = ({ styling, onPress, passenger }) => {
           size={"small"}
           styling={TripInformationStyles.passengersCount}
           icon={"people"}
-          primaryText={"1"}
+          primaryText={seatsBooked}
           secondaryText={"Vietos"}
         />
         <Ionicons

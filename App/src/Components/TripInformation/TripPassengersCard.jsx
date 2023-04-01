@@ -17,6 +17,7 @@ const TripPassengersCard = ({ passengers }) => {
           <PassengerInformation
             key={index}
             passenger={passenger.passenger}
+            seatsBooked={passenger.seatsBooked}
             onPress={() => console.log()}
             styling={
               index > 0 ? TripInformationStyles.passengerInfoNotFirst : {}
