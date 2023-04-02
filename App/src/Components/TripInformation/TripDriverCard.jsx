@@ -10,7 +10,7 @@ import IconButton from "../Button/IconButton";
 import PageNames from "../../Constants/pageNames";
 
 const TripDriverCard = ({ driver, isUserDriver, navigation }) => {
-  const profilePictureUri = generatePictureUri(driver.profilePicture);
+  const profilePictureUri = generatePictureUri(driver?.profilePicture);
   const handleOnChatPress = () => {};
 
   const handleOnProfilePress = () => {

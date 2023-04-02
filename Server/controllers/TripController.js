@@ -96,40 +96,22 @@ const getTripInformation = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const trip = await Trip.findById(id)
-      .populate(
-        "driver",
-        "name surname gender dateOfBirth phoneNumber profilePicture"
-      )
-      .populate(
-        "passengers.passenger",
-        "name surname gender dateOfBirth phoneNumber profilePicture"
-      );
-    if (!trip)
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ error: ErrorMessages.TRIP_NOT_FOUND });
-
+    const trip = await findTripById(id);
     const { driver, passengers } = trip;
-
-    if (driver.profilePicture?.buffer)
-      driver.profilePicture = driver.profilePicture.buffer.toString("base64");
-
-    passengers.forEach((passenger) => {
-      if (passenger.profilePicture?.buffer)
-        passenger.profilePicture =
-          passenger.profilePicture.buffer.toString("base64");
-    });
-
+    const isUserDriver = userId === driver._id.toString();
+    const isUserPassenger = trip.passengers.some(
+      (passenger) => passenger.passenger._id.toString() === userId
+    );
     // const {rating, reviewCount} = getUserRatingAndReviewCount(trips.driver._id)
+
+    parseDriverProfilePicture(driver);
+    parsePassengersProfilePictures(passengers);
 
     res.status(StatusCodes.OK).json({
       trip: {
         ...trip.toObject(),
-        isUserDriver: userId === driver._id.toString(),
-        isUserPassenger: trip.passengers.some(
-          (passenger) => passenger.passenger._id.toString() === userId
-        ),
+        isUserDriver,
+        isUserPassenger,
       },
     });
   } catch (error) {
@@ -350,10 +332,10 @@ const seatBooking = async (req, res) => {
     trip.passengers.push({ passenger: userId, seatsBooked: passengersCount });
 
     await trip.save();
+    const updatedTrip = await findTripById(tripId);
 
-    const updatedTrip = await Trip.findById(tripId)
-      .populate("driver", "name surname")
-      .populate("passengers.passenger", "name surname");
+    parseDriverProfilePicture(updatedTrip.driver);
+    parsePassengersProfilePictures(updatedTrip.passengers);
 
     res
       .status(StatusCodes.OK)
@@ -373,14 +355,7 @@ const cancelBooking = async (req, res) => {
   } = req;
 
   try {
-    const trip = await Trip.findById(id)
-      .populate("driver", "name surname")
-      .populate("passengers.passenger", "name surname");
-
-    if (!trip)
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .send(ErrorMessages.TRIP_NOT_FOUND);
+    const trip = await findTripById(id);
 
     const passenger = trip.passengers.find(
       ({ passenger }) => passenger._id.toString() === userId
@@ -396,18 +371,49 @@ const cancelBooking = async (req, res) => {
 
     await trip.save();
 
-    const tripObject = trip.toObject();
-    const { passengers, ...tripData } = tripObject;
+    parseDriverProfilePicture(trip.driver);
+    parsePassengersProfilePictures(trip.passengers);
 
     res
       .status(StatusCodes.OK)
-      .json({ trip: { ...tripData, isUserPassenger: false } });
+      .json({ trip: { ...trip.toObject(), isUserPassenger: false } });
   } catch (error) {
     Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
+};
+
+const findTripById = async (id) => {
+  const trip = await Trip.findById(id)
+    .populate(
+      "driver",
+      "name surname gender dateOfBirth phoneNumber profilePicture"
+    )
+    .populate(
+      "passengers.passenger",
+      "name surname gender dateOfBirth phoneNumber profilePicture"
+    );
+  if (!trip) throw new Error(ErrorMessages.TRIP_NOT_FOUND);
+  return trip;
+};
+
+const parseDriverProfilePicture = (driver) => {
+  if (driver.profilePicture?.buffer)
+    driver.profilePicture = driver.profilePicture.buffer.toString("base64");
+
+  return driver;
+};
+
+const parsePassengersProfilePictures = (passengers) => {
+  passengers?.forEach((passenger) => {
+    if (passenger.profilePicture?.buffer)
+      passenger.profilePicture =
+        passenger.profilePicture.buffer.toString("base64");
+  });
+
+  return passengers;
 };
 
 export default {

@@ -12,7 +12,6 @@ const UserInformation = ({ navigation, route }) => {
   const { user, profilePictureUri } = route.params;
   useScreenArrowBack(navigation, PageNames.TRIP_INFORMATION);
 
-  console.log(user);
   return (
     <Container>
       <View style={UserInformationStyles.userInformationWrapper}>

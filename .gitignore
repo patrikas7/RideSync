@@ -15,3 +15,5 @@ lib/
 .vs/
 .vscode/
 .DS_Store
+
+out/
