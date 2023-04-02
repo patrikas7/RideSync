@@ -24,11 +24,11 @@ const ProfileNewVehicleScreen = ({ token }) => {
   });
   const [displayedCarModels, setDisplayedCardModels] = useState([]);
   const [vehicle, setVehicle] = useState({
-    plateNumber: "",
-    make: null,
+    licensePlateNumber: "",
+    manufacturer: null,
     model: null,
     type: null,
-    makeDate: null,
+    manufactureYear: null,
   });
   const navigation = useNavigation();
   useScreenArrowBack(navigation, PageNames.PROFILE_VEHICLE);
@@ -38,12 +38,12 @@ const ProfileNewVehicleScreen = ({ token }) => {
   }, []);
 
   useEffect(() => {
-    if (!vehicle.make) return;
+    if (!vehicle.manufacturer) return;
     const carModelsToDisplay = carsData.carModels.filter(
-      (model) => model.make === vehicle.make.toLowerCase()
+      (model) => model.make === vehicle.manufacturer.toLowerCase()
     );
     setDisplayedCardModels(carModelsToDisplay);
-  }, [vehicle.make]);
+  }, [vehicle.manufacturer]);
 
   const fetchCars = async () => {
     try {
@@ -75,6 +75,16 @@ const ProfileNewVehicleScreen = ({ token }) => {
     }
   };
 
+  const registerVehicle = async () => {
+    setIsLoading(true);
+    try {
+    } catch (error) {
+      printError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const showError = (message) => {
     showMessage({
       message,
@@ -84,7 +94,7 @@ const ProfileNewVehicleScreen = ({ token }) => {
 
   const isPlateNumberValid = () => {
     const plateNumberRegex = /^[A-Z]{3} [0-9]{3}$/;
-    return plateNumberRegex.test(vehicle.plateNumber);
+    return plateNumberRegex.test(vehicle.licensePlateNumber);
   };
 
   return (
@@ -95,16 +105,20 @@ const ProfileNewVehicleScreen = ({ token }) => {
           placeholder={"Valstybinis nr. ABC 123"}
           value={vehicle.plateNumber}
           onChange={(plateNumber) =>
-            setVehicle((prevState) => ({ ...prevState, plateNumber }))
+            setVehicle((prevState) => ({ ...prevState, licensePlateNumber }))
           }
         />
 
         <Dropdown
           placeholder={"Automobilio gamintojas.."}
           items={carsData.carMakes}
-          value={vehicle.make}
-          onValueChange={(make) =>
-            setVehicle((prevState) => ({ ...prevState, make, model: "" }))
+          value={vehicle.manufacturer}
+          onValueChange={(manufacturer) =>
+            setVehicle((prevState) => ({
+              ...prevState,
+              manufacturer,
+              model: "",
+            }))
           }
         />
 
@@ -129,9 +143,9 @@ const ProfileNewVehicleScreen = ({ token }) => {
         <Dropdown
           placeholder={"Gamybos metai.."}
           items={carsData.carYears}
-          value={vehicle.makeDate}
-          onValueChange={(makeDate) =>
-            setVehicle((prevState) => ({ ...prevState, makeDate }))
+          value={vehicle.manufactureYear}
+          onValueChange={(manufactureYear) =>
+            setVehicle((prevState) => ({ ...prevState, manufactureYear }))
           }
         />
       </View>

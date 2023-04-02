@@ -145,6 +145,16 @@ const Schemas = {
       passengersCount: Joi.number().integer().min(1).required(),
     }),
   },
+  car: {
+    create: Joi.object({
+      manufacturer: Joi.string().required(),
+      model: Joi.string().required(),
+      licensePlateNumber: Joi.string().required(),
+      type: Joi.string().required(),
+      manufactureYear: Joi.string().required(),
+      ownwer: Joi.string().required(),
+    }),
+  },
 };
 
 export default Schemas;

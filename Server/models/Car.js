@@ -5,15 +5,10 @@ const CarSchema = new Schema({
   model: { type: String, required: true },
   licensePlateNumber: { type: String, required: true },
   type: { type: String, required: true },
-  color: { type: String, required: true },
   manufactureYear: { type: Number, required: true },
-  picture: {
-    data: Buffer,
-    contentType: String,
-  },
   ownwer: {
     type: Schema.Types.ObjectId,
-    ref: "BasicUser",
+    ref: "User",
     required: true,
   },
 });
