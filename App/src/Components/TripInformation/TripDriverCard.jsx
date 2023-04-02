@@ -11,7 +11,9 @@ import PageNames from "../../Constants/pageNames";
 
 const TripDriverCard = ({ driver, isUserDriver, navigation }) => {
   const profilePictureUri = generatePictureUri(driver?.profilePicture);
-  const handleOnChatPress = () => {};
+  const handleOnChatPress = () => {
+    navigation.navigate(PageNames.CHAT);
+  };
 
   const handleOnProfilePress = () => {
     navigation.navigate(PageNames.USER_INFORMATION, {

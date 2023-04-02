@@ -1,10 +1,14 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
 import TripsSearchResults from "../Views/Trips/TripsSearchResults/TripsSearchResults";
 import TripInformationScreen from "../Views/Trips/TripInformation/TripInformationScreen";
 import TripSearchFiltersScreen from "../Views/Trips/TripsSearchResults/TripSearchFiltersScreen";
 import TripPassengersCount from "../Views/Trips/TripInformation/TripPassengersCountSelect";
 import UserInformation from "../Views/Trips/TripInformation/UserInformation";
+import ChatScreen from "../Views/Chat/ChatScreen";
 
 const Trips = ({ route, navigation }) => {
   const Stack = createStackNavigator();
@@ -54,6 +58,14 @@ const Trips = ({ route, navigation }) => {
         options={{
           headerShadowVisible: false,
           title: "Profilis",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.CHAT}
+        component={ChatScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
       />
     </Stack.Navigator>

@@ -22,6 +22,7 @@ const Colors = {
   MIDNIGHT_BLACK: "#171717",
   WARNING_YELLOW: "#FBBF24",
   DISABLED: "#BDBDBD",
+  CHAT_BACKGROUND: "#f5f5f5",
 };
 
 export default Colors;

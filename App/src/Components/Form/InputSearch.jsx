@@ -12,6 +12,7 @@ const InputSearch = ({
   onChange,
   styling,
   secureTextEntry,
+  multiline,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputContainer = useRef(new Animated.Value(1)).current;
@@ -50,8 +51,9 @@ const InputSearch = ({
           style={InputSearchStyles.input}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          maxLength={30}
+          maxLength={!multiline ? 30 : undefined}
           secureTextEntry={secureTextEntry}
+          multiline={multiline}
         />
 
         {value && (
