@@ -30,7 +30,9 @@ const UserInformation = ({ navigation, route }) => {
         </View>
         <View style={UserInformationStyles.highlightContainer}>
           <View>
-            <Text style={UserInformationStyles.primaryText}>5</Text>
+            <Text style={UserInformationStyles.primaryText}>
+              {user.trips.length}
+            </Text>
             <Text style={UserInformationStyles.secondaryText}>Kelionės</Text>
           </View>
           <TripPersonRating />

@@ -1,10 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { View, Text, Image, TouchableHighlight } from "react-native";
+import { generatePictureUri } from "../../Utils/utils";
 import TripsListStyle from "./TripsListStyle";
 import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
 
 const TripCard = ({ trip, onPress, containerStyling }) => {
+  const profilePictureUri = generatePictureUri(trip.driver?.profilePicture);
+
   return (
     <TouchableHighlight
       onPress={() => onPress(trip._id)}
@@ -59,7 +62,11 @@ const TripCard = ({ trip, onPress, containerStyling }) => {
             ]}
           >
             <Image
-              source={require("../../../assets/pictures/avatar.png")}
+              source={
+                profilePictureUri
+                  ? { uri: profilePictureUri }
+                  : require("../../../assets/pictures/avatar.png")
+              }
               style={TripsListStyle.avatar}
             />
             <Text style={TripsListStyle.driverName}>

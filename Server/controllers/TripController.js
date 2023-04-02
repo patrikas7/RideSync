@@ -43,7 +43,12 @@ const getTrips = async (req, res) => {
       ],
     })
       .select("departure.city destination.city date time personsCount price")
-      .populate("driver", "name");
+      .populate("driver", "name profilePicture")
+      .lean();
+
+    trips.forEach(({ driver }) => {
+      driver = parseDriverProfilePicture(driver);
+    });
 
     res.status(StatusCodes.OK).json({ trips });
   } catch (error) {
@@ -78,8 +83,6 @@ const getUserRatingAndReviewCount = async (userId) => {
 
     const userAggregate = await BasicUser.aggregate(pipeline);
 
-    Logging.info(userAggregate);
-
     if (userAggregate.length > 0) {
       const { rating, reviewCount } = userAggregate[0];
       return { rating, reviewCount };
@@ -96,7 +99,7 @@ const getTripInformation = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const trip = await findTripById(id);
+    const trip = await findTripById(id, true);
     const { driver, passengers } = trip;
     const isUserDriver = userId === driver._id.toString();
     const isUserPassenger = trip.passengers.some(
@@ -104,12 +107,12 @@ const getTripInformation = async (req, res) => {
     );
     // const {rating, reviewCount} = getUserRatingAndReviewCount(trips.driver._id)
 
-    parseDriverProfilePicture(driver);
-    parsePassengersProfilePictures(passengers);
+    trip.driver = parseDriverProfilePicture(driver);
+    trip.passengers = parsePassengersProfilePictures(passengers);
 
     res.status(StatusCodes.OK).json({
       trip: {
-        ...trip.toObject(),
+        ...trip,
         isUserDriver,
         isUserPassenger,
       },
@@ -332,6 +335,7 @@ const seatBooking = async (req, res) => {
     trip.passengers.push({ passenger: userId, seatsBooked: passengersCount });
 
     await trip.save();
+    await addTripToUsersTripsHistory(userId, tripId);
     const updatedTrip = await findTripById(tripId);
 
     parseDriverProfilePicture(updatedTrip.driver);
@@ -370,7 +374,7 @@ const cancelBooking = async (req, res) => {
     trip.passengers.pull(passenger._id);
 
     await trip.save();
-
+    await removeTripFromUsersTripHistory(userId, id);
     parseDriverProfilePicture(trip.driver);
     parsePassengersProfilePictures(trip.passengers);
 
@@ -385,23 +389,40 @@ const cancelBooking = async (req, res) => {
   }
 };
 
-const findTripById = async (id) => {
-  const trip = await Trip.findById(id)
+const findTripById = async (id, useLean) => {
+  const query = Trip.findById(id)
     .populate(
       "driver",
-      "name surname gender dateOfBirth phoneNumber profilePicture"
+      "name surname gender dateOfBirth phoneNumber profilePicture trips"
     )
     .populate(
       "passengers.passenger",
-      "name surname gender dateOfBirth phoneNumber profilePicture"
+      "name surname gender dateOfBirth phoneNumber profilePicture trips"
     );
+  if (useLean) {
+    query.lean();
+  }
+  const trip = await query.exec();
   if (!trip) throw new Error(ErrorMessages.TRIP_NOT_FOUND);
   return trip;
 };
 
+const addTripToUsersTripsHistory = async (userId, tripId) => {
+  const user = await User.findById(userId);
+  user.trips.push(tripId);
+  await user.save();
+};
+
+const removeTripFromUsersTripHistory = async (userId, tripId) => {
+  const user = await User.findById(userId);
+  user.trips = user.trips.filter((id) => id !== tripId);
+  await user.save();
+};
+
 const parseDriverProfilePicture = (driver) => {
   if (driver.profilePicture?.buffer)
-    driver.profilePicture = driver.profilePicture.buffer.toString("base64");
+    driver.profilePicture.buffer =
+      driver.profilePicture.buffer.toString("base64");
 
   return driver;
 };
@@ -409,7 +430,7 @@ const parseDriverProfilePicture = (driver) => {
 const parsePassengersProfilePictures = (passengers) => {
   passengers?.forEach((passenger) => {
     if (passenger.profilePicture?.buffer)
-      passenger.profilePicture =
+      passenger.profilePicture.buffer =
         passenger.profilePicture.buffer.toString("base64");
   });
 
