@@ -16,6 +16,8 @@ const ErrorMessages = {
   SEARCH_TIME_ERROR: "Pasirinktas laikas negali būti mažesnis už esamą laiką",
   EMPTY_FIELD: "Laukas negali būti tuščias",
   ALL_FIELDS_ARE_REQUIRED: "Visi laukai yra privalomi",
+  PLATE_NUMBER_VALIDATION:
+    "Netinkamas automobilio valstybinio numerio formatas. Tinakamas formatas yra ABC 123",
 };
 
 export default ErrorMessages;

@@ -29,3 +29,13 @@ export const AvailableSeatsSlots = {
   THREE: "3",
   FOUR: "4",
 };
+
+export const CarTypes = {
+  SEDAN: "Sedanas",
+  UNIVERSAL: "Universalas",
+  SUV: "Visureigis",
+  PICKUP: "Pikapas",
+  CABRIOLET: "Kabrioletas",
+  COUPE: "Kupė",
+  MINIVAN: "Minivenas",
+};

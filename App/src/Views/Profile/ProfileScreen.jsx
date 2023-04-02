@@ -88,7 +88,7 @@ const ProfileScreen = ({ token }) => {
             />
             <ListItem
               icon={"car-outline"}
-              text={"Pridėti automobilį"}
+              text={"Mano automobiliai"}
               onPress={() => handleOnListItemPess(PageNames.PROFILE_VEHICLE)}
             />
           </View>

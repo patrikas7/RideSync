@@ -11,10 +11,12 @@ import ProfileScreen from "../Views/Profile/ProfileScreen";
 import ProfileValueEditScreen from "../Views/Profile/ProfileValueEditScreen";
 import ProfileSettingsScreen from "../Views/Profile/ProfileSettingsScreen";
 import ProfilePictureEditScren from "../Views/Profile/ProfilePictureEditScreen";
+import ProfileVehicleScreen from "../Views/Profile/ProfileVehicleScreen";
+import ProfileNewVehicleScreen from "../Views/Profile/ProfileNewVehicleScreen";
 
 const Profile = ({ navigation }) => {
   const Stack = createStackNavigator();
-  const { token } = useUserData();
+  const { token, id } = useUserData();
 
   return (
     <Stack.Navigator>
@@ -78,6 +80,23 @@ const Profile = ({ navigation }) => {
           ...TransitionPresets.ModalSlideFromBottomIOS,
           headerShadowVisible: false,
           title: "",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.PROFILE_VEHICLE}
+        children={() => <ProfileVehicleScreen token={token} id={id} />}
+        options={{
+          ...TransitionPresets.ModalSlideFromBottomIOS,
+          headerShadowVisible: false,
+          title: "",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.PROFILE_NEW_VEHICLE}
+        children={() => <ProfileNewVehicleScreen token={token} />}
+        options={{
+          headerShadowVisible: false,
+          title: "Automobilio registracija",
         }}
       />
     </Stack.Navigator>

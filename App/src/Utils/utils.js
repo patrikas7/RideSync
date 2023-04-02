@@ -47,3 +47,12 @@ export const calculateAge = (dateString) => {
   var ageDate = new Date(ageDifMs);
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
+
+export const printError = (error) => {
+  if (error.response) {
+    console.error(error.response.data);
+    return;
+  }
+
+  console.error(error);
+};

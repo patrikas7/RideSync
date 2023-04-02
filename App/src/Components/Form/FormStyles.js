@@ -37,10 +37,11 @@ export const InputSearchStyles = StyleSheet.create({
   inputSearchContainer: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
     borderColor: Colors.BLUE_500,
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
   },
   inputContainer: {
     marginLeft: 12,
@@ -72,3 +73,17 @@ export const InputSwitchStyles = StyleSheet.create({
     fontSize: Sizes.DEFAULT_TEXT_SIZE,
   },
 });
+
+export const getDropdownStyles = (isOpen) =>
+  StyleSheet.create({
+    inputIOS: {
+      fontSize: Sizes.DEFAULT_TEXT_SIZE,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderWidth: isOpen ? 2 : 1,
+      borderColor: Colors.BLUE_500,
+      borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
+      color: Colors.BLACK,
+      marginTop: 16,
+    },
+  });

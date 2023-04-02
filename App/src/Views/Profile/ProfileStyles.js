@@ -94,8 +94,12 @@ export const ProfileSettingsStyles = StyleSheet.create({
   buttonsContainer: {
     marginBottom: 32,
   },
-
   firstButton: {
     marginBottom: 32,
   },
+});
+
+export const ProfileVehicleStyles = StyleSheet.create({
+  newVehicleForm: { flex: 1, marginTop: 16 },
+  button: { marginBottom: 32 },
 });
