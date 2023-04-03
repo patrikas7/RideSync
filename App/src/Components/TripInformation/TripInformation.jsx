@@ -12,7 +12,7 @@ import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";
 import TripPassengersCard from "./TripPassengersCard";
 
-const TripInformation = ({ trip, id, token, navigation, setTrip }) => {
+const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnButtonClick = async () => {
@@ -96,6 +96,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip }) => {
             <TripPassengersCard
               passengers={trip.passengers}
               navigation={navigation}
+              userId={userId}
             />
           )}
 

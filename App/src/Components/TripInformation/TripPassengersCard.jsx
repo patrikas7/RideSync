@@ -3,7 +3,7 @@ import TripInformationStyles from "./TripInformationStyle";
 import PassengerInformation from "./PassengerInformation";
 import PageNames from "../../Constants/pageNames";
 
-const TripPassengersCard = ({ passengers, navigation }) => {
+const TripPassengersCard = ({ passengers, navigation, userId }) => {
   return (
     <View
       style={[
@@ -23,6 +23,7 @@ const TripPassengersCard = ({ passengers, navigation }) => {
               navigation.navigate(PageNames.USER_INFORMATION, {
                 user: passenger.passenger,
                 profilePictureUri,
+                isMyProfile: passenger.passenger._id === userId,
               })
             }
             styling={

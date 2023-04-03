@@ -19,6 +19,7 @@ const TripDriverCard = ({ driver, isUserDriver, navigation }) => {
     navigation.navigate(PageNames.USER_INFORMATION, {
       user: driver,
       profilePictureUri,
+      isMyProfile: isUserDriver,
     });
   };
 

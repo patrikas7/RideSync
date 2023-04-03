@@ -9,7 +9,7 @@ import Button from "../../../Components/Button/Button";
 import { calculateAge } from "../../../Utils/utils";
 
 const UserInformation = ({ navigation, route }) => {
-  const { user, profilePictureUri } = route.params;
+  const { user, profilePictureUri, isMyProfile } = route.params;
   useScreenArrowBack(navigation, PageNames.TRIP_INFORMATION);
 
   return (
@@ -65,10 +65,12 @@ const UserInformation = ({ navigation, route }) => {
           />
         </View>
       </View>
-      <Button
-        text={"Siųsti pranešimą"}
-        styling={UserInformationStyles.button}
-      />
+      {!isMyProfile && (
+        <Button
+          text={"Siųsti pranešimą"}
+          styling={UserInformationStyles.button}
+        />
+      )}
     </Container>
   );
 };

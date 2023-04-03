@@ -10,13 +10,13 @@ import useScreenIconRight from "../../../hooks/useScreenIconRight";
 import Colors from "../../../Constants/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-const TripInformationScreen = ({}) => {
+const TripInformationScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const [trip, setTrip] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { id } = route.params;
-  const { token } = useUserData();
+  const { token, id: userId } = useUserData();
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
 
   const handleOnEditPress = () => {
@@ -67,6 +67,7 @@ const TripInformationScreen = ({}) => {
           token={token}
           navigation={navigation}
           setTrip={setTrip}
+          userId={userId}
         />
       )}
     </Container>

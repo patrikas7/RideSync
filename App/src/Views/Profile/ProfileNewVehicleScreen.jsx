@@ -63,8 +63,6 @@ const ProfileNewVehicleScreen = ({ token }) => {
     setDisplayedCarModels(carModelsToDisplay);
   }, [vehicle.manufacturer]);
 
-  console.log(vehicle);
-
   const fetchCars = async () => {
     try {
       const { data } = await axios.get("/cars/data", {
@@ -139,7 +137,6 @@ const ProfileNewVehicleScreen = ({ token }) => {
     }
   };
 
-  console.log(vehicle);
   const handleOnUpdate = async () => {
     setIsLoading(true);
     try {
