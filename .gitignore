@@ -15,5 +15,6 @@ lib/
 .vs/
 .vscode/
 .DS_Store
+.VSCodeCounter/
 
 out/

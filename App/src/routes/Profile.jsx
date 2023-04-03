@@ -88,7 +88,7 @@ const Profile = ({ navigation }) => {
         options={{
           ...TransitionPresets.ModalSlideFromBottomIOS,
           headerShadowVisible: false,
-          title: "",
+          title: "Mano automobiliai",
         }}
       />
       <Stack.Screen

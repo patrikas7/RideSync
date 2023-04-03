@@ -73,11 +73,23 @@ const ProfileNewVehicleScreen = ({ token }) => {
       showError(ErrorMessages.PLATE_NUMBER_VALIDATION);
       return;
     }
+
+    registerVehicle();
   };
 
   const registerVehicle = async () => {
     setIsLoading(true);
     try {
+      const { data } = await axios.post("/car", vehicle, {
+        headers: { Authorization: token },
+      });
+
+      showMessage({
+        message: "Automobilis buvo sėkmingai užregistruotas",
+        type: "success",
+      });
+
+      navigation.navigate(PageNames.PROFILE_VEHICLE, { car: data.car });
     } catch (error) {
       printError(error);
     } finally {
@@ -104,7 +116,7 @@ const ProfileNewVehicleScreen = ({ token }) => {
         <InputSearch
           placeholder={"Valstybinis nr. ABC 123"}
           value={vehicle.plateNumber}
-          onChange={(plateNumber) =>
+          onChange={(licensePlateNumber) =>
             setVehicle((prevState) => ({ ...prevState, licensePlateNumber }))
           }
         />

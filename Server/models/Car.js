@@ -1,4 +1,6 @@
 import mongoose, { Schema } from "mongoose";
+import Logging from "../library/Logging.js";
+import BasicUser from "./BasicUser.js";
 
 const CarSchema = new Schema({
   manufacturer: { type: String, required: true },
@@ -8,7 +10,7 @@ const CarSchema = new Schema({
   manufactureYear: { type: Number, required: true },
   ownwer: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: "BasicUser",
     required: true,
   },
 });

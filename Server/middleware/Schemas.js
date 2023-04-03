@@ -152,7 +152,6 @@ const Schemas = {
       licensePlateNumber: Joi.string().required(),
       type: Joi.string().required(),
       manufactureYear: Joi.string().required(),
-      ownwer: Joi.string().required(),
     }),
   },
 };

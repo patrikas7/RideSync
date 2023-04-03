@@ -19,7 +19,8 @@ const checkUserByEmail = async (req, res) => {
 };
 
 const getUserCars = async (req, res) => {
-  const user = req.user;
+  const { userId } = req;
+  const user = await User.findById(userId).populate("cars");
 
   res.status(StatusCodes.OK).json({ carsList: user.cars });
 };

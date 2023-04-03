@@ -1,6 +1,7 @@
 import ErrorMessages from "../enums/errorMessages.js";
 import StatusCodes from "../enums/statusCodes.js";
 import Logging from "../library/Logging.js";
+import User from "../models/User.js";
 import Car from "../models/Car.js";
 
 const postCar = async (req, res) => {
@@ -12,7 +13,7 @@ const postCar = async (req, res) => {
   const car = new Car({
     manufacturer,
     model,
-    licensePlateNumber,
+    licensePlateNumber: licensePlateNumber.toUpperCase(),
     type,
     manufactureYear,
     ownwer: userId,
@@ -20,7 +21,12 @@ const postCar = async (req, res) => {
 
   try {
     const newCar = await car.save();
-    res.status(StatusCodes.CREATION_SUCCESS).json({ newCar });
+    const user = await User.findById(userId);
+
+    user.cars.push(newCar._id);
+    await user.save();
+
+    res.status(StatusCodes.CREATION_SUCCESS).json({ car: newCar });
   } catch (error) {
     Logging.error(error);
     res

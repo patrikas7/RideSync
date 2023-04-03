@@ -1,5 +1,5 @@
 import express from "express";
-import controller from "../controllers/CarController";
+import controller from "../controllers/CarController.js";
 import Schemas from "../middleware/Schemas.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import { ValidateSchema } from "../middleware/SchemaValidator.js";
@@ -11,3 +11,5 @@ CarRouter.route("/").post(
   ValidateSchema(Schemas.car.create),
   controller.postCar
 );
+
+export default CarRouter;

@@ -8,7 +8,7 @@ import SearchRouter from "./routes/SearchRoutes.js";
 import TripRouter from "./routes/TripRoutes.js";
 import TripSubscriptionRouter from "./routes/TripSubscriptionRoutes.js";
 import CarServiceRouter from "./routes/CarServiceRoutes.js";
-import CarRouter from "./routes/CarRoutes";
+import CarRouter from "./routes/CarRoutes.js";
 import mongoose from "mongoose";
 
 const app = express();
