@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { View } from "react-native";
@@ -6,7 +6,7 @@ import { ProfileVehicleStyles } from "./ProfileStyles";
 import { hasObjectEmptyValues, printError } from "../../Utils/utils";
 import { showMessage } from "react-native-flash-message";
 import Spinner from "react-native-loading-spinner-overlay";
-import Button from "../../Components/Button/Button";
+import Button, { ButtonColor } from "../../Components/Button/Button";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
@@ -22,7 +22,7 @@ const ProfileNewVehicleScreen = ({ token }) => {
     carTypes: [],
     carYears: [],
   });
-  const [displayedCarModels, setDisplayedCardModels] = useState([]);
+  const [displayedCarModels, setDisplayedCarModels] = useState([]);
   const [vehicle, setVehicle] = useState({
     licensePlateNumber: "",
     manufacturer: null,
@@ -31,6 +31,9 @@ const ProfileNewVehicleScreen = ({ token }) => {
     manufactureYear: null,
   });
   const navigation = useNavigation();
+  const route = useRoute();
+  const car = route.params?.car;
+  const isEdit = !!car;
   useScreenArrowBack(navigation, PageNames.PROFILE_VEHICLE);
 
   useEffect(() => {
@@ -38,12 +41,29 @@ const ProfileNewVehicleScreen = ({ token }) => {
   }, []);
 
   useEffect(() => {
+    if (!carsData.carModels.length || !car) return;
+    const { licensePlateNumber, manufacturer, model, type, manufactureYear } =
+      car;
+
+    setVehicle({
+      licensePlateNumber,
+      manufacturer,
+      model,
+      type,
+      manufactureYear: manufactureYear.toString(),
+    });
+  }, [carsData.carModels]);
+
+  useEffect(() => {
     if (!vehicle.manufacturer) return;
     const carModelsToDisplay = carsData.carModels.filter(
       (model) => model.make === vehicle.manufacturer.toLowerCase()
     );
-    setDisplayedCardModels(carModelsToDisplay);
+
+    setDisplayedCarModels(carModelsToDisplay);
   }, [vehicle.manufacturer]);
+
+  console.log(vehicle);
 
   const fetchCars = async () => {
     try {
@@ -66,11 +86,11 @@ const ProfileNewVehicleScreen = ({ token }) => {
 
   const handleOnRegister = () => {
     if (hasObjectEmptyValues(vehicle)) {
-      showError(ErrorMessages.ALL_FIELDS_ARE_REQUIRED);
+      showInfoMessage(ErrorMessages.ALL_FIELDS_ARE_REQUIRED);
       return;
     }
     if (!isPlateNumberValid()) {
-      showError(ErrorMessages.PLATE_NUMBER_VALIDATION);
+      showInfoMessage(ErrorMessages.PLATE_NUMBER_VALIDATION);
       return;
     }
 
@@ -84,12 +104,12 @@ const ProfileNewVehicleScreen = ({ token }) => {
         headers: { Authorization: token },
       });
 
-      showMessage({
-        message: "Automobilis buvo sėkmingai užregistruotas",
-        type: "success",
+      showInfoMessage("Automobilis buvo sėkmingai užregistruotas", "success");
+      navigation.navigate(PageNames.PROFILE_VEHICLE, {
+        create: data.car,
+        update: null,
+        delete: null,
       });
-
-      navigation.navigate(PageNames.PROFILE_VEHICLE, { car: data.car });
     } catch (error) {
       printError(error);
     } finally {
@@ -97,10 +117,54 @@ const ProfileNewVehicleScreen = ({ token }) => {
     }
   };
 
-  const showError = (message) => {
+  const handleOnDelete = async () => {
+    setIsLoading(true);
+    try {
+      const id = route.params.car._id;
+      await axios.delete("/car", {
+        params: { id },
+        headers: { Authorization: token },
+      });
+
+      showInfoMessage("Automobilis buvo sėkmingai pašalintas", "success");
+      navigation.navigate(PageNames.PROFILE_VEHICLE, {
+        delete: id,
+        create: null,
+        update: null,
+      });
+    } catch (error) {
+      printError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  console.log(vehicle);
+  const handleOnUpdate = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.put("/car", vehicle, {
+        params: { id: route.params.car._id },
+        headers: { Authorization: token },
+      });
+
+      showInfoMessage("Automobilis buvo sėkmingai pašalintas", "success");
+      navigation.navigate(PageNames.PROFILE_VEHICLE, {
+        delete: null,
+        create: null,
+        update: data.car,
+      });
+    } catch (error) {
+      printError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const showInfoMessage = (message, type = "danger") => {
     showMessage({
       message,
-      type: "danger",
+      type,
     });
   };
 
@@ -115,7 +179,7 @@ const ProfileNewVehicleScreen = ({ token }) => {
       <View style={ProfileVehicleStyles.newVehicleForm}>
         <InputSearch
           placeholder={"Valstybinis nr. ABC 123"}
-          value={vehicle.plateNumber}
+          value={vehicle.licensePlateNumber}
           onChange={(licensePlateNumber) =>
             setVehicle((prevState) => ({ ...prevState, licensePlateNumber }))
           }
@@ -161,10 +225,19 @@ const ProfileNewVehicleScreen = ({ token }) => {
           }
         />
       </View>
+      {isEdit && (
+        <Button
+          text={"Pašalinti"}
+          styling={ProfileVehicleStyles.button}
+          onClick={handleOnDelete}
+          color={ButtonColor.WHITE}
+        />
+      )}
+
       <Button
-        text={"Registruoti"}
+        text={isEdit ? "Atnaujinti" : "Registruoti"}
         styling={ProfileVehicleStyles.button}
-        onClick={handleOnRegister}
+        onClick={isEdit ? handleOnUpdate : handleOnRegister}
       />
     </Container>
   );

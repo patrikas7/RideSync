@@ -99,6 +99,14 @@ const Profile = ({ navigation }) => {
           title: "Automobilio registracija",
         }}
       />
+      <Stack.Screen
+        name={PageNames.PROFILE_VEHICLE_EDIT}
+        children={() => <ProfileNewVehicleScreen token={token} />}
+        options={{
+          headerShadowVisible: false,
+          title: "Automobilio redagavimas",
+        }}
+      />
     </Stack.Navigator>
   );
 };

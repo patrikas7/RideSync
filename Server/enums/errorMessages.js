@@ -10,6 +10,7 @@ const ErrorMessages = {
   EXCEEDS_SEATS_COUNT: "Keleivių skaičius viršija galimų vietų skaičių",
   TRIP_BOOKING_DATE: "Kelionė jau įvyko, vieta negali būti rezervuojama",
   PASSENGER_NOT_FOUND: "Keleivis buvo nerastas",
+  CAR_NOT_FOUND: "Automobilis buvo nerastas",
 };
 
 export default ErrorMessages;

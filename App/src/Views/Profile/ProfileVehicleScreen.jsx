@@ -17,16 +17,39 @@ const ProfileVehicleScreen = ({ token, id }) => {
   const [cars, setCars] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
-  useScreenArrowBack(navigation, PageNames.PROFILE_OVERVIEW);
+  useScreenArrowBack(
+    navigation,
+    PageNames.PROFILE_OVERVIEW,
+    {},
+    "close-outline"
+  );
 
   useEffect(() => {
     fetchUserCars();
   }, []);
 
   useEffect(() => {
-    if (!route.params?.car) return;
-    setCars((prevState) => [...prevState, route.params?.car]);
-  }, [route.params?.car]);
+    if (!route.params?.create) return;
+    setCars((prevState) => [...prevState, route.params?.create]);
+  }, [route.params?.create]);
+
+  useEffect(() => {
+    if (!route.params?.delete) return;
+    const updatedCatsList = cars.filter(
+      (car) => car._id !== route.params.delete
+    );
+    setCars(updatedCatsList);
+  }, [route.params?.delete]);
+
+  useEffect(() => {
+    if (!route.params?.update) return;
+    const index = cars.findIndex((car) => car._id === route.params.update._id);
+    if (index !== -1) {
+      const updatedCatsList = [...cars];
+      updatedCatsList.splice(index, 1, route.params.update);
+      setCars(updatedCatsList);
+    }
+  }, [route.params?.update]);
 
   const fetchUserCars = async () => {
     try {
@@ -52,7 +75,9 @@ const ProfileVehicleScreen = ({ token, id }) => {
             icon={"car"}
             text={car.licensePlateNumber}
             secondaryText={`${car.manufacturer} ${car.model} ${car.type} ${car.manufactureYear} m.`}
-            onPress={() => console.log()}
+            onPress={() =>
+              navigation.navigate(PageNames.PROFILE_VEHICLE_EDIT, { car })
+            }
           />
         ))}
       </View>

@@ -18,7 +18,6 @@ const Dropdown = ({ placeholder, items, onValueChange, value }) => {
       }}
       onOpen={() => setIsOpen(true)}
       onClose={() => setIsOpen(false)}
-      on
     />
   );
 };
