@@ -25,6 +25,8 @@ TripRouter.route("/")
     controller.postTrip
   );
 
+TripRouter.route("/filter").get(authMiddleware, controller.filterTrips);
+
 TripRouter.route("/information")
   .get(authMiddleware, validateIdMiddleware, controller.getTripInformation)
   .delete(authMiddleware, validateIdMiddleware, controller.deleteTrip);

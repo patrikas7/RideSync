@@ -4,51 +4,21 @@ import Logging from "../library/Logging.js";
 import Trip from "../models/Trip.js";
 import BasicUser from "../models/BasicUser.js";
 import User from "../models/User.js";
-// import TripBookmark from "../models/TripBookmark.js";
+import {
+  AvailableSeatsSlots,
+  DepartureTimeSlots,
+  TripOptions,
+} from "../enums/enums.js";
+import TripBookmark from "../models/TripBookmark.js";
 
 // PAGINATIONS
 // Add rating calculation
 
 const getTrips = async (req, res) => {
-  const { destination, departure, date, personsCount } = req.query;
+  const query = buildSearchQuery(req);
 
   try {
-    const trips = await Trip.find({
-      $and: [
-        {
-          $or: [
-            {
-              "departure.city": departure,
-              "destination.city": destination,
-            },
-            {
-              "departure.city": departure,
-              "stops.city": { $in: [destination] },
-            },
-            {
-              "destination.city": destination,
-              "stops.city": { $in: [departure] },
-            },
-            {
-              stops: {
-                $elemMatch: { city: departure },
-                $elemMatch: { city: destination },
-              },
-            },
-            { personsCount: { $gt: 0 } },
-          ],
-        },
-        // { date: { $eq: date } },
-        { ...(personsCount ? { personsCount } : {}) },
-      ],
-    })
-      .select("departure.city destination.city date time personsCount price")
-      .populate("driver", "name profilePicture")
-      .lean();
-
-    trips.forEach(({ driver }) => {
-      driver = parseDriverProfilePicture(driver);
-    });
+    const trips = await findTrips(query);
 
     res.status(StatusCodes.OK).json({ trips });
   } catch (error) {
@@ -57,6 +27,41 @@ const getTrips = async (req, res) => {
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
+};
+
+const buildSearchQuery = (req) => {
+  const { destination, departure, date, personsCount } = req.query;
+  const query = {
+    $and: [
+      {
+        $or: [
+          {
+            "departure.city": departure,
+            "destination.city": destination,
+          },
+          {
+            "departure.city": departure,
+            "stops.city": { $in: [destination] },
+          },
+          {
+            "destination.city": destination,
+            "stops.city": { $in: [departure] },
+          },
+          {
+            stops: {
+              $elemMatch: { city: departure },
+              $elemMatch: { city: destination },
+            },
+          },
+          { personsCount: { $gt: 0 } },
+        ],
+      },
+      // { date: { $eq: date } },
+      { ...(personsCount ? { personsCount } : {}) },
+    ],
+  };
+
+  return query;
 };
 
 const getUserRatingAndReviewCount = async (userId) => {
@@ -220,55 +225,15 @@ const getRemainingTime = (dateStr, timeStr) => {
 };
 
 const filterTrips = async (req, res) => {
-  const {
-    destination,
-    departure,
-    date,
-    tripOption,
-    departureTime,
-    availableSeats,
-    onlyFreeTrips,
-    isAddToFavouritesSelcted,
-    priceRange,
-  } = req.query;
+  const { isAddToFavouritesSelcted } = req.query;
   const userId = req.userId;
-  const query = {};
-
-  if (destination) {
-    query.destination.city = destination;
-  }
-
-  if (departure) {
-    query.departure.city = departure;
-  }
-
-  if (date) {
-    query.date = date;
-  }
-
-  if (tripOption) {
-    query.tripOption = tripOption;
-  }
-
-  if (departureTime) {
-    query.departureTime = departureTime;
-  }
-
-  if (availableSeats) {
-    query.availableSeats = availableSeats;
-  }
-
-  if (onlyFreeTrips === "true") {
-    query.price = 0;
-  }
-
-  if (priceRange) {
-    const [minPrice, maxPrice] = priceRange.split("-");
-    query.price = { $gte: minPrice, $lte: maxPrice };
-  }
+  const query = buildFiltersQuery(req.query);
 
   try {
-    // if (isAddToFavouritesSelcted) await addTripToFavorites(req.query, userId);
+    if (isAddToFavouritesSelcted) await addTripToFavorites(req.query, userId);
+    const trips = await findTrips(query);
+
+    res.status(StatusCodes.OK).json({ trips });
   } catch (error) {
     Logging.error(error);
     res
@@ -277,20 +242,72 @@ const filterTrips = async (req, res) => {
   }
 };
 
-// const addTripToFavorites = async (query, userId) => {
-//   const tripBookmark = new TripBookmark({
-//     destination: query.destination,
-//     departure: query.departure,
-//     tripOption: query.tripOption,
-//     departureTime: query.departureTime,
-//     availableSeats: query.availableSeats,
-//     onlyFreeTrips: query.onlyFreeTrips,
-//     priceRange: query.priceRange,
-//     userId,
-//   });
+const buildFiltersQuery = (req) => {
+  const {
+    destination,
+    departure,
+    tripOption,
+    departureTime,
+    availableSeats,
+    onlyFreeTrips,
+    priceRange,
+  } = req;
+  const query = {};
 
-//   await tripBookmark.save();
-// };
+  query.destination.city = destination;
+  query.departure.city = departure;
+
+  if (tripOption !== TripOptions.ALL_TRIPS) {
+    query.stops =
+      tripOption === TripOptions.TRIP_WITHOUT_STOPS
+        ? { size: { $eq: 0 } }
+        : { size: { $gt: 0 } };
+  }
+
+  if (departureTime !== DepartureTimeSlots.ALL_TIMES) {
+    if (departureTime === DepartureTimeSlots.FIRST_QUATER)
+      query.time = { $gte: "00:00", $lt: "05:59" };
+    else if (departureTime === DepartureTimeSlots.SECOND_QUATER)
+      query.time = { $gte: "06:00", $lt: "11:59" };
+    else if (departureTime === DepartureTimeSlots.THIRD_QUATER)
+      query.time = { $gte: "12:00", $lt: "17:59" };
+    else query.time = { $gte: "18:00", $lt: "23:59" };
+  }
+
+  if (availableSeats !== AvailableSeatsSlots.DOES_NOT_MATTER) {
+    if (availableSeats === AvailableSeatsSlots.ONE)
+      query.personsCount = { $gte: 1 };
+    else if (availableSeats === AvailableSeatsSlots.TWO)
+      query.personsCount = { $gte: 2 };
+    else if (availableSeats === AvailableSeatsSlots.THREE)
+      query.personsCount = { $gte: 3 };
+    else query.personsCount = { $gte: 4 };
+  }
+
+  if (!onlyFreeTrips) {
+    const [minPrice, maxPrice] = priceRange.split("-");
+    query.price = { $gte: minPrice, $lte: maxPrice };
+  } else {
+    query.price = 0;
+  }
+
+  return query;
+};
+
+const addTripToFavorites = async (query, userId) => {
+  const tripBookmark = new TripBookmark({
+    destination: query.destination,
+    departure: query.departure,
+    tripOption: query.tripOption,
+    departureTime: query.departureTime,
+    availableSeats: query.availableSeats,
+    onlyFreeTrips: query.onlyFreeTrips,
+    priceRange: query.priceRange,
+    userId,
+  });
+
+  await tripBookmark.save();
+};
 
 const deleteTrip = async (req, res) => {
   const { id } = req.query;
@@ -387,6 +404,19 @@ const cancelBooking = async (req, res) => {
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
+};
+
+const findTrips = async (query) => {
+  const trips = await Trip.find(query)
+    .select("departure.city destination.city date time personsCount price")
+    .populate("driver", "name profilePicture")
+    .lean();
+
+  trips.forEach(({ driver }) => {
+    driver = parseDriverProfilePicture(driver);
+  });
+
+  return trips;
 };
 
 const findTripById = async (id, useLean) => {

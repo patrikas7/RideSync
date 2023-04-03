@@ -4,9 +4,7 @@ const BasicUserSchema = new Schema({
   departureSearchHistory: [{ type: String }],
   destinationSearchHistory: [{ type: String }],
   tripsSearchHistory: [{ departure: String, destination: String }],
-  tripBookmarks: [
-    { departure: String, destination: String, personCount: Number },
-  ],
+  tripBookmarks: [{ type: Schema.Types.ObjectId, ref: "TripBookmark" }],
   cars: [
     {
       type: mongoose.Schema.Types.ObjectId,

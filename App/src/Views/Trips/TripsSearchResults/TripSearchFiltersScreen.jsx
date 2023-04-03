@@ -30,6 +30,8 @@ const TripSearchFiltersScreen = ({ navigation }) => {
   });
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
 
+  const filter = async () => {};
+
   const renderSliderSlot = (item, index, activeSlot, setActiveSlot) => (
     <TouchableHighlight
       style={[
