@@ -1,5 +1,7 @@
 export const hasObjectEmptyValues = (obj) => Object.values(obj).some((x) => !x);
 
+export const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
+
 export const getErrorState = (fields, errorMessage) => {
   let errors = {};
   Object.keys(fields).forEach((key) => {

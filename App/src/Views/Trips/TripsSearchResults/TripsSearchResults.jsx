@@ -22,6 +22,7 @@ import { printError } from "../../../Utils/utils";
 const TripsSearchResults = ({ mainRoute }) => {
   const [activeSearchType, setActiveSearchType] = useState(0);
   const [panelVisible, setPanelVisible] = useState(false);
+  const [filters, setFilteres] = useState({});
   const ref = useRef(null);
   const [hasTripSubscriptionBeenMade, setHasTripSubscriptionBeenMade] =
     useState(false);
@@ -36,23 +37,32 @@ const TripsSearchResults = ({ mainRoute }) => {
     navigation,
     icons: ["funnel-outline", "filter"],
     shouldRender: true,
+    dependency: filters,
     onPress: () =>
       navigation.navigate(PageNames.TRIP_SEARCH_FILTERS, {
         departure,
         destination,
         token,
+        filters,
       }),
   });
 
-  useFocusEffect(
-    useCallback(() => {
-      fetchTrips();
-    }, [])
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     fetchTrips();
+  //   }, [])
+  // );
+
+  useEffect(() => {
+    fetchTrips();
+  }, []);
 
   useEffect(() => {
     if (!route.params?.query) return;
-    filterTrips();
+    const query = route.params.query;
+
+    setFilteres(query);
+    filterTrips(query);
   }, [route.params?.query]);
 
   const fetchTrips = async () => {
@@ -77,12 +87,12 @@ const TripsSearchResults = ({ mainRoute }) => {
     }
   };
 
-  const filterTrips = async () => {
+  const filterTrips = async (query) => {
     setIsLoading(true);
     try {
       const { data } = await axios.get("/trips/filter", {
         params: {
-          ...route.params?.query,
+          ...query,
           destination: destination?.city,
           departure: departure?.city,
           date,

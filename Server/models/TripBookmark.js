@@ -12,7 +12,7 @@ const TripBookmarkSchema = new Schema({
   tripOption: { type: String, default: TripOptions.ALL_TRIPS },
   departureTime: { type: String, default: DepartureTimeSlots.ALL_TIMES },
   availableSeats: {
-    type: Number,
+    type: String,
     default: AvailableSeatsSlots.DOES_NOT_MATTER,
   },
   onlyFreeTrips: { type: Boolean, default: false },
@@ -24,9 +24,7 @@ const TripBookmarkSchema = new Schema({
   },
 });
 
-const TripBookmark = mongoose.model("TripBookmark", TripBookmarkSchema);
-
-TripBookmarkSchema.pre("save", async (next) => {
+TripBookmarkSchema.pre("save", async function (next) {
   try {
     const user = await BasicUser.findById(this.userId);
     user.tripBookmarks.push(this._id);
@@ -36,5 +34,7 @@ TripBookmarkSchema.pre("save", async (next) => {
     next(err);
   }
 });
+
+const TripBookmark = mongoose.model("TripBookmark", TripBookmarkSchema);
 
 export default TripBookmark;

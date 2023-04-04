@@ -18,22 +18,41 @@ import Colors from "../../../Constants/colors";
 import RadioButtons from "../../../Components/RadioButtons/RadioButtons";
 import HorizontalSlider from "../../../Components/HorizontalSlider/HorizontalSlider";
 import Checkbox from "expo-checkbox";
+import { isObjectEmpty } from "../../../Utils/utils";
+import useScreenIconRight from "../../../hooks/useScreenIconRight";
 
-const TripSearchFiltersScreen = ({ navigation }) => {
-  const [state, setState] = useState({
-    tripOption: TripOptionsValues.ALL_TRIPS,
-    departureTime: DepartureTimeSlots[0].key,
-    availableSeats: AvailableSeatsSlots[0].key,
-    onlyFreeTrips: false,
-    isAddToFavouritesSelcted: false,
-    priceRange: [5, 50],
-  });
+const initialState = {
+  tripOption: TripOptionsValues.ALL_TRIPS,
+  departureTime: DepartureTimeSlots[0].key,
+  availableSeats: AvailableSeatsSlots[0].key,
+  onlyFreeTrips: false,
+  isAddToFavouritesSelcted: false,
+  priceRange: [5, 50],
+};
+
+const TripSearchFiltersScreen = ({ navigation, route }) => {
+  const { filters } = route.params;
+  const [state, setState] = useState(
+    isObjectEmpty(filters) ? initialState : filters
+  );
+
   useScreenArrowBack(
     navigation,
     PageNames.TRIP_SEARCH_RESULTS,
     {},
     "close-outline"
   );
+
+  const handleOnResetPress = () => {
+    setState(initialState);
+  };
+
+  useScreenIconRight({
+    navigation,
+    icons: ["refresh-outline"],
+    shouldRender: true,
+    onPress: handleOnResetPress,
+  });
 
   const renderSliderSlot = (item, index, activeSlot, setActiveSlot) => (
     <TouchableHighlight

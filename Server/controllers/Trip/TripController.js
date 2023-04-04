@@ -174,8 +174,8 @@ const filterTrips = async (req, res) => {
   const query = buildFiltersQuery(req.query);
 
   try {
-    // if (isAddToFavouritesSelcted) await addTripToFavorites(req.query, userId);
-    Logging.info(query);
+    if (isAddToFavouritesSelcted === "true")
+      await addTripToFavorites(req.query, userId);
     const trips = await findTrips(query);
 
     res.status(StatusCodes.OK).json({ trips });

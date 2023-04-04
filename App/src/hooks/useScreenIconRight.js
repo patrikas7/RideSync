@@ -9,6 +9,7 @@ const useScreenIconRight = ({
   icons,
   onPress,
   shouldRender,
+  dependency,
   color = Colors.GREY_700,
 }) => {
   useEffect(() => {
@@ -33,7 +34,7 @@ const useScreenIconRight = ({
         </View>
       ),
     });
-  }, [shouldRender]);
+  }, [shouldRender, dependency]);
 };
 
 const styles = StyleSheet.create({
