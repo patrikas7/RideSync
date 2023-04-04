@@ -5,11 +5,10 @@ import { StyleSheet } from "react-native";
 import Colors from "../Constants/colors";
 import PageNames from "../Constants/pageNames";
 import Sizes from "../Constants/sizes";
-import BookmarksScreen from "../Views/Bookmarks/BookmarksScreen";
 import SearchScreen from "../Views/Search/SearchScreen";
-import FutureTrips from "../Views/Trips/FutureTrips/FutureTrips";
 import Publish from "./Publish";
 import MyRides from "./MyRides";
+import Bookmarks from "./Bookmarks";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -57,8 +56,8 @@ const Tabs = ({ route, navigation }) => {
         }}
       />
       <Tab.Screen
-        name={PageNames.SAVED_RIDES}
-        children={BookmarksScreen}
+        name={PageNames.BOOKMARKS}
+        component={Bookmarks}
         options={{
           tabBarLabel: "Išsaugoti",
           tabBarIcon: ({ color }) => (

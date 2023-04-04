@@ -3,6 +3,7 @@ import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import bcrypt from "bcryptjs";
+import BasicUser from "../models/BasicUser.js";
 
 const checkUserByEmail = async (req, res) => {
   const { email } = req.query;
@@ -150,6 +151,21 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const getUserBookmarks = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const user = await BasicUser.findById(userId);
+
+    res.status(StatusCodes.OK).json({ bookmars: user.tripBookmarks });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
@@ -158,4 +174,5 @@ export default {
   changePassword,
   uploadPicture,
   deleteUser,
+  getUserBookmarks,
 };

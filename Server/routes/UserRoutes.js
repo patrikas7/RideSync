@@ -18,6 +18,7 @@ UserRouter.route("/")
   .delete(authMiddleware, controller.deleteUser);
 
 UserRouter.route("/checkByEmail").get(controller.checkUserByEmail);
+
 UserRouter.route("/car").get(
   authMiddleware,
   validateIdMiddleware,
@@ -34,5 +35,7 @@ UserRouter.route("/profilePicture").post(
   authMiddleware,
   controller.uploadPicture
 );
+
+UserRouter.route("/bookmars").get(authMiddleware, controller.getUserBookmarks);
 
 export default UserRouter;
