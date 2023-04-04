@@ -31,6 +31,15 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     alignSelf: "center",
   },
+  informationContainer: {
+    flex: 1,
+  },
+  button: {
+    marginBottom: 32,
+  },
+  bookmarkDetail: {
+    paddingTop: 8,
+  },
 });
 
 export default styles;

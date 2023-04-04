@@ -10,13 +10,13 @@ import styles from "./BookmarkStyles";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
-const BookmarkCard = ({ item, index }) => {
+const BookmarkCard = ({ item, index, onPress }) => {
   return (
     <TouchableHighlight
       style={[styles.bookmarkCard, index && styles.bookmarkCardNotFirst]}
       underlayColor={Colors.HIGHLIGHT_UNDERLAY}
       activeOpacity={0.8}
-      onPress={() => console.log("")}
+      onPress={onPress}
     >
       <View>
         <Text

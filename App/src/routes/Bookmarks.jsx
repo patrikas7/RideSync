@@ -22,7 +22,7 @@ const Bookmarks = () => {
         name={PageNames.BOOKMARK_INFORMATION}
         children={() => <BookmarkInformationScreen token={token} />}
         options={{
-          title: "Paieškos informacija",
+          title: "Išsaugotas maršrutas",
           headerShadowVisible: false,
         }}
       />

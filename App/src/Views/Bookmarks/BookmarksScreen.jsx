@@ -39,7 +39,17 @@ const BookmarksScreen = ({ token }) => {
       <FlatList
         data={bookmarks}
         keyExtractor={(item) => item._id}
-        renderItem={BookmarkCard}
+        renderItem={({ item, index }) => (
+          <BookmarkCard
+            item={item}
+            index={index}
+            onPress={() =>
+              navigation.navigate(PageNames.BOOKMARK_INFORMATION, {
+                bookmark: item,
+              })
+            }
+          />
+        )}
         style={{ marginTop: 24 }}
       />
     ) : (
