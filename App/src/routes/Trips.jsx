@@ -42,6 +42,7 @@ const Trips = ({ route, navigation }) => {
         options={{
           title: "Paieškos filtrai",
           headerShadowVisible: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
       />
       <Stack.Screen

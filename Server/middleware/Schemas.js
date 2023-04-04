@@ -127,13 +127,14 @@ const Schemas = {
         .required(),
       onlyFreeTrips: Joi.boolean().required(),
       isAddToFavouritesSelcted: Joi.boolean().required(),
-      priceRangeRange: Joi.array()
+      priceRange: Joi.array()
         .ordered(
           Joi.number().integer().min(0).max(100),
           Joi.number().integer().min(0).max(100)
         )
         .length(2)
         .required(),
+      date: Joi.string().required(),
     }),
   },
   tripSubscription: {

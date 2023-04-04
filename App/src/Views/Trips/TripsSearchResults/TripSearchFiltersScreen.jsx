@@ -28,9 +28,12 @@ const TripSearchFiltersScreen = ({ navigation }) => {
     isAddToFavouritesSelcted: false,
     priceRange: [5, 50],
   });
-  useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
-
-  const filter = async () => {};
+  useScreenArrowBack(
+    navigation,
+    PageNames.TRIP_SEARCH_RESULTS,
+    {},
+    "close-outline"
+  );
 
   const renderSliderSlot = (item, index, activeSlot, setActiveSlot) => (
     <TouchableHighlight
@@ -52,6 +55,10 @@ const TripSearchFiltersScreen = ({ navigation }) => {
       </Text>
     </TouchableHighlight>
   );
+
+  const handleOnSave = () => {
+    navigation.navigate(PageNames.TRIP_SEARCH_RESULTS, { query: state });
+  };
 
   return (
     <Container>
@@ -170,7 +177,11 @@ const TripSearchFiltersScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <Button text={"Išsaugoti"} styling={TripFiltersStyles.button} />
+      <Button
+        text={"Išsaugoti"}
+        styling={TripFiltersStyles.button}
+        onClick={handleOnSave}
+      />
     </Container>
   );
 };

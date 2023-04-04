@@ -1,5 +1,5 @@
 import express from "express";
-import controller from "../controllers/TripController.js";
+import controller from "../controllers/Trip/TripController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import Schemas from "../middleware/Schemas.js";
 import {
@@ -25,7 +25,11 @@ TripRouter.route("/")
     controller.postTrip
   );
 
-TripRouter.route("/filter").get(authMiddleware, controller.filterTrips);
+TripRouter.route("/filter").get(
+  authMiddleware,
+  ValidateQuerySchema(Schemas.trip.filter),
+  controller.filterTrips
+);
 
 TripRouter.route("/information")
   .get(authMiddleware, validateIdMiddleware, controller.getTripInformation)

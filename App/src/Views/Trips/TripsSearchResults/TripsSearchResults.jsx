@@ -1,7 +1,11 @@
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { Text, View } from "react-native";
 import axios from "axios";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { showMessage } from "react-native-flash-message";
 import Spinner from "react-native-loading-spinner-overlay";
 import ButtonsSwitch from "../../../Components/ButtonsSwitch/ButtonsSwitch";
@@ -13,6 +17,7 @@ import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 import useScreenIconRight from "../../../hooks/useScreenIconRight";
 import SlidingUpPanel from "rn-sliding-up-panel";
+import { printError } from "../../../Utils/utils";
 
 const TripsSearchResults = ({ mainRoute }) => {
   const [activeSearchType, setActiveSearchType] = useState(0);
@@ -23,6 +28,7 @@ const TripsSearchResults = ({ mainRoute }) => {
   const { destination, departure, date, personsCount, token, id } =
     mainRoute.params;
   const navigation = useNavigation();
+  const route = useRoute();
   const [tripsList, setTripsList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   useScreenArrowBack(navigation, PageNames.SEARCH);
@@ -44,7 +50,14 @@ const TripsSearchResults = ({ mainRoute }) => {
     }, [])
   );
 
+  useEffect(() => {
+    if (!route.params?.query) return;
+    filterTrips();
+  }, [route.params?.query]);
+
   const fetchTrips = async () => {
+    if (route.params?.query) return;
+
     try {
       const { data } = await axios.get("/trips", {
         params: {
@@ -58,7 +71,28 @@ const TripsSearchResults = ({ mainRoute }) => {
 
       setTripsList(data?.trips);
     } catch (error) {
-      console.log(error);
+      printError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const filterTrips = async () => {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get("/trips/filter", {
+        params: {
+          ...route.params?.query,
+          destination: destination?.city,
+          departure: departure?.city,
+          date,
+        },
+        headers: { Authorization: token },
+      });
+
+      setTripsList(data.trips);
+    } catch (error) {
+      printError(error);
     } finally {
       setIsLoading(false);
     }

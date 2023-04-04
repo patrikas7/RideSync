@@ -1,15 +1,17 @@
-import ErrorMessages from "../enums/errorMessages.js";
-import StatusCodes from "../enums/statusCodes.js";
-import Logging from "../library/Logging.js";
-import Trip from "../models/Trip.js";
-import BasicUser from "../models/BasicUser.js";
-import User from "../models/User.js";
+import ErrorMessages from "../../enums/errorMessages.js";
+import StatusCodes from "../../enums/statusCodes.js";
+import Logging from "../../library/Logging.js";
+import Trip from "../../models/Trip.js";
+import BasicUser from "../../models/BasicUser.js";
+import User from "../../models/User.js";
+import TripBookmark from "../../models/TripBookmark.js";
 import {
-  AvailableSeatsSlots,
-  DepartureTimeSlots,
-  TripOptions,
-} from "../enums/enums.js";
-import TripBookmark from "../models/TripBookmark.js";
+  buildSearchQuery,
+  getTripsWithUserType,
+  buildFiltersQuery,
+  parseDriverProfilePicture,
+  parsePassengersProfilePictures,
+} from "./TripControllerUtils.js";
 
 // PAGINATIONS
 // Add rating calculation
@@ -27,41 +29,6 @@ const getTrips = async (req, res) => {
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
-};
-
-const buildSearchQuery = (req) => {
-  const { destination, departure, date, personsCount } = req.query;
-  const query = {
-    $and: [
-      {
-        $or: [
-          {
-            "departure.city": departure,
-            "destination.city": destination,
-          },
-          {
-            "departure.city": departure,
-            "stops.city": { $in: [destination] },
-          },
-          {
-            "destination.city": destination,
-            "stops.city": { $in: [departure] },
-          },
-          {
-            stops: {
-              $elemMatch: { city: departure },
-              $elemMatch: { city: destination },
-            },
-          },
-          { personsCount: { $gt: 0 } },
-        ],
-      },
-      // { date: { $eq: date } },
-      { ...(personsCount ? { personsCount } : {}) },
-    ],
-  };
-
-  return query;
 };
 
 const getUserRatingAndReviewCount = async (userId) => {
@@ -201,36 +168,14 @@ const getUsersFutureTrips = async (req, res) => {
   }
 };
 
-const getTripsWithUserType = (id, trips) =>
-  trips.map((trip) => {
-    const isUserDriver = trip.driver._id.toString() === id;
-    const timeLeftUntilTrip = getRemainingTime();
-    return {
-      ...trip.toObject(),
-      isUserDriver,
-      timeLeftUntilTrip,
-    };
-  });
-
-const getRemainingTime = (dateStr, timeStr) => {
-  const inputDate = new Date(`${dateStr}T${timeStr}:00`);
-  const now = new Date();
-  const timeDiff = (inputDate.getTime() - now.getTime()) / (1000 * 60);
-  if (timeDiff < 120 && timeDiff > 0) {
-    const hours = Math.floor(timeDiff / 60);
-    const minutes = Math.floor(timeDiff % 60);
-    return { hours, minutes };
-  }
-  return null;
-};
-
 const filterTrips = async (req, res) => {
   const { isAddToFavouritesSelcted } = req.query;
   const userId = req.userId;
   const query = buildFiltersQuery(req.query);
 
   try {
-    if (isAddToFavouritesSelcted) await addTripToFavorites(req.query, userId);
+    // if (isAddToFavouritesSelcted) await addTripToFavorites(req.query, userId);
+    Logging.info(query);
     const trips = await findTrips(query);
 
     res.status(StatusCodes.OK).json({ trips });
@@ -240,58 +185,6 @@ const filterTrips = async (req, res) => {
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
-};
-
-const buildFiltersQuery = (req) => {
-  const {
-    destination,
-    departure,
-    tripOption,
-    departureTime,
-    availableSeats,
-    onlyFreeTrips,
-    priceRange,
-  } = req;
-  const query = {};
-
-  query.destination.city = destination;
-  query.departure.city = departure;
-
-  if (tripOption !== TripOptions.ALL_TRIPS) {
-    query.stops =
-      tripOption === TripOptions.TRIP_WITHOUT_STOPS
-        ? { size: { $eq: 0 } }
-        : { size: { $gt: 0 } };
-  }
-
-  if (departureTime !== DepartureTimeSlots.ALL_TIMES) {
-    if (departureTime === DepartureTimeSlots.FIRST_QUATER)
-      query.time = { $gte: "00:00", $lt: "05:59" };
-    else if (departureTime === DepartureTimeSlots.SECOND_QUATER)
-      query.time = { $gte: "06:00", $lt: "11:59" };
-    else if (departureTime === DepartureTimeSlots.THIRD_QUATER)
-      query.time = { $gte: "12:00", $lt: "17:59" };
-    else query.time = { $gte: "18:00", $lt: "23:59" };
-  }
-
-  if (availableSeats !== AvailableSeatsSlots.DOES_NOT_MATTER) {
-    if (availableSeats === AvailableSeatsSlots.ONE)
-      query.personsCount = { $gte: 1 };
-    else if (availableSeats === AvailableSeatsSlots.TWO)
-      query.personsCount = { $gte: 2 };
-    else if (availableSeats === AvailableSeatsSlots.THREE)
-      query.personsCount = { $gte: 3 };
-    else query.personsCount = { $gte: 4 };
-  }
-
-  if (!onlyFreeTrips) {
-    const [minPrice, maxPrice] = priceRange.split("-");
-    query.price = { $gte: minPrice, $lte: maxPrice };
-  } else {
-    query.price = 0;
-  }
-
-  return query;
 };
 
 const addTripToFavorites = async (query, userId) => {
@@ -447,24 +340,6 @@ const removeTripFromUsersTripHistory = async (userId, tripId) => {
   const user = await User.findById(userId);
   user.trips = user.trips.filter((id) => id !== tripId);
   await user.save();
-};
-
-const parseDriverProfilePicture = (driver) => {
-  if (driver.profilePicture?.buffer)
-    driver.profilePicture.buffer =
-      driver.profilePicture.buffer.toString("base64");
-
-  return driver;
-};
-
-const parsePassengersProfilePictures = (passengers) => {
-  passengers?.forEach((passenger) => {
-    if (passenger.profilePicture?.buffer)
-      passenger.profilePicture.buffer =
-        passenger.profilePicture.buffer.toString("base64");
-  });
-
-  return passengers;
 };
 
 export default {
