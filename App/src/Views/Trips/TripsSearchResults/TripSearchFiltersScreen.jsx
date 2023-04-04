@@ -3,8 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { View, TouchableHighlight, Text } from "react-native";
 import { TripFiltersStyles } from "./TripsSearchResultsStyle";
 import {
-  TripOptionsValues,
-  TripOptionsLabels,
+  TripOptions,
   DepartureTimeSlots,
   AvailableSeatsSlots,
 } from "./TripSearchFiltersConstants";
@@ -22,7 +21,7 @@ import { isObjectEmpty } from "../../../Utils/utils";
 import useScreenIconRight from "../../../hooks/useScreenIconRight";
 
 const initialState = {
-  tripOption: TripOptionsValues.ALL_TRIPS,
+  tripOption: Object.keys(TripOptions)[2],
   departureTime: DepartureTimeSlots[0].key,
   availableSeats: AvailableSeatsSlots[0].key,
   onlyFreeTrips: false,
@@ -85,8 +84,8 @@ const TripSearchFiltersScreen = ({ navigation, route }) => {
         <View style={TripFiltersStyles.filtersSection}>
           <Text style={TripFiltersStyles.headline}>Sustojimai</Text>
           <RadioButtons
-            labels={TripOptionsLabels}
-            values={Object.values(TripOptionsValues)}
+            labels={Object.values(TripOptions)}
+            values={Object.keys(TripOptions)}
             selected={state.tripOption}
             onSelect={(tripOption) =>
               setState((prevState) => ({ ...prevState, tripOption }))

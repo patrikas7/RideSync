@@ -155,9 +155,9 @@ const getUserBookmarks = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const user = await BasicUser.findById(userId);
+    const user = await BasicUser.findById(userId).populate("tripBookmarks");
 
-    res.status(StatusCodes.OK).json({ bookmars: user.tripBookmarks });
+    res.status(StatusCodes.OK).json({ bookmarks: user.tripBookmarks });
   } catch (error) {
     Logging.error(error);
     return res
