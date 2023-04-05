@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import { View, Alert } from "react-native";
-import { TripOptions } from "../Trips/TripsSearchResults/TripSearchFiltersConstants";
+import { TripOptions } from "../../Components/Filters/FiltersConstants";
 import {
   getTimeFrameText,
   getSeatsCountText,
@@ -27,7 +27,7 @@ const BookmarkInformationScreen = ({ token }) => {
 
   useScreenArrowBack(navigation, PageNames.BOOKMARKS_LIST);
   const handleOnIconRightPress = (index) =>
-    index === 0 ? handleOnDelete() : {};
+    index === 0 ? handleOnDelete() : handleOnEdit();
 
   useScreenIconRight({
     navigation,
@@ -74,7 +74,9 @@ const BookmarkInformationScreen = ({ token }) => {
     setIsLoading(false);
   };
 
-  const handleOnEdit = () => {};
+  const handleOnEdit = () => {
+    navigation.navigate(PageNames.BOOKMARK_EDIT, { bookmark });
+  };
 
   return (
     <Container>

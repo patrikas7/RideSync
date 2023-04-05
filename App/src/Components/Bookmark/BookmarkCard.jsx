@@ -1,6 +1,6 @@
 import { View, TouchableHighlight, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { TripOptions } from "../../Views/Trips/TripsSearchResults/TripSearchFiltersConstants";
+import { TripOptions } from "../Filters/FiltersConstants";
 import {
   getTimeFrameText,
   getSeatsCountText,

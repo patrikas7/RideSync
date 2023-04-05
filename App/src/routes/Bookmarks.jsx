@@ -3,6 +3,7 @@ import PageNames from "../Constants/pageNames";
 import BookmarkInformationScreen from "../Views/Bookmarks/BookmarkInformationScreen";
 import BookmarksScreen from "../Views/Bookmarks/BookmarksScreen";
 import useUserData from "../hooks/useUserData";
+import BookmarkEditScreen from "../Views/Bookmarks/BookmarkEditScreen";
 
 const Bookmarks = () => {
   const Stack = createStackNavigator();
@@ -23,6 +24,15 @@ const Bookmarks = () => {
         children={() => <BookmarkInformationScreen token={token} />}
         options={{
           title: "Išsaugotas maršrutas",
+          headerShadowVisible: false,
+        }}
+      />
+
+      <Stack.Screen
+        name={PageNames.BOOKMARK_EDIT}
+        children={() => <BookmarkEditScreen token={token} />}
+        options={{
+          title: "Maršruto redagavimas",
           headerShadowVisible: false,
         }}
       />

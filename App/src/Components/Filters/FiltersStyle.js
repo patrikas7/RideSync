@@ -1,8 +1,11 @@
 import { StyleSheet } from "react-native";
-import Colors from "../../../Constants/colors";
-import Sizes from "../../../Constants/sizes";
+import Sizes from "../../Constants/sizes";
+import Colors from "../../Constants/colors";
 
-export const TripFiltersStyles = StyleSheet.create({
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   filtersWrapper: {
     flex: 1,
   },
@@ -67,3 +70,5 @@ export const TripFiltersStyles = StyleSheet.create({
     marginTop: 32,
   },
 });
+
+export default styles;

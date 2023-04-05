@@ -2,8 +2,7 @@ import {
   DepartureTimeSlots,
   DepartureTimeSlotsKeys,
   AvailableSeatsSlotsKeys,
-  AvailableSeatsSlots,
-} from "../../Views/Trips/TripsSearchResults/TripSearchFiltersConstants";
+} from "../Filters/FiltersConstants";
 
 export const getTimeFrameText = (departureTime) => {
   const matchingSlot = DepartureTimeSlots.find(

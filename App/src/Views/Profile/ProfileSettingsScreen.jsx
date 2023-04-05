@@ -34,7 +34,7 @@ const ProfileSettingsScreen = ({ mainNavigation, token }) => {
   };
 
   const onDeleteAccountPress = () => {
-    Alert.alert("Ar esate tikri?", "Ar tikrai norite ištrinti paskyrą", [
+    Alert.alert("Paskyros trinimas", "Ar tikrai norite ištrinti paskyrą?", [
       {
         text: "Ne",
       },
