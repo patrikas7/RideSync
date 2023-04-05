@@ -1,11 +1,7 @@
-import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Text, View } from "react-native";
 import axios from "axios";
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { showMessage } from "react-native-flash-message";
 import Spinner from "react-native-loading-spinner-overlay";
 import ButtonsSwitch from "../../../Components/ButtonsSwitch/ButtonsSwitch";
@@ -46,12 +42,6 @@ const TripsSearchResults = ({ mainRoute }) => {
         filters,
       }),
   });
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     fetchTrips();
-  //   }, [])
-  // );
 
   useEffect(() => {
     fetchTrips();

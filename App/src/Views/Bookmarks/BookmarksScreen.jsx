@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { FlatList } from "react-native";
@@ -13,16 +13,15 @@ const BookmarksScreen = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [bookmarks, setBookmarks] = useState([]);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (!token) return;
-
-    fetchBookmarks();
-  }, [token]);
+    if (isFocused && token) fetchBookmarks();
+  }, [isFocused, token]);
 
   const fetchBookmarks = async () => {
     try {
-      const { data } = await axios.get("/user/bookmars", {
+      const { data } = await axios.get("/bookmarks/user", {
         headers: { Authorization: token },
       });
 

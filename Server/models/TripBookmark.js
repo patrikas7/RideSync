@@ -29,9 +29,22 @@ TripBookmarkSchema.pre("save", async function (next) {
     const user = await BasicUser.findById(this.userId);
     user.tripBookmarks.push(this._id);
     await user.save();
+
     next();
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
+  }
+});
+
+TripBookmarkSchema.pre("delete", async function (next) {
+  try {
+    const user = await BasicUser.findById(this.userId);
+    user.tripBookmarks.pull(this._id);
+    await user.save();
+
+    next();
+  } catch (error) {
+    next(error);
   }
 });
 

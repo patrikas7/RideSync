@@ -36,6 +36,4 @@ UserRouter.route("/profilePicture").post(
   controller.uploadPicture
 );
 
-UserRouter.route("/bookmars").get(authMiddleware, controller.getUserBookmarks);
-
 export default UserRouter;

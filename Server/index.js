@@ -9,6 +9,7 @@ import TripRouter from "./routes/TripRoutes.js";
 import TripSubscriptionRouter from "./routes/TripSubscriptionRoutes.js";
 import CarServiceRouter from "./routes/CarServiceRoutes.js";
 import CarRouter from "./routes/CarRoutes.js";
+import TripBookmarkRouter from "./routes/TripBookmarkRoutes.js";
 import mongoose from "mongoose";
 
 const app = express();
@@ -75,4 +76,5 @@ const startServer = () => {
   app.use("/tripSubscriptions", TripSubscriptionRouter);
   app.use("/cars", CarServiceRouter);
   app.use("/car", CarRouter);
+  app.use("/bookmarks", TripBookmarkRouter);
 };
