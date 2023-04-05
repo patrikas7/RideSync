@@ -19,6 +19,39 @@ const getUserBookmarks = async (req, res) => {
   }
 };
 
+const updateBookmark = async (req, res) => {
+  try {
+    const { id } = req.query;
+    const bookmark = req.body;
+
+    const updatedBookmark = await TripBookmark.findByIdAndUpdate(
+      { _id: id },
+      {
+        departure: bookmark.departure,
+        destination: bookmark.destination,
+        tripOption: bookmark.tripOption,
+        departureTime: bookmark.departureTime,
+        availableSeats: bookmark.availableSeats,
+        onlyFreeTrips: bookmark.onlyFreeTrips,
+        priceRange: bookmark.priceRange,
+      },
+      { new: true }
+    );
+
+    if (!updatedBookmark)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send(ErrorMessages.TRIP_BOOKMARK_NOT_FOUND);
+
+    res.status(StatusCodes.OK).json({ tripBookmark: updatedBookmark });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 const deleteBookmark = async (req, res) => {
   const { id } = req.query;
 
@@ -33,4 +66,4 @@ const deleteBookmark = async (req, res) => {
   }
 };
 
-export default { deleteBookmark, getUserBookmarks };
+export default { deleteBookmark, getUserBookmarks, updateBookmark };

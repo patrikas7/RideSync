@@ -1,9 +1,13 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
 import BookmarkInformationScreen from "../Views/Bookmarks/BookmarkInformationScreen";
 import BookmarksScreen from "../Views/Bookmarks/BookmarksScreen";
 import useUserData from "../hooks/useUserData";
 import BookmarkEditScreen from "../Views/Bookmarks/BookmarkEditScreen";
+import CitySearchScreen from "../Views/Search/CitySearchScreen";
 
 const Bookmarks = () => {
   const Stack = createStackNavigator();
@@ -34,6 +38,15 @@ const Bookmarks = () => {
         options={{
           title: "Maršruto redagavimas",
           headerShadowVisible: false,
+        }}
+      />
+
+      <Stack.Screen
+        name={PageNames.CITY_SEARCH}
+        component={CitySearchScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
       />
     </Stack.Navigator>

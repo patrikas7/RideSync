@@ -21,6 +21,44 @@ const citySchema = Joi.object().keys({
   longitude: Joi.number().required(),
 });
 
+const bookmarkSchema = {
+  departure: Joi.string().required(),
+  destination: Joi.string().required(),
+  tripOption: Joi.string()
+    .valid(
+      TripOptions.TRIP_WITH_STOPS,
+      TripOptions.TRIP_WITHOUT_STOPS,
+      TripOptions.ALL_TRIPS
+    )
+    .required(),
+  departureTime: Joi.string()
+    .valid(
+      DepartureTimeSlots.ALL_TIMES,
+      DepartureTimeSlots.FIRST_QUATER,
+      DepartureTimeSlots.SECOND_QUATER,
+      DepartureTimeSlots.THIRD_QUATER,
+      DepartureTimeSlots.FOURTH_QUATER
+    )
+    .required(),
+  availableSeats: Joi.string()
+    .valid(
+      AvailableSeatsSlots.DOES_NOT_MATTER,
+      AvailableSeatsSlots.ONE,
+      AvailableSeatsSlots.TWO,
+      AvailableSeatsSlots.THREE,
+      AvailableSeatsSlots.FOUR
+    )
+    .required(),
+  onlyFreeTrips: Joi.boolean().required(),
+  priceRange: Joi.array()
+    .ordered(
+      Joi.number().integer().min(0).max(100),
+      Joi.number().integer().min(0).max(100)
+    )
+    .length(2)
+    .required(),
+};
+
 // Add password criteroa
 const Schemas = {
   basicUser: {
@@ -74,6 +112,7 @@ const Schemas = {
       departure: Joi.string().required(),
       destination: Joi.string().required(),
     }),
+    update: Joi.object(bookmarkSchema),
   },
   trip: {
     get: Joi.object({
@@ -98,43 +137,9 @@ const Schemas = {
       returnTime: Joi.string(),
     }),
     filter: Joi.object({
-      departure: Joi.string().required(),
-      destination: Joi.string().required(),
-      tripOption: Joi.string()
-        .valid(
-          TripOptions.TRIP_WITH_STOPS,
-          TripOptions.TRIP_WITHOUT_STOPS,
-          TripOptions.ALL_TRIPS
-        )
-        .required(),
-      departureTime: Joi.string()
-        .valid(
-          DepartureTimeSlots.ALL_TIMES,
-          DepartureTimeSlots.FIRST_QUATER,
-          DepartureTimeSlots.SECOND_QUATER,
-          DepartureTimeSlots.THIRD_QUATER,
-          DepartureTimeSlots.FOURTH_QUATER
-        )
-        .required(),
-      availableSeats: Joi.string()
-        .valid(
-          AvailableSeatsSlots.DOES_NOT_MATTER,
-          AvailableSeatsSlots.ONE,
-          AvailableSeatsSlots.TWO,
-          AvailableSeatsSlots.THREE,
-          AvailableSeatsSlots.FOUR
-        )
-        .required(),
-      onlyFreeTrips: Joi.boolean().required(),
       isAddToFavouritesSelcted: Joi.boolean().required(),
-      priceRange: Joi.array()
-        .ordered(
-          Joi.number().integer().min(0).max(100),
-          Joi.number().integer().min(0).max(100)
-        )
-        .length(2)
-        .required(),
       date: Joi.string().required(),
+      ...bookmarkSchema,
     }),
   },
   tripSubscription: {

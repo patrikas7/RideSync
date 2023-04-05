@@ -2,6 +2,7 @@ import {
   DepartureTimeSlots,
   DepartureTimeSlotsKeys,
   AvailableSeatsSlotsKeys,
+  AvailableSeatsSlots,
 } from "../Filters/FiltersConstants";
 
 export const getTimeFrameText = (departureTime) => {
@@ -18,7 +19,12 @@ export const getTimeFrameText = (departureTime) => {
 export const getSeatsCountText = (availableSeats) => {
   if (availableSeats === AvailableSeatsSlotsKeys.DOES_NOT_MATTER)
     return "Bet koks vietų skaičius";
-  else if (matchingSlot) return matchingSlot.text;
+
+  const matchingSlot = AvailableSeatsSlots.find(
+    (slot) => slot.key === availableSeats
+  );
+
+  if (matchingSlot) return matchingSlot.value;
   else return "";
 };
 

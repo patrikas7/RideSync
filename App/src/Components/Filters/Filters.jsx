@@ -89,7 +89,14 @@ const Filters = ({ onButtonPress, prefill }) => {
           />
         </View>
 
-        <View style={[styles.filtersSection, styles.filtersSectionNotFirst]}>
+        <View
+          style={[
+            styles.filtersSection,
+            styles.filtersSectionNotFirst,
+            state?.isAddToFavouritesSelcted === undefined &&
+              styles.filtersSectionLast,
+          ]}
+        >
           <Text style={styles.headline}>Kelionės kaina žmogui</Text>
           <Slider
             thumbTintColor={Colors.BLUE_500}
@@ -124,32 +131,37 @@ const Filters = ({ onButtonPress, prefill }) => {
             <Text style={styles.text}>Tik nemokamos kelionės</Text>
           </View>
         </View>
-        <View
-          style={[
-            styles.filtersSection,
-            styles.filtersSectionNotFirst,
-            styles.filtersSectionLast,
-          ]}
-        >
-          <View style={styles.addToFavorites}>
-            <TouchableHighlight
-              onPress={() =>
-                setState((prevState) => ({
-                  ...prevState,
-                  isAddToFavouritesSelcted: !prevState.isAddToFavouritesSelcted,
-                }))
-              }
-              underlayColor={Colors.WHITE}
-            >
-              <Ionicons
-                name={state.isAddToFavouritesSelcted ? "star" : "star-outline"}
-                size={Sizes.ICON}
-                color={Colors.GOLD}
-              />
-            </TouchableHighlight>
-            <Text style={styles.text}>Pridėti paiešką prie favoritų</Text>
+        {state?.isAddToFavouritesSelcted !== undefined && (
+          <View
+            style={[
+              styles.filtersSection,
+              styles.filtersSectionNotFirst,
+              styles.filtersSectionLast,
+            ]}
+          >
+            <View style={styles.addToFavorites}>
+              <TouchableHighlight
+                onPress={() =>
+                  setState((prevState) => ({
+                    ...prevState,
+                    isAddToFavouritesSelcted:
+                      !prevState.isAddToFavouritesSelcted,
+                  }))
+                }
+                underlayColor={Colors.WHITE}
+              >
+                <Ionicons
+                  name={
+                    state.isAddToFavouritesSelcted ? "star" : "star-outline"
+                  }
+                  size={Sizes.ICON}
+                  color={Colors.GOLD}
+                />
+              </TouchableHighlight>
+              <Text style={styles.text}>Pridėti paiešką prie favoritų</Text>
+            </View>
           </View>
-        </View>
+        )}
       </View>
       <Button
         text={"Išsaugoti"}

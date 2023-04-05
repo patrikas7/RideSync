@@ -20,7 +20,7 @@ import { useIsFocused } from "@react-navigation/native";
 // Mirsta appsasa atidarius citySearch su klaipeda, su kitais miestais lyg viskas okey
 
 const CitySearchScreen = ({ route, navigation }) => {
-  const { inputType, value, prevScreen } = route.params;
+  const { inputType, value, prevScreen, navigateToPrev } = route.params;
   const [searchTerm, setSearchTerm] = useState(value);
   const [isLoading, setIsLoading] = useState(true);
   const [suggestions, setSuggestions] = useState([]);
@@ -89,7 +89,7 @@ const CitySearchScreen = ({ route, navigation }) => {
 
   const handleOnSuggestionPress = (suggestion) => {
     saveSearchHistory(suggestion.addressLine1);
-    navigation.navigate(PageNames.HOME, {
+    navigation.navigate(navigateToPrev ? prevScreen : PageNames.HOME, {
       screen: prevScreen,
       [inputType]: {
         addressLine1: suggestion.addressLine1,
@@ -127,7 +127,7 @@ const CitySearchScreen = ({ route, navigation }) => {
           placeholder="Įveskite ieškoma vietą"
           value={searchTerm}
           onChange={setSearchTerm}
-          onBack={() => navigation.navigate(PageNames.HOME)}
+          onBack={() => navigation.navigate(prevScreen)}
         />
         <View style={SearchStyles.citySearchPillsContainer}>
           <Pills

@@ -24,9 +24,9 @@ const SearchStyles = StyleSheet.create({
     marginTop: 36,
   },
   citySearchContainer: {
-    marginTop: 4,
     paddingHorizontal: Sizes.DEFAULT_HORIZONTAL_PADDING,
     flex: 1,
+    backgroundColor: Colors.WHITE,
   },
   citySearchInputContainer: {
     flexDirection: "row",
@@ -38,7 +38,7 @@ const SearchStyles = StyleSheet.create({
   citySearchInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: Colors.BLACK,
   },
   citySearchPillsContainer: {
     marginTop: 16,

@@ -13,6 +13,7 @@ const InputSearch = ({
   styling,
   secureTextEntry,
   multiline,
+  onFocus,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputContainer = useRef(new Animated.Value(1)).current;
@@ -24,6 +25,11 @@ const InputSearch = ({
       useNativeDriver: false,
     }).start();
   }, [isFocused]);
+
+  const handleOnFocus = () => {
+    setIsFocused(true);
+    if (onFocus) onFocus();
+  };
 
   return (
     <Animated.View
@@ -49,7 +55,7 @@ const InputSearch = ({
           value={value}
           onChangeText={onChange}
           style={InputSearchStyles.input}
-          onFocus={() => setIsFocused(true)}
+          onFocus={handleOnFocus}
           onBlur={() => setIsFocused(false)}
           maxLength={!multiline ? 30 : undefined}
           secureTextEntry={secureTextEntry}
