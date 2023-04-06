@@ -11,6 +11,7 @@ import CarServiceRouter from "./routes/CarServiceRoutes.js";
 import CarRouter from "./routes/CarRoutes.js";
 import TripBookmarkRouter from "./routes/TripBookmarkRoutes.js";
 import NotificationRouter from "./routes/NotificationRoutes.js";
+import TripSearchRequestRouter from "./routes/TripSearchRequestRoutes.js";
 import mongoose from "mongoose";
 
 const app = express();
@@ -79,4 +80,5 @@ const startServer = () => {
   app.use("/car", CarRouter);
   app.use("/bookmarks", TripBookmarkRouter);
   app.use("/notifications", NotificationRouter);
+  app.use("/trip-search-requests", TripSearchRequestRouter);
 };

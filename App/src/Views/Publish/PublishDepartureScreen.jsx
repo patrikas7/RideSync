@@ -1,17 +1,16 @@
+import { useRoute } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setDeparture, setPublisType } from "../../redux/publish/publishSlice";
 import ButtonsSwitch from "../../Components/ButtonsSwitch/ButtonsSwitch";
-import PropTypes from "prop-types";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
 import MapLocationSearch from "../../Components/MapLocationSearch/MapLocationSearch";
 import PublishStyles from "./PublishStyles";
-import { useRoute } from "@react-navigation/native";
 import useUserData from "../../hooks/useUserData";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
 import NoResults from "../../Components/NoResults/NoResults";
-import { useDispatch, useSelector } from "react-redux";
-import { setDeparture } from "../../redux/publish/publishSlice";
 
 const PublishDepartureScreen = ({ navigation, route }) => {
   const currentRoute = useRoute();
@@ -78,15 +77,11 @@ const PublishDepartureScreen = ({ navigation, route }) => {
       <ButtonsSwitch
         leftButtonText="Kelionės skelbimas"
         rightButtonText="Kelionės paieškos skelbimas"
+        onPress={(index) => dispatch(setPublisType(index))}
       />
       {renderContent()}
     </Container>
   );
-};
-
-PublishDepartureScreen.propTypes = {
-  navigation: PropTypes.object.isRequired,
-  route: PropTypes.object.isRequired,
 };
 
 export default PublishDepartureScreen;

@@ -7,6 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import ErrorMessages from "../../Constants/errorMessages";
 import {
+  PublishTypes,
   setDestination,
   setDestinationError,
 } from "../../redux/publish/publishSlice";
@@ -15,8 +16,9 @@ import { useEffect } from "react";
 const PublishDestinationScreen = ({ navigation, route }) => {
   const currentNavigation = useNavigation();
   const currentRoute = useRoute();
-  const departure = useSelector((state) => state.publish.departure);
-  const destination = useSelector((state) => state.publish.destination);
+  const { departure, destination, publishType } = useSelector(
+    (state) => state.publish
+  );
   const destinationError = useSelector(
     (state) => state.publishErrors.destination
   );
@@ -39,7 +41,11 @@ const PublishDestinationScreen = ({ navigation, route }) => {
         mapHintText="Ar tai yra vieta į kurią atvykstate?"
         navigation={navigation}
         currentScreen={currentRoute.name}
-        nextScreen={PageNames.PUBLISH_STOPS}
+        nextScreen={
+          publishType === PublishTypes.PUBLISH_TRIP
+            ? PageNames.PUBLISH_STOPS
+            : PageNames.PUBLISH_DATE_AND_TIME
+        }
         route={route}
         location={destination}
         onLocationChange={(destination) =>

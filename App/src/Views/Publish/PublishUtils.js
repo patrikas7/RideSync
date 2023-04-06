@@ -1,3 +1,6 @@
+import PageNames from "../../Constants/pageNames";
+import { PublishTypes } from "../../redux/publish/publishSlice";
+
 export const generatePins = (departure, destination, stops) => [
   {
     latitude: departure.latitude,
@@ -64,4 +67,20 @@ export const parseSelectedDate = (selectedDate) => {
     date: date.replaceAll("/", "-"),
     time,
   };
+};
+
+export const getDateAndTimePrevScreen = (publishType, isReturn) => {
+  if (publishType === PublishTypes.PUBLISH_TRIP_SEARCH_REQUEST)
+    return PageNames.PUBLISH_DESTINATION_SEARCH;
+
+  if (isReturn) return PageNames.PUBLISH_INFORMATION;
+  return PageNames.PUBLISH_STOPS;
+};
+
+export const getPublishInformationNextScreen = (publishType, isRoundTrip) => {
+  if (publishType === PublishTypes.PUBLISH_TRIP_SEARCH_REQUEST)
+    return PageNames.PUBLISH_INFORMATION_CONFIRMATION;
+
+  if (isRoundTrip) return PageNames.PUBLISH_RETURN_DATE_AND_TIME;
+  return PageNames.PUBLISH_ROUTE_CONFIRMATION;
 };

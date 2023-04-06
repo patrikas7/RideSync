@@ -1,16 +1,19 @@
-import { useNavigation } from "@react-navigation/native";
 import Container from "../../Components/Container/Container";
 import Success from "../../Components/Success/Success";
 import PageNames from "../../Constants/pageNames";
 
-const PublishSuccessPage = () => {
-  const navigation = useNavigation();
+const PublishSuccessPage = ({ navigation, route }) => {
+  const { isTripPublish } = route.params;
+
+  const primaryText = isTripPublish
+    ? "Kelionė buvo sukurta"
+    : "Kelionės paieškos užklausa buvo sėkmingai sukurta";
 
   return (
     <Container>
       <Success
-        primaryText="Kelionė buvo sukurta"
-        secondaryText=" Kelionės informacija galite peržiūrėti būsimų kelionių skiltyje"
+        primaryText={primaryText}
+        secondaryText="Kelionės informacija galite peržiūrėti mano kelionių skiltyje"
         buttonText="Kurti naują kelionę"
         onPress={() => navigation.navigate(PageNames.PUBLISH_DEPARTURE_SEARCH)}
       />

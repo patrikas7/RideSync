@@ -1,17 +1,20 @@
 import { Text, View } from "react-native";
-import { PublishInformationStyles } from "./PublishStyles";
-import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { showMessage } from "react-native-flash-message";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  PublishTypes,
+  resetErrors,
+  resetState,
+} from "../../redux/publish/publishSlice";
+import { printError } from "../../Utils/utils";
+import { PublishInformationStyles } from "./PublishStyles";
 import useUserData from "../../hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import PublishInformationCardListItem from "./PublishInformationCardListItem";
 import Button from "../Button/Button";
-import ErrorMessages from "../../Constants/errorMessages";
 import axios from "axios";
 import PageNames from "../../Constants/pageNames";
-import { resetState } from "../../redux/publish/publishSlice";
 
 const PublishInformation = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,24 +25,44 @@ const PublishInformation = () => {
 
   const handleOnConfimration = async () => {
     setIsLoading(true);
+    const isTripPublish = state.publishType === PublishTypes.PUBLISH_TRIP;
     try {
-      await axios.post(
-        "/trips",
-        { ...state, id },
-        { headers: { Authorization: token } }
-      );
+      const postFunction = isTripPublish ? postTrip : postTripSearchRequest;
+      await postFunction();
 
       dispatch(resetState());
-      navigation.navigate(PageNames.PUBLISH_SUCCES);
+      dispatch(resetErrors());
+      navigation.navigate(PageNames.PUBLISH_SUCCES, { isTripPublish });
     } catch (error) {
-      console.log(error);
-      showMessage({
-        message: ErrorMessages.UNEXPECTED_ERROR,
-        type: "danger",
-      });
+      printError(error);
     }
 
     setIsLoading(false);
+  };
+
+  const postTrip = async () => {
+    const { publishType, ...publishTrip } = state;
+
+    await axios.post(
+      "/trips",
+      { ...publishTrip, id },
+      { headers: { Authorization: token } }
+    );
+  };
+
+  const postTripSearchRequest = async () => {
+    await axios.post(
+      "/trip-search-requests",
+      {
+        departure: state.departure,
+        destination: state.destination,
+        date: state.date,
+        time: state.time,
+        passengersCount: state.personsCount,
+        comments: state.comments,
+      },
+      { headers: { Authorization: token } }
+    );
   };
 
   return (
@@ -82,10 +105,12 @@ const PublishInformation = () => {
             text={`Keleivių skaičius: ${state.personsCount}`}
             icon="people-outline"
           />
-          <PublishInformationCardListItem
-            text={`Kaina keleiviui: ${state.price}`}
-            icon="cash-outline"
-          />
+          {state.price && (
+            <PublishInformationCardListItem
+              text={`Kaina keleiviui: ${state.price}`}
+              icon="cash-outline"
+            />
+          )}
           {state.isRoundTrip && (
             <>
               <PublishInformationCardListItem
@@ -97,6 +122,12 @@ const PublishInformation = () => {
                 icon="time-outline"
               />
             </>
+          )}
+          {state.comments && (
+            <PublishInformationCardListItem
+              text={`Komentarai: ${state.comments}`}
+              icon="chatbubble-outline"
+            />
           )}
         </View>
       </View>

@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { PublishInformationFormStyles } from "./PublishStyles";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -11,14 +11,15 @@ import {
   toggleIsRoundTrip,
   toggleIsTripFree,
   setPrice,
+  PublishTypes,
 } from "../../redux/publish/publishSlice";
+import { showMessage } from "react-native-flash-message";
+import { getPublishInformationNextScreen } from "../../Views/Publish/PublishUtils";
+import { PublishInformationFormStyles } from "./PublishStyles";
 import Input from "../Form/Input";
 import Button from "../Button/Button";
 import InputSwitch from "../Form/InputSwitch";
-import PageNames from "../../Constants/pageNames";
 import ErrorMessages from "../../Constants/errorMessages";
-import { showMessage } from "react-native-flash-message";
-import { useEffect } from "react";
 
 const PublishInformationForm = () => {
   const state = useSelector((state) => state.publish);
@@ -45,18 +46,22 @@ const PublishInformationForm = () => {
   };
 
   const handleOnNextClick = () => {
+    const { publishType, price, personsCount, isRoundTrip } = state;
     dispatch(resetErrors());
-    if (!state.price || !state.personsCount) {
-      if (!state.price) dispatch(setPriceError(ErrorMessages.REQUIRED_FIELD));
-      if (!state.personsCount)
-        dispatch(setPersonsCountError(ErrorMessages.REQUIRED_FIELD));
+
+    if (publishType === PublishTypes.PUBLISH_TRIP && !price) {
+      dispatch(setPriceError(ErrorMessages.REQUIRED_FIELD));
       return;
     }
 
+    if (!personsCount) {
+      dispatch(setPersonsCountError(ErrorMessages.REQUIRED_FIELD));
+      return;
+    }
+
+    dispatch(resetErrors());
     navigation.navigate(
-      state.isRoundTrip
-        ? PageNames.PUBLISH_RETURN_DATE_AND_TIME
-        : PageNames.PUBLISH_ROUTE_CONFIRMATION
+      getPublishInformationNextScreen(publishType, isRoundTrip)
     );
   };
 
@@ -74,17 +79,19 @@ const PublishInformationForm = () => {
           maxLength={2}
         />
 
-        <Input
-          placeholder={"Kaina vienam keleiviui"}
-          icon={"cash-outline"}
-          inputMode={"numeric"}
-          value={state.price}
-          onChange={(value) => dispatch(setPrice(value))}
-          hasError={!!errorState.price}
-          errorText={errorState.price}
-          maxLength={5}
-          disabled={state.isTripFree}
-        />
+        {state.publishType === PublishTypes.PUBLISH_TRIP && (
+          <Input
+            placeholder={"Kaina vienam keleiviui"}
+            icon={"cash-outline"}
+            inputMode={"numeric"}
+            value={state.price}
+            onChange={(value) => dispatch(setPrice(value))}
+            hasError={!!errorState.price}
+            errorText={errorState.price}
+            maxLength={5}
+            disabled={state.isTripFree}
+          />
+        )}
 
         <Input
           placeholder={"Papildomi komentarai"}
@@ -95,16 +102,20 @@ const PublishInformationForm = () => {
           containerStyling={PublishInformationFormStyles.multiline}
         />
 
-        <InputSwitch
-          isEnabled={state.isTripFree}
-          onChange={() => dispatch(toggleIsTripFree())}
-          text="Ar kelionė yra nemokama?"
-        />
-        <InputSwitch
-          isEnabled={state.isRoundTrip}
-          onChange={() => dispatch(toggleIsRoundTrip())}
-          text="Ar bus grįžtama tuo pačiu maršrutu?"
-        />
+        {state.publishType === PublishTypes.PUBLISH_TRIP && (
+          <>
+            <InputSwitch
+              isEnabled={state.isTripFree}
+              onChange={() => dispatch(toggleIsTripFree())}
+              text="Ar kelionė yra nemokama?"
+            />
+            <InputSwitch
+              isEnabled={state.isRoundTrip}
+              onChange={() => dispatch(toggleIsRoundTrip())}
+              text="Ar bus grįžtama tuo pačiu maršrutu?"
+            />
+          </>
+        )}
       </View>
       <Button
         text="Toliau"

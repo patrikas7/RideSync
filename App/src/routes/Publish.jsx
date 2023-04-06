@@ -87,7 +87,7 @@ const Publish = ({ navigation, route }) => {
         />
         <Stack.Screen
           name={PageNames.PUBLISH_SUCCES}
-          children={() => <PublishSuccessPage />}
+          component={PublishSuccessPage}
           options={{
             headerShown: false,
           }}

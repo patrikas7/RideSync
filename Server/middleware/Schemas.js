@@ -166,6 +166,16 @@ const Schemas = {
       manufactureYear: Joi.string().required(),
     }),
   },
+  tripSearchRequest: {
+    create: Joi.object({
+      departure: citySchema.required(),
+      destination: citySchema.required(),
+      date: Joi.string().required(),
+      time: Joi.string().required(),
+      passengersCount: Joi.string().required(),
+      comments: Joi.string(),
+    }),
+  },
 };
 
 export default Schemas;

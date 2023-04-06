@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getFormatedTodaysDate } from "../../Utils/utils";
 
+export const PublishTypes = {
+  PUBLISH_TRIP: "PUBLISH_TRIP",
+  PUBLISH_TRIP_SEARCH_REQUEST: "PUBLISH_TRIP_SEARCH_REQUEST",
+};
+
 const initialState = {
+  publishType: PublishTypes.PUBLISH_TRIP,
   departure: {},
   destination: {},
   stops: [],
@@ -26,6 +32,14 @@ export const publishSlice = createSlice({
   name: "publish",
   initialState: initialState,
   reducers: {
+    setPublisType: (state, action) => {
+      if (!action.payload) {
+        state.publishType = PublishTypes.PUBLISH_TRIP;
+        return;
+      }
+
+      state.publishType = PublishTypes.PUBLISH_TRIP_SEARCH_REQUEST;
+    },
     setDeparture: (state, action) => {
       state.departure = action.payload;
     },
@@ -88,6 +102,7 @@ export const publishErrorsSlice = createSlice({
 });
 
 export const {
+  setPublisType,
   setDeparture,
   setDestination,
   setPersonsCount,

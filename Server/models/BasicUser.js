@@ -16,6 +16,9 @@ const BasicUserSchema = new Schema({
     { type: mongoose.Schema.Types.ObjectId, ref: "TripSubscription" },
   ],
   trips: [{ type: mongoose.Schema.Types.ObjectId, ref: "Trip" }],
+  tripSearchRequests: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "TripSearchRequest" },
+  ],
 });
 
 const BasicUser = User.discriminator("BasicUser", BasicUserSchema);

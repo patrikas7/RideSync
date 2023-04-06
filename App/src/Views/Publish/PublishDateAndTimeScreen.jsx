@@ -1,8 +1,16 @@
 import { useNavigation } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
 import { useSelector, useDispatch } from "react-redux";
-import { setDate, setReturnDate } from "../../redux/publish/publishSlice";
-import { isAtLeastOneHourFromNow, isTimeGapSufficient } from "./PublishUtils";
+import {
+  PublishTypes,
+  setDate,
+  setReturnDate,
+} from "../../redux/publish/publishSlice";
+import {
+  isAtLeastOneHourFromNow,
+  isTimeGapSufficient,
+  getDateAndTimePrevScreen,
+} from "./PublishUtils";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import PageNames from "../../Constants/pageNames";
 import Container from "../../Components/Container/Container";
@@ -12,14 +20,14 @@ import DateAndTimePicker from "../../Components/TimeAndDatePicker/TimeAndDatePic
 
 const PublishDateAndTimeScreen = ({ isReturn }) => {
   const navigation = useNavigation();
-  const { date, time, returnDate, returnTime } = useSelector(
+  const { date, time, returnDate, returnTime, publishType } = useSelector(
     (state) => state.publish
   );
   const dispatch = useDispatch();
 
   useScreenArrowBack(
     navigation,
-    isReturn ? PageNames.PUBLISH_INFORMATION : PageNames.PUBLISH_STOPS
+    getDateAndTimePrevScreen(publishType, isReturn)
   );
 
   const handleOnDateChange = ({ date, time }) => {
