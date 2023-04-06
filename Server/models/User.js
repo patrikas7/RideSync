@@ -18,6 +18,9 @@ const UserSchema = new Schema({
     buffer: { type: Buffer },
     type: { type: String },
   },
+  notifications: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "Notification" },
+  ],
 });
 
 const User = mongoose.model("User", UserSchema);

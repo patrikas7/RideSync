@@ -9,6 +9,7 @@ import SearchScreen from "../Views/Search/SearchScreen";
 import Publish from "./Publish";
 import MyRides from "./MyRides";
 import Bookmarks from "./Bookmarks";
+import Inbox from "./Inbox";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -67,7 +68,7 @@ const Tabs = ({ route, navigation }) => {
       />
       <Tab.Screen
         name={PageNames.INBOX}
-        component={SearchScreen}
+        component={Inbox}
         options={{
           tabBarLabel: "Žinutės",
           tabBarIcon: ({ color }) => (

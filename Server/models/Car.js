@@ -1,6 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-import Logging from "../library/Logging.js";
-import BasicUser from "./BasicUser.js";
 
 const CarSchema = new Schema({
   manufacturer: { type: String, required: true },
