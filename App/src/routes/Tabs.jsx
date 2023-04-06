@@ -1,7 +1,8 @@
-import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { StyleSheet } from "react-native";
+import { printError } from "../Utils/utils";
 import Colors from "../Constants/colors";
 import PageNames from "../Constants/pageNames";
 import Sizes from "../Constants/sizes";
@@ -10,19 +11,43 @@ import Publish from "./Publish";
 import MyRides from "./MyRides";
 import Bookmarks from "./Bookmarks";
 import Inbox from "./Inbox";
+import useUserData from "../hooks/useUserData";
+import axios from "axios";
 
 const Tab = createMaterialBottomTabNavigator();
 
 const Tabs = ({ route, navigation }) => {
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const { id, token } = useUserData();
+
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchUnreadNotifications = async () => {
+      try {
+        const { data } = await axios.get("/notifications/user/unread", {
+          headers: { Authorization: token },
+        });
+
+        setUnreadNotifications(data.unreadNotificationsCount);
+      } catch (error) {
+        printError(error);
+      }
+    };
+
+    fetchUnreadNotifications();
+  }, [token]);
+
   return (
     <Tab.Navigator barStyle={styles.barStyle} activeColor={Colors.BLUE_400}>
       <Tab.Screen
         name={PageNames.SEARCH}
-        children={(props) => (
+        children={() => (
           <SearchScreen
             navigation={navigation}
             route={route}
-            tabNavigation={props.navigation}
+            id={id}
+            token={token}
           />
         )}
         options={{
@@ -58,7 +83,7 @@ const Tabs = ({ route, navigation }) => {
       />
       <Tab.Screen
         name={PageNames.BOOKMARKS}
-        component={Bookmarks}
+        children={() => <Bookmarks token={token} />}
         options={{
           tabBarLabel: "Išsaugoti",
           tabBarIcon: ({ color }) => (
@@ -68,7 +93,7 @@ const Tabs = ({ route, navigation }) => {
       />
       <Tab.Screen
         name={PageNames.INBOX}
-        component={Inbox}
+        children={() => <Inbox token={token} />}
         options={{
           tabBarLabel: "Žinutės",
           tabBarIcon: ({ color }) => (
@@ -78,16 +103,11 @@ const Tabs = ({ route, navigation }) => {
               color={color}
             />
           ),
-          tabBarBadge: 3,
+          ...(unreadNotifications && { tabBarBadge: unreadNotifications }),
         }}
       />
     </Tab.Navigator>
   );
-};
-
-Tabs.propTypes = {
-  route: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired,
 };
 
 export default Tabs;

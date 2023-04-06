@@ -12,10 +12,9 @@ import PageNames from "../../Constants/pageNames";
 import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../Constants/colors";
 
-const SearchScreen = ({ route, navigation }) => {
+const SearchScreen = ({ route, navigation, id, token }) => {
   const [tripsSearchHistory, setTripsSearchHistory] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
-  const { id, token } = useUserData();
 
   useEffect(() => {
     if (id && token) fetchTripsSearchHistory();

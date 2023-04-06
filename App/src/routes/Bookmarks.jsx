@@ -9,9 +9,8 @@ import useUserData from "../hooks/useUserData";
 import BookmarkEditScreen from "../Views/Bookmarks/BookmarkEditScreen";
 import CitySearchScreen from "../Views/Search/CitySearchScreen";
 
-const Bookmarks = () => {
+const Bookmarks = ({ token }) => {
   const Stack = createStackNavigator();
-  const { token } = useUserData();
 
   return (
     <Stack.Navigator>
