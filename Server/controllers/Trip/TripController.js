@@ -111,6 +111,7 @@ const postTrip = async (req, res) => {
     isRoundTrip,
     returnDate,
     returnTime,
+    car,
   } = req.body;
 
   const trip = new Trip({
@@ -124,6 +125,7 @@ const postTrip = async (req, res) => {
     comments,
     isTripFree,
     isRoundTrip,
+    car,
     returnDate: isRoundTrip ? returnDate : null,
     returnTime: isRoundTrip ? returnTime : null,
     driver: req.user._id,

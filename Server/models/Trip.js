@@ -22,6 +22,7 @@ const TripSchema = new Schema({
   returnDate: { type: String },
   returnTime: { type: String },
   driver: { type: Schema.Types.ObjectId, ref: "BasicUser" },
+  car: { type: Schema.Types.ObjectId, ref: "Car" },
   passengers: [
     {
       passenger: { type: Schema.Types.ObjectId, ref: "BasicUser" },

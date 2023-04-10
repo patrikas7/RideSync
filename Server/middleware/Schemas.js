@@ -135,6 +135,7 @@ const Schemas = {
       isRoundTrip: Joi.boolean().required(),
       returnDate: Joi.string(),
       returnTime: Joi.string(),
+      car: Joi.string().required(),
     }),
     filter: Joi.object({
       isAddToFavouritesSelcted: Joi.boolean().required(),

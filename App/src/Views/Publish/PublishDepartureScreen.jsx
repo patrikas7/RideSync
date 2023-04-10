@@ -1,7 +1,11 @@
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useIsFocused } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDeparture, setPublisType } from "../../redux/publish/publishSlice";
+import {
+  setDeparture,
+  setPublisType,
+  setUserCars,
+} from "../../redux/publish/publishSlice";
 import ButtonsSwitch from "../../Components/ButtonsSwitch/ButtonsSwitch";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
@@ -17,22 +21,24 @@ const PublishDepartureScreen = ({ navigation, route }) => {
   const { token, id } = useUserData();
   const [isUserEligebleToPost, setIsUserEligebleToPost] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const isFocused = useIsFocused();
   const departure = useSelector((state) => state.publish.departure);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!token || !id) return;
+    if (!token || !id || !isFocused) return;
     fetchUsersVehicle();
-  }, [token, id]);
+  }, [token, id, isFocused]);
 
   const fetchUsersVehicle = async () => {
+    setIsLoading(true);
     try {
       const { data } = await axios.get("/user/car", {
         params: { id },
         headers: { Authorization: token },
       });
 
+      dispatch(setUserCars(constructCarsList(data.carsList)));
       setIsUserEligebleToPost(!!data.carsList.length);
     } catch (error) {
       console.log(error);
@@ -40,6 +46,12 @@ const PublishDepartureScreen = ({ navigation, route }) => {
 
     setIsLoading(false);
   };
+
+  const constructCarsList = (carsList) =>
+    carsList.map((car) => ({
+      label: `${car.manufacturer} ${car.model} ${car.licensePlateNumber}`,
+      value: car._id,
+    }));
 
   const renderContent = () => {
     if (isLoading) return <Spinner visible={isLoading} />;

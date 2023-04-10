@@ -20,6 +20,8 @@ const initialState = {
   isRoundTrip: false,
   returnDate: getFormatedTodaysDate(),
   returnTime: "00:00",
+  userCars: [],
+  car: null,
 };
 
 const initialErrorState = {
@@ -78,6 +80,12 @@ export const publishSlice = createSlice({
     toggleIsRoundTrip: (state) => {
       state.isRoundTrip = !state.isRoundTrip;
     },
+    setUserCars: (state, action) => {
+      state.userCars = action.payload;
+    },
+    setSelectedCar: (state, action) => {
+      state.car = action.payload;
+    },
     resetState: () => initialState,
   },
 });
@@ -116,6 +124,8 @@ export const {
   toggleIsRoundTrip,
   setReturnDate,
   resetState,
+  setUserCars,
+  setSelectedCar,
 } = publishSlice.actions;
 
 export const {

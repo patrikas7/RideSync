@@ -12,6 +12,7 @@ import {
   toggleIsTripFree,
   setPrice,
   PublishTypes,
+  setSelectedCar,
 } from "../../redux/publish/publishSlice";
 import { showMessage } from "react-native-flash-message";
 import { getPublishInformationNextScreen } from "../../Views/Publish/PublishUtils";
@@ -20,6 +21,7 @@ import Input from "../Form/Input";
 import Button from "../Button/Button";
 import InputSwitch from "../Form/InputSwitch";
 import ErrorMessages from "../../Constants/errorMessages";
+import Dropdown from "../Form/Dropdown";
 
 const PublishInformationForm = () => {
   const state = useSelector((state) => state.publish);
@@ -46,12 +48,18 @@ const PublishInformationForm = () => {
   };
 
   const handleOnNextClick = () => {
-    const { publishType, price, personsCount, isRoundTrip } = state;
+    const { publishType, price, personsCount, isRoundTrip, car } = state;
     dispatch(resetErrors());
 
-    if (publishType === PublishTypes.PUBLISH_TRIP && !price) {
-      dispatch(setPriceError(ErrorMessages.REQUIRED_FIELD));
-      return;
+    if (publishType === PublishTypes.PUBLISH_TRIP) {
+      if (!price) {
+        dispatch(setPriceError(ErrorMessages.REQUIRED_FIELD));
+        return;
+      }
+      if (!car) {
+        showMessage({ message: ErrorMessages.CAR_IS_REQUIRED, type: "danger" });
+        return;
+      }
     }
 
     if (!personsCount) {
@@ -80,17 +88,26 @@ const PublishInformationForm = () => {
         />
 
         {state.publishType === PublishTypes.PUBLISH_TRIP && (
-          <Input
-            placeholder={"Kaina vienam keleiviui"}
-            icon={"cash-outline"}
-            inputMode={"numeric"}
-            value={state.price}
-            onChange={(value) => dispatch(setPrice(value))}
-            hasError={!!errorState.price}
-            errorText={errorState.price}
-            maxLength={5}
-            disabled={state.isTripFree}
-          />
+          <>
+            <Input
+              placeholder={"Kaina vienam keleiviui"}
+              icon={"cash-outline"}
+              inputMode={"numeric"}
+              value={state.price}
+              onChange={(value) => dispatch(setPrice(value))}
+              hasError={!!errorState.price}
+              errorText={errorState.price}
+              maxLength={5}
+              disabled={state.isTripFree}
+            />
+
+            <Dropdown
+              placeholder={"Automobilis"}
+              items={state.userCars}
+              value={state.car}
+              onValueChange={(val) => dispatch(setSelectedCar(val))}
+            />
+          </>
         )}
 
         <Input

@@ -41,7 +41,7 @@ const PublishInformation = () => {
   };
 
   const postTrip = async () => {
-    const { publishType, ...publishTrip } = state;
+    const { publishType, userCars, ...publishTrip } = state;
 
     await axios.post(
       "/trips",

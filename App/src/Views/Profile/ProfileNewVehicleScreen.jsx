@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { View } from "react-native";
+import { View, Alert } from "react-native";
 import { ProfileVehicleStyles } from "./ProfileStyles";
 import { hasObjectEmptyValues, printError } from "../../Utils/utils";
 import { showMessage } from "react-native-flash-message";
@@ -13,6 +13,7 @@ import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import InputSearch from "../../Components/Form/InputSearch";
 import ErrorMessages from "../../Constants/errorMessages";
 import Dropdown from "../../Components/Form/Dropdown";
+import useScreenIconRight from "../../hooks/useScreenIconRight";
 
 const ProfileNewVehicleScreen = ({ token }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,31 @@ const ProfileNewVehicleScreen = ({ token }) => {
   const route = useRoute();
   const car = route.params?.car;
   const isEdit = !!car;
+
   useScreenArrowBack(navigation, PageNames.PROFILE_VEHICLE);
+
+  const handleOnDelete = () => {
+    Alert.alert(
+      "Automobilio šalinimas",
+      "Ar tikrai norite pašalinti automobilį?",
+      [
+        {
+          text: "Ne",
+        },
+        {
+          text: "Taip",
+          onPress: () => deleteVehicle(),
+        },
+      ]
+    );
+  };
+
+  useScreenIconRight({
+    navigation,
+    icons: ["trash-outline"],
+    shouldRender: isEdit,
+    onPress: handleOnDelete,
+  });
 
   useEffect(() => {
     fetchCars();
@@ -115,7 +140,7 @@ const ProfileNewVehicleScreen = ({ token }) => {
     }
   };
 
-  const handleOnDelete = async () => {
+  const deleteVehicle = async () => {
     setIsLoading(true);
     try {
       const id = route.params.car._id;
@@ -222,14 +247,6 @@ const ProfileNewVehicleScreen = ({ token }) => {
           }
         />
       </View>
-      {isEdit && (
-        <Button
-          text={"Pašalinti"}
-          styling={ProfileVehicleStyles.button}
-          onClick={handleOnDelete}
-          color={ButtonColor.WHITE}
-        />
-      )}
 
       <Button
         text={isEdit ? "Atnaujinti" : "Registruoti"}

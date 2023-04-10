@@ -1,6 +1,4 @@
-import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
 import Container from "../../Components/Container/Container";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import PageNames from "../../Constants/pageNames";

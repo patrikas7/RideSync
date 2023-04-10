@@ -18,6 +18,7 @@ const ErrorMessages = {
   ALL_FIELDS_ARE_REQUIRED: "Visi laukai yra privalomi",
   PLATE_NUMBER_VALIDATION:
     "Netinkamas automobilio valstybinio numerio formatas. Tinakamas formatas yra ABC 123",
+  CAR_IS_REQUIRED: "Turite pasirinkti automobilį",
 };
 
 export default ErrorMessages;
