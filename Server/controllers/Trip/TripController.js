@@ -74,7 +74,7 @@ const getTripInformation = async (req, res) => {
     const trip = await findTripById(id, true);
     const { driver, passengers } = trip;
     const isUserDriver = userId === driver._id.toString();
-    const isUserPassenger = trip.passengers.some(
+    const isUserPassenger = trip?.passengers?.some(
       (passenger) => passenger.passenger._id.toString() === userId
     );
     // const {rating, reviewCount} = getUserRatingAndReviewCount(trips.driver._id)
@@ -323,7 +323,9 @@ const findTripById = async (id, useLean) => {
     .populate(
       "passengers.passenger",
       "name surname gender dateOfBirth phoneNumber profilePicture trips"
-    );
+    )
+    .populate("car");
+
   if (useLean) {
     query.lean();
   }

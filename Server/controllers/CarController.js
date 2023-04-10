@@ -4,6 +4,7 @@ import Logging from "../library/Logging.js";
 import User from "../models/User.js";
 import Car from "../models/Car.js";
 import BasicUser from "../models/BasicUser.js";
+import Trip from "../models/Trip.js";
 
 const postCar = async (req, res) => {
   const {
@@ -70,6 +71,11 @@ const deleteCar = async (req, res) => {
     query: { id },
   } = req;
   try {
+    if (await isCarInActiveTrip(id))
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send(ErrorMessages.CAR_IS_IN_ACTIVE_TRIP);
+
     await Car.findByIdAndDelete(id);
     await BasicUser.findOneAndUpdate({ _id: userId }, { $pull: { cars: id } });
 
@@ -80,6 +86,15 @@ const deleteCar = async (req, res) => {
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
+};
+
+const isCarInActiveTrip = async (id) => {
+  const trips = await Trip.find({ car: id });
+  const currentDate = new Date().toISOString().slice(0, 10);
+
+  const unfinishedTrips = trips.filter((trip) => trip.date >= currentDate);
+
+  return unfinishedTrips.length;
 };
 
 export default { postCar, deleteCar, updateCar };

@@ -156,7 +156,7 @@ const ProfileNewVehicleScreen = ({ token }) => {
         update: null,
       });
     } catch (error) {
-      printError(error);
+      showInfoMessage(error.response.data);
     } finally {
       setIsLoading(false);
     }

@@ -12,6 +12,8 @@ const ErrorMessages = {
   PASSENGER_NOT_FOUND: "Keleivis buvo nerastas",
   CAR_NOT_FOUND: "Automobilis buvo nerastas",
   TRIP_BOOKMARK_NOT_FOUND: "Kelionės paieška buvo nerasta",
+  CAR_IS_IN_ACTIVE_TRIP:
+    "Automobilis yra registruotas į kelionę, pašalinkite kelionę norint pašalinti automobilį",
 };
 
 export default ErrorMessages;

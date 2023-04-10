@@ -9,7 +9,7 @@ import Sizes from "../../Constants/sizes";
 import IconButton from "../Button/IconButton";
 import PageNames from "../../Constants/pageNames";
 
-const TripDriverCard = ({ driver, isUserDriver, navigation }) => {
+const TripDriverCard = ({ driver, isUserDriver, navigation, car }) => {
   const profilePictureUri = generatePictureUri(driver?.profilePicture);
   const handleOnChatPress = () => {
     navigation.navigate(PageNames.CHAT);
@@ -57,9 +57,11 @@ const TripDriverCard = ({ driver, isUserDriver, navigation }) => {
           <Ionicons name="car" size={Sizes.ICON} />
           <View>
             <Text style={TripInformationStyles.primaryText}>
-              Audi a4 2011 sedanas
+              {`${car?.manufacturer} ${car?.model} ${car?.manufactureYear} ${car?.type}`}
             </Text>
-            <Text style={TripInformationStyles.secondaryText}>MGD 331</Text>
+            <Text style={TripInformationStyles.secondaryText}>
+              {car?.licensePlateNumber}
+            </Text>
           </View>
         </View>
         {!isUserDriver && (

@@ -88,6 +88,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
           />
           <TripDriverCard
             driver={trip.driver}
+            car={trip?.car}
             isUserDriver={trip.isUserDriver}
             navigation={navigation}
           />
