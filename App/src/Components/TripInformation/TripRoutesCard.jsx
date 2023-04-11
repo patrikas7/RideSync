@@ -14,7 +14,7 @@ const TripRoutesCard = ({ departure, destination, time, stops }) => {
           color={Colors.BLUE_500}
           secondaryTextStyling={TripInformationStyles.routeSecondaryText}
         />
-        {stops.map((stop, index) => (
+        {stops?.map((stop, index) => (
           <Fragment key={index}>
             <View style={TripInformationStyles.separator}></View>
             <MainStop

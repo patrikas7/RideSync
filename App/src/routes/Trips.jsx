@@ -11,6 +11,8 @@ import UserInformation from "../Views/Trips/TripInformation/UserInformation";
 import ChatScreen from "../Views/Chat/ChatScreen";
 import TripEditScreen from "../Views/Trips/TripInformation/TripEditScreen";
 import CitySearchScreen from "../Views/Search/CitySearchScreen";
+import DateAndTimePicker from "../Components/TimeAndDatePicker/TimeAndDatePicker";
+import TripDateAndTimeEditScreen from "../Views/Trips/TripInformation/TripDateAndTimeEditScreen";
 
 const Trips = ({ route, navigation }) => {
   const Stack = createStackNavigator();
@@ -88,10 +90,19 @@ const Trips = ({ route, navigation }) => {
         }}
       />
       <Stack.Screen
-        name={PageNames.PUBLISH_DATE_AND_TIME}
-        component={CitySearchScreen}
+        name={PageNames.TRIP_DATE_AND_TIME_EDIT}
+        component={TripDateAndTimeEditScreen}
         options={{
-          headerShown: false,
+          headerShadowVisible: false,
+          title: "",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.TRIP_RETURN_DATE_AND_TIME_EDIT}
+        component={TripDateAndTimeEditScreen}
+        options={{
+          headerShadowVisible: false,
+          title: "",
         }}
       />
     </Stack.Navigator>

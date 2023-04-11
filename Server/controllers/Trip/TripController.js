@@ -346,6 +346,44 @@ const removeTripFromUsersTripHistory = async (userId, tripId) => {
   await user.save();
 };
 
+const updatedTrip = async (req, res) => {
+  const { id } = req.query;
+  const updateData = req.body;
+
+  try {
+    const updatedTrip = await Trip.findByIdAndUpdate(id, updateData, {
+      new: true,
+    })
+      .populate(
+        "driver",
+        "name surname gender dateOfBirth phoneNumber profilePicture trips"
+      )
+      .populate(
+        "passengers.passenger",
+        "name surname gender dateOfBirth phoneNumber profilePicture trips"
+      )
+      .populate("car");
+
+    if (!updatedTrip)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send(ErrorMessages.TRIP_NOT_FOUND);
+
+    res.status(StatusCodes.OK).json({
+      trip: {
+        ...updatedTrip.toObject(),
+        isUserDriver: true,
+        isUserPassenger: false,
+      },
+    });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   getTrips,
   postTrip,
@@ -355,4 +393,5 @@ export default {
   deleteTrip,
   seatBooking,
   cancelBooking,
+  updatedTrip,
 };

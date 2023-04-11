@@ -1,6 +1,5 @@
 import { ScrollView, Keyboard, Text } from "react-native";
 import { useEffect, useState } from "react";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { TripEditStyles } from "./TripInformationStyles";
 import { constructCarsList, printError } from "../../../Utils/utils";
 import { showMessage } from "react-native-flash-message";
@@ -110,6 +109,13 @@ const TripEditScreen = ({ route, navigation }) => {
 
       return;
     }
+
+    navigation.navigate(PageNames.TRIP_DATE_AND_TIME_EDIT, {
+      trip,
+      token,
+      id,
+      prevScreen: route.name,
+    });
   };
 
   return (

@@ -14,6 +14,7 @@ const getEligableDate = () => {
 };
 
 const citySchema = Joi.object().keys({
+  _id: Joi.string(),
   addressLine1: Joi.string().required(),
   addressLine2: Joi.string().required(),
   city: Joi.string().required(),
@@ -57,6 +58,22 @@ const bookmarkSchema = {
     )
     .length(2)
     .required(),
+};
+
+const tripSchema = {
+  departure: citySchema.required(),
+  destination: citySchema.required(),
+  stops: Joi.array().items(citySchema).required(),
+  date: Joi.string().required(),
+  time: Joi.string().required(),
+  personsCount: Joi.number().required(),
+  price: Joi.string().required(),
+  comments: Joi.string().allow(null, ""),
+  isTripFree: Joi.boolean().required(),
+  isRoundTrip: Joi.boolean().required(),
+  returnDate: Joi.string().allow(null, ""),
+  returnTime: Joi.string().allow(null, ""),
+  car: Joi.string().required(),
 };
 
 // Add password criteroa
@@ -123,20 +140,9 @@ const Schemas = {
     }),
     create: Joi.object({
       id: Joi.string().required(),
-      departure: citySchema.required(),
-      destination: citySchema.required(),
-      stops: Joi.array().items(citySchema).required(),
-      date: Joi.string().required(),
-      time: Joi.string().required(),
-      personsCount: Joi.string().required(),
-      price: Joi.string().required(),
-      comments: Joi.string().allow(null, ""),
-      isTripFree: Joi.boolean().required(),
-      isRoundTrip: Joi.boolean().required(),
-      returnDate: Joi.string(),
-      returnTime: Joi.string(),
-      car: Joi.string().required(),
+      ...tripSchema,
     }),
+    update: Joi.object(tripSchema),
     filter: Joi.object({
       isAddToFavouritesSelcted: Joi.boolean().required(),
       date: Joi.string().required(),

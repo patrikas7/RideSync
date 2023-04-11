@@ -56,6 +56,8 @@ const TripInformationScreen = () => {
     setIsLoading(false);
   };
 
+  console.log(trip);
+
   return (
     <Container>
       {isLoading ? (

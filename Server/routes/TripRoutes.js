@@ -23,6 +23,11 @@ TripRouter.route("/")
     userCheckMiddleware,
     ValidateSchema(Schemas.trip.create),
     controller.postTrip
+  )
+  .put(
+    authMiddleware,
+    ValidateSchema(Schemas.trip.update),
+    controller.updatedTrip
   );
 
 TripRouter.route("/filter").get(
