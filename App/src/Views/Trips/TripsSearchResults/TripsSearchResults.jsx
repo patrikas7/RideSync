@@ -14,6 +14,7 @@ import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 import useScreenIconRight from "../../../hooks/useScreenIconRight";
 import SlidingUpPanel from "rn-sliding-up-panel";
 import { printError } from "../../../Utils/utils";
+import TripSearchRequestList from "../../../Components/TripsList/TripSearchRequestsList";
 
 const TripsSearchResults = ({ mainRoute }) => {
   const [activeSearchType, setActiveSearchType] = useState(0);
@@ -27,6 +28,7 @@ const TripsSearchResults = ({ mainRoute }) => {
   const navigation = useNavigation();
   const route = useRoute();
   const [tripsList, setTripsList] = useState([]);
+  const [tripSearchRequests, setTripSearchRequests] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useScreenArrowBack(navigation, PageNames.SEARCH);
   useScreenIconRight({
@@ -46,6 +48,32 @@ const TripsSearchResults = ({ mainRoute }) => {
   useEffect(() => {
     fetchTrips();
   }, []);
+
+  useEffect(() => {
+    if (!activeSearchType || tripSearchRequests) return;
+    const fetchTripSearchRequests = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await axios.get("/trip-search-requests", {
+          params: {
+            destination: destination?.city,
+            departure: departure?.city,
+            date,
+            passengersCount: personsCount,
+          },
+          headers: { Authorization: token },
+        });
+
+        setTripSearchRequests(data.tripSearchRequests);
+      } catch (error) {
+        printError(error);
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchTripSearchRequests();
+  }, [activeSearchType]);
 
   useEffect(() => {
     if (!route.params?.query) return;
@@ -126,6 +154,8 @@ const TripsSearchResults = ({ mainRoute }) => {
     }
   };
 
+  console.log(tripSearchRequests);
+
   const renderResults = () =>
     !isLoading && !tripsList.length ? (
       <NoResults
@@ -136,24 +166,21 @@ const TripsSearchResults = ({ mainRoute }) => {
       />
     ) : (
       <View style={{ flex: 1 }}>
-        <TripsList
-          tripsList={tripsList}
-          onPress={(id) =>
-            navigation.navigate(PageNames.TRIP_INFORMATION, { id })
-          }
-        />
-        <SlidingUpPanel
-          ref={ref}
-          visible={true}
-          height={200}
-          draggableRange={{ top: 200, bottom: 0 }}
-          friction={0.5}
-          snappingPoints={[0, 200]}
-        >
-          <View style={{ flex: 1, backgroundColor: "white" }}>
-            <Text style={{ fontSize: 24, padding: 16 }}>Sliding Up Panel</Text>
-          </View>
-        </SlidingUpPanel>
+        {!activeSearchType ? (
+          <TripsList
+            tripsList={tripsList}
+            onPress={(id) =>
+              navigation.navigate(PageNames.TRIP_INFORMATION, { id })
+            }
+          />
+        ) : (
+          <TripsList
+            tripsList={tripSearchRequests}
+            onPress={(id) =>
+              navigation.navigate(PageNames.TRIP_INFORMATION, { id })
+            }
+          />
+        )}
       </View>
     );
 

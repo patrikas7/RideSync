@@ -38,15 +38,17 @@ const TripCard = ({ trip, onPress, containerStyling }) => {
               </View>
 
               <View style={TripsListStyle.detailsContainer}>
-                <View>
-                  <Text
-                    style={TripsListStyle.infomrationPrimary}
-                  >{`${trip.price}€`}</Text>
-                  <Text style={TripsListStyle.price}>Keleiviui</Text>
-                </View>
+                {trip.price && (
+                  <View>
+                    <Text
+                      style={TripsListStyle.infomrationPrimary}
+                    >{`${trip.price}€`}</Text>
+                    <Text style={TripsListStyle.price}>Keleiviui</Text>
+                  </View>
+                )}
                 <View>
                   <Text style={TripsListStyle.infomrationPrimary}>
-                    {trip.personsCount}
+                    {trip.personsCount || trip.passengersCount}
                   </Text>
                   <Text style={TripsListStyle.infomrationSecondary}>
                     Vietos
@@ -70,7 +72,9 @@ const TripCard = ({ trip, onPress, containerStyling }) => {
               style={TripsListStyle.avatar}
             />
             <Text style={TripsListStyle.driverName}>
-              {trip.isUserDriver ? "Aš" : trip.driver.name}
+              {trip.isUserDriver
+                ? "Aš"
+                : trip?.driver?.name || trip?.user?.name}
             </Text>
             {!trip.isUserDriver && (
               <View style={TripsListStyle.reviewContainer}>
