@@ -20,7 +20,7 @@ const TripInformationScreen = () => {
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
 
   const handleOnEditPress = () => {
-    console.log("test");
+    navigation.navigate(PageNames.TRIP_EDIT, { trip, token, id: userId });
   };
 
   useScreenIconRight({

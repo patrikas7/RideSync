@@ -51,3 +51,15 @@ export const UserInformationStyles = StyleSheet.create({
     marginBottom: 32,
   },
 });
+
+export const TripEditStyles = StyleSheet.create({
+  headline: {
+    color: Colors.GREY_600,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
+    fontWeight: "bold",
+    marginTop: 8,
+  },
+  headlineNotFirst: {
+    marginTop: 16,
+  },
+});

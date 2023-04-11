@@ -6,6 +6,7 @@ import {
   setPublisType,
   setUserCars,
 } from "../../redux/publish/publishSlice";
+import { constructCarsList } from "../../Utils/utils";
 import ButtonsSwitch from "../../Components/ButtonsSwitch/ButtonsSwitch";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
@@ -46,12 +47,6 @@ const PublishDepartureScreen = ({ navigation, route }) => {
 
     setIsLoading(false);
   };
-
-  const constructCarsList = (carsList) =>
-    carsList.map((car) => ({
-      label: `${car.manufacturer} ${car.model} ${car.licensePlateNumber}`,
-      value: car._id,
-    }));
 
   const renderContent = () => {
     if (isLoading) return <Spinner visible={isLoading} />;

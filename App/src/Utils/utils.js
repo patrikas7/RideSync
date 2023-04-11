@@ -58,3 +58,9 @@ export const printError = (error) => {
 
   console.error(error);
 };
+
+export const constructCarsList = (carsList) =>
+  carsList.map((car) => ({
+    label: `${car.manufacturer} ${car.model} ${car.licensePlateNumber}`,
+    value: car._id,
+  }));

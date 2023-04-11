@@ -9,6 +9,8 @@ import TripSearchFiltersScreen from "../Views/Trips/TripsSearchResults/TripSearc
 import TripPassengersCount from "../Views/Trips/TripInformation/TripPassengersCountSelect";
 import UserInformation from "../Views/Trips/TripInformation/UserInformation";
 import ChatScreen from "../Views/Chat/ChatScreen";
+import TripEditScreen from "../Views/Trips/TripInformation/TripEditScreen";
+import CitySearchScreen from "../Views/Search/CitySearchScreen";
 
 const Trips = ({ route, navigation }) => {
   const Stack = createStackNavigator();
@@ -67,6 +69,29 @@ const Trips = ({ route, navigation }) => {
         options={{
           headerShown: false,
           ...TransitionPresets.ModalSlideFromBottomIOS,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.TRIP_EDIT}
+        component={TripEditScreen}
+        options={{
+          headerShadowVisible: false,
+          title: "Kelionės redagavimas",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.CITY_SEARCH}
+        component={CitySearchScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.PUBLISH_DATE_AND_TIME}
+        component={CitySearchScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
