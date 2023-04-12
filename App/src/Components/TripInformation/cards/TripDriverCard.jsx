@@ -20,6 +20,7 @@ const TripDriverCard = ({ driver, isUserDriver, navigation, car }) => {
       user: driver,
       profilePictureUri,
       isMyProfile: isUserDriver,
+      prevScreen: PageNames.TRIP_INFORMATION,
     });
   };
 

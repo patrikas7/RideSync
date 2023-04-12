@@ -24,6 +24,7 @@ const TripPassengersCard = ({ passengers, navigation, userId }) => {
                 user: passenger.passenger,
                 profilePictureUri,
                 isMyProfile: passenger.passenger._id === userId,
+                prevScreen: PageNames.TRIP_INFORMATION,
               })
             }
             styling={

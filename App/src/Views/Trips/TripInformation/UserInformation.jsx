@@ -9,8 +9,8 @@ import Button from "../../../Components/Button/Button";
 import { calculateAge } from "../../../Utils/utils";
 
 const UserInformation = ({ navigation, route }) => {
-  const { user, profilePictureUri, isMyProfile } = route.params;
-  useScreenArrowBack(navigation, PageNames.TRIP_INFORMATION);
+  const { user, profilePictureUri, isMyProfile, prevScreen } = route.params;
+  useScreenArrowBack(navigation, prevScreen);
 
   return (
     <Container>

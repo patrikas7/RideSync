@@ -24,6 +24,18 @@ TripSearchRequestSchema.pre("save", async function (next) {
   }
 });
 
+TripSearchRequestSchema.pre("delete", async function (next) {
+  try {
+    const user = await BasicUser.findById(this.userId);
+    user.tripSearchRequests.pull(this._id);
+    await user.save();
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 const TripSearchRequest = mongoose.model(
   "TripSearchRequest",
   TripSearchRequestSchema

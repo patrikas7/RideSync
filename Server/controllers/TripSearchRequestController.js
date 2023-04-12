@@ -47,6 +47,7 @@ const getTripSearchRequests = async (req, res) => {
 
 const getTripSearchRequest = async (req, res) => {
   const { id } = req.params;
+  const { userId } = req;
 
   try {
     const tripSearchRequest = await TripSearchRequest.findById(id).populate(
@@ -60,7 +61,25 @@ const getTripSearchRequest = async (req, res) => {
         .send(ErrorMessages.TRIP_SEARCH_REQUEST_NOT_FOUND);
 
     tripSearchRequest.user = parseUserProfilePicture(tripSearchRequest.user);
-    res.status(StatusCodes.OK).json({ tripSearchRequest });
+    const isUsersPost = tripSearchRequest.user._id.toString() === userId;
+
+    res.status(StatusCodes.OK).json({
+      tripSearchRequest: { ...tripSearchRequest.toObject(), isUsersPost },
+    });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+const deleteTripSearchRequest = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await TripSearchRequest.findByIdAndDelete(id);
+    res.status(StatusCodes.OK).json({ message: "deleted" });
   } catch (error) {
     Logging.error(error);
     res
@@ -73,4 +92,5 @@ export default {
   postTripSearchRequest,
   getTripSearchRequests,
   getTripSearchRequest,
+  deleteTripSearchRequest,
 };

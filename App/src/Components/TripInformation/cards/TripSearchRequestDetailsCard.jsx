@@ -4,10 +4,25 @@ import TripPersonProfile from "../TripPersonProfile";
 import TripInformationStyles from "../TripInformationStyle";
 import TripPersonRating from "../TripPersonRating";
 import TripDetail from "./TripDetail";
+import PageNames from "../../../Constants/pageNames";
 
-const TripSearchRequestDetailsCard = ({ user, passengersCount, comments }) => {
+const TripSearchRequestDetailsCard = ({
+  user,
+  passengersCount,
+  comments,
+  isMyProfile,
+  navigation,
+}) => {
   const profilePictureUri = generatePictureUri(user?.profilePicture);
-  const handleOnProfilePress = () => {};
+
+  const handleOnProfilePress = () => {
+    navigation.navigate(PageNames.USER_INFORMATION, {
+      user,
+      profilePictureUri,
+      isMyProfile,
+      prevScreen: PageNames.TRIP_SEARCH_REQUEST_INFORMATION,
+    });
+  };
 
   return (
     <View

@@ -4,7 +4,7 @@ import TripRoutesCard from "./cards/TripRoutesCard";
 import TripSearchRequestDetailsCard from "./cards/TripSearchRequestDetailsCard";
 import Button from "../Button/Button";
 
-const TripSearchRequest = ({ tripSearchRequest }) => {
+const TripSearchRequest = ({ tripSearchRequest, onPress, navigation }) => {
   return (
     <View style={TripInformationStyles.inforamtionWrapper}>
       <View style={TripInformationStyles.scrollWrapper}>
@@ -19,11 +19,19 @@ const TripSearchRequest = ({ tripSearchRequest }) => {
             user={tripSearchRequest.user}
             passengersCount={tripSearchRequest.passengersCount}
             comments={tripSearchRequest.comments}
+            navigation={navigation}
+            isMyProfile={tripSearchRequest.isUsersPost}
           />
         </ScrollView>
+
         <Button
-          text={"Rašyti pranešimą"}
+          text={
+            tripSearchRequest.isUsersPost
+              ? "Naikinti skelbimą"
+              : "Rašyti pranešimą"
+          }
           styling={TripInformationStyles.button}
+          onClick={onPress}
         />
       </View>
     </View>
