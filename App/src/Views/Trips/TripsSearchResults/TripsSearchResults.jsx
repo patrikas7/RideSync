@@ -154,8 +154,6 @@ const TripsSearchResults = ({ mainRoute }) => {
     }
   };
 
-  console.log(tripSearchRequests);
-
   const renderResults = () =>
     !isLoading && !tripsList.length ? (
       <NoResults
@@ -177,7 +175,9 @@ const TripsSearchResults = ({ mainRoute }) => {
           <TripsList
             tripsList={tripSearchRequests}
             onPress={(id) =>
-              navigation.navigate(PageNames.TRIP_INFORMATION, { id })
+              navigation.navigate(PageNames.TRIP_SEARCH_REQUEST_INFORMATION, {
+                id,
+              })
             }
           />
         )}

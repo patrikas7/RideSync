@@ -8,11 +8,8 @@ import useUserData from "../../../hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import useScreenIconRight from "../../../hooks/useScreenIconRight";
 import Colors from "../../../Constants/colors";
-import { useNavigation, useRoute } from "@react-navigation/native";
 
-const TripInformationScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
+const TripInformationScreen = ({ navigation, route }) => {
   const [trip, setTrip] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { id } = route.params;

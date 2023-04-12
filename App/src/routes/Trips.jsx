@@ -11,10 +11,10 @@ import UserInformation from "../Views/Trips/TripInformation/UserInformation";
 import ChatScreen from "../Views/Chat/ChatScreen";
 import TripEditScreen from "../Views/Trips/TripInformation/TripEditScreen";
 import CitySearchScreen from "../Views/Search/CitySearchScreen";
-import DateAndTimePicker from "../Components/TimeAndDatePicker/TimeAndDatePicker";
 import TripDateAndTimeEditScreen from "../Views/Trips/TripInformation/TripDateAndTimeEditScreen";
+import TripSearchRequestInformationScreen from "../Views/Trips/TripInformation/TripSearchRequestInformationScreen";
 
-const Trips = ({ route, navigation }) => {
+const Trips = ({ route }) => {
   const Stack = createStackNavigator();
 
   return (
@@ -29,14 +29,17 @@ const Trips = ({ route, navigation }) => {
       />
       <Stack.Screen
         name={PageNames.TRIP_INFORMATION}
-        children={() => (
-          <TripInformationScreen
-            mainRoute={route}
-            mainNavigation={navigation}
-          />
-        )}
+        component={TripInformationScreen}
         options={{
           title: "Kelionės informacija",
+          headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.TRIP_SEARCH_REQUEST_INFORMATION}
+        component={TripSearchRequestInformationScreen}
+        options={{
+          title: "Kelionės paieškos užklausa",
           headerShadowVisible: false,
         }}
       />

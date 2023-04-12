@@ -44,4 +44,27 @@ const getTripSearchRequests = async (req, res) => {
   }
 };
 
-export default { postTripSearchRequest, getTripSearchRequests };
+const getTripSearchRequest = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const tripSearchRequest = await TripSearchRequest.findById(id);
+    if (!tripSearchRequest)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send(ErrorMessages.TRIP_SEARCH_REQUEST_NOT_FOUND);
+
+    res.status(StatusCodes.OK).json({ tripSearchRequest });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+export default {
+  postTripSearchRequest,
+  getTripSearchRequests,
+  getTripSearchRequest,
+};
