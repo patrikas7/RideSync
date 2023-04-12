@@ -1,13 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Image, Text, TouchableHighlight, View } from "react-native";
-import { generatePictureUri } from "../../Utils/utils";
-import TripInformationStyles from "./TripInformationStyle";
-import TripPersonRating from "./TripPersonRating";
+import { Text, View } from "react-native";
+import { generatePictureUri } from "../../../Utils/utils";
+import TripInformationStyles from "../TripInformationStyle";
+import TripPersonRating from "../TripPersonRating";
 
-import Colors from "../../Constants/colors";
-import Sizes from "../../Constants/sizes";
-import IconButton from "../Button/IconButton";
-import PageNames from "../../Constants/pageNames";
+import Colors from "../../../Constants/colors";
+import Sizes from "../../../Constants/sizes";
+import IconButton from "../../Button/IconButton";
+import PageNames from "../../../Constants/pageNames";
 
 const TripDriverCard = ({ driver, isUserDriver, navigation, car }) => {
   const profilePictureUri = generatePictureUri(driver?.profilePicture);
@@ -32,24 +32,11 @@ const TripDriverCard = ({ driver, isUserDriver, navigation, car }) => {
       ]}
     >
       <View style={TripInformationStyles.driverCardLeft}>
-        <TouchableHighlight
+        <TripPersonProfile
           onPress={handleOnProfilePress}
-          underlayColor={Colors.WHITE}
-        >
-          <View style={TripInformationStyles.driverInformation}>
-            <Image
-              source={
-                profilePictureUri
-                  ? { uri: profilePictureUri }
-                  : require("../../../assets/pictures/avatar.png")
-              }
-              style={TripInformationStyles.avatar}
-            />
-            <Text style={TripInformationStyles.driverName}>{`${
-              driver.name
-            } ${driver.surname.charAt(0)}.`}</Text>
-          </View>
-        </TouchableHighlight>
+          profilePictureUri={profilePictureUri}
+          user={driver}
+        />
         <TripPersonRating />
       </View>
       <View>

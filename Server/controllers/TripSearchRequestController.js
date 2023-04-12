@@ -2,6 +2,7 @@ import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import TripSearchRequest from "../models/TripSearchRequest.js";
+import { parseUserProfilePicture } from "./Trip/TripControllerUtils.js";
 
 const postTripSearchRequest = async (req, res) => {
   try {
@@ -48,12 +49,17 @@ const getTripSearchRequest = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const tripSearchRequest = await TripSearchRequest.findById(id);
+    const tripSearchRequest = await TripSearchRequest.findById(id).populate(
+      "user",
+      "name surname gender dateOfBirth phoneNumber profilePicture trips"
+    );
+
     if (!tripSearchRequest)
       return res
         .status(StatusCodes.NOT_FOUND)
         .send(ErrorMessages.TRIP_SEARCH_REQUEST_NOT_FOUND);
 
+    tripSearchRequest.user = parseUserProfilePicture(tripSearchRequest.user);
     res.status(StatusCodes.OK).json({ tripSearchRequest });
   } catch (error) {
     Logging.error(error);

@@ -6,6 +6,8 @@ import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 import axios from "axios";
 import Container from "../../../Components/Container/Container";
+import Spinner from "react-native-loading-spinner-overlay/lib";
+import TripSearchRequest from "../../../Components/TripInformation/TripSearchRequest";
 
 const TripSearchRequestInformationScreen = ({ navigation, route }) => {
   const [tripSearchRequest, setTripSearchRequest] = useState({});
@@ -37,7 +39,15 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
   }, [id, token]);
 
   console.log(tripSearchRequest);
-  return <Container></Container>;
+  return (
+    <Container>
+      {isLoading ? (
+        <Spinner visible={isLoading} />
+      ) : (
+        <TripSearchRequest tripSearchRequest={tripSearchRequest} />
+      )}
+    </Container>
+  );
 };
 
 export default TripSearchRequestInformationScreen;

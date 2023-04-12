@@ -127,11 +127,11 @@ const buildPriceQuery = (onlyFreeTrips, priceRange) => {
 
 export const getTripsWithUserType = (id, trips) =>
   trips.map((trip) => {
-    const isUserDriver = trip.driver._id.toString() === id;
+    const isUseruser = trip.user._id.toString() === id;
     const timeLeftUntilTrip = getRemainingTime();
     return {
       ...trip.toObject(),
-      isUserDriver,
+      isUseruser,
       timeLeftUntilTrip,
     };
   });
@@ -148,12 +148,11 @@ const getRemainingTime = (dateStr, timeStr) => {
   return null;
 };
 
-export const parseDriverProfilePicture = (driver) => {
-  if (driver.profilePicture?.buffer)
-    driver.profilePicture.buffer =
-      driver.profilePicture.buffer.toString("base64");
+export const parseUserProfilePicture = (user) => {
+  if (user.profilePicture?.buffer)
+    user.profilePicture.buffer = user.profilePicture.buffer.toString("base64");
 
-  return driver;
+  return user;
 };
 
 export const parsePassengersProfilePictures = (passengers) => {

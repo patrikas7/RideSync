@@ -1,16 +1,16 @@
 import { ScrollView, View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import TripInformationStyles from "./TripInformationStyle";
-import TripRoutesCard from "./TripRoutesCard";
-import TripDetailsCard from "./TripDetailsCard";
-import TripDriverCard from "./TripDriverCard";
+import TripRoutesCard from "./cards/TripRoutesCard";
+import TripDetailsCard from "./cards/TripDetailsCard";
+import TripDriverCard from "./cards/TripDriverCard";
 import Button from "../Button/Button";
 import TextButton from "../Button/TextButton";
 import { useState } from "react";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";
-import TripPassengersCard from "./TripPassengersCard";
+import TripPassengersCard from "./cards/TripPassengersCard";
 
 const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
   const [isLoading, setIsLoading] = useState(false);

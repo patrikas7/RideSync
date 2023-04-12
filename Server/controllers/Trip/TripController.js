@@ -9,7 +9,7 @@ import {
   buildSearchQuery,
   getTripsWithUserType,
   buildFiltersQuery,
-  parseDriverProfilePicture,
+  parseUserProfilePicture,
   parsePassengersProfilePictures,
 } from "./TripControllerUtils.js";
 
@@ -79,7 +79,7 @@ const getTripInformation = async (req, res) => {
     );
     // const {rating, reviewCount} = getUserRatingAndReviewCount(trips.driver._id)
 
-    trip.driver = parseDriverProfilePicture(driver);
+    trip.driver = parseUserProfilePicture(driver);
     trip.passengers = parsePassengersProfilePictures(passengers);
 
     res.status(StatusCodes.OK).json({
@@ -250,7 +250,7 @@ const seatBooking = async (req, res) => {
     await addTripToUsersTripsHistory(userId, tripId);
     const updatedTrip = await findTripById(tripId);
 
-    parseDriverProfilePicture(updatedTrip.driver);
+    parseUserProfilePicture(updatedTrip.driver);
     parsePassengersProfilePictures(updatedTrip.passengers);
 
     res
@@ -287,7 +287,7 @@ const cancelBooking = async (req, res) => {
 
     await trip.save();
     await removeTripFromUsersTripHistory(userId, id);
-    parseDriverProfilePicture(trip.driver);
+    parseUserProfilePicture(trip.driver);
     parsePassengersProfilePictures(trip.passengers);
 
     res
@@ -308,7 +308,7 @@ const findTrips = async (query) => {
     .lean();
 
   trips.forEach(({ driver }) => {
-    driver = parseDriverProfilePicture(driver);
+    driver = parseUserProfilePicture(driver);
   });
 
   return trips;
