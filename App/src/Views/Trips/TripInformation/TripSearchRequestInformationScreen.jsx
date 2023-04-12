@@ -50,7 +50,9 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
     fetchTripSearchRequest();
   }, [id, token]);
 
-  const handleOnButtonPress = () => {};
+  const handleOnButtonPress = () => {
+    if (tripSearchRequest.isUsersPost) deleteRequest();
+  };
 
   const deleteRequest = async () => {
     setIsLoading(true);
@@ -63,6 +65,8 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
         message: "Kelionės paieškos skelbimas buvo sėkmingai ištrintas",
         type: "success",
       });
+
+      navigation.navigate(PageNames.TRIP_SEARCH_RESULTS);
     } catch (error) {
       printError(error);
     }

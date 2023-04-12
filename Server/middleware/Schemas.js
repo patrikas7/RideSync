@@ -180,7 +180,7 @@ const Schemas = {
       date: Joi.string().required(),
       time: Joi.string().required(),
       passengersCount: Joi.string().required(),
-      comments: Joi.string(),
+      comments: Joi.string().allow(null, ""),
     }),
   },
 };

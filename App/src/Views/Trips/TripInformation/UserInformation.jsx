@@ -1,12 +1,11 @@
 import { Image, Text, View } from "react-native";
 import { UserInformationStyles } from "./TripInformationStyles";
+import { calculateAge } from "../../../Utils/utils";
 import Container from "../../../Components/Container/Container";
 import TripPersonRating from "../../../Components/TripInformation/TripPersonRating";
-import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 import ListItem from "../../../Components/List/ListItem";
 import Button from "../../../Components/Button/Button";
-import { calculateAge } from "../../../Utils/utils";
 
 const UserInformation = ({ navigation, route }) => {
   const { user, profilePictureUri, isMyProfile, prevScreen } = route.params;

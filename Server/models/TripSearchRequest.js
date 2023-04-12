@@ -8,7 +8,7 @@ const TripSearchRequestSchema = new Schema({
   date: { type: String, required: true },
   time: { type: String, required: true },
   passengersCount: { type: Number, required: true },
-  comments: { type: String, required: true },
+  comments: { type: String },
   user: { type: Schema.Types.ObjectId, ref: "BasicUser" },
 });
 

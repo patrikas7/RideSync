@@ -1,8 +1,13 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Text, View } from "react-native";
-import axios from "axios";
-import { useRef, useState, useEffect } from "react";
+import {
+  useNavigation,
+  useRoute,
+  useIsFocused,
+} from "@react-navigation/native";
+import { View } from "react-native";
+import { useState, useEffect } from "react";
 import { showMessage } from "react-native-flash-message";
+import { printError } from "../../../Utils/utils";
+import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay";
 import ButtonsSwitch from "../../../Components/ButtonsSwitch/ButtonsSwitch";
 import Container from "../../../Components/Container/Container";
@@ -12,24 +17,21 @@ import TripsList from "../../../Components/TripsList/TripsList";
 import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 import useScreenIconRight from "../../../hooks/useScreenIconRight";
-import SlidingUpPanel from "rn-sliding-up-panel";
-import { printError } from "../../../Utils/utils";
-import TripSearchRequestList from "../../../Components/TripsList/TripSearchRequestsList";
 
 const TripsSearchResults = ({ mainRoute }) => {
   const [activeSearchType, setActiveSearchType] = useState(0);
-  const [panelVisible, setPanelVisible] = useState(false);
   const [filters, setFilteres] = useState({});
-  const ref = useRef(null);
+  const [tripsList, setTripsList] = useState([]);
+  const [tripSearchRequests, setTripSearchRequests] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [hasTripSubscriptionBeenMade, setHasTripSubscriptionBeenMade] =
     useState(false);
   const { destination, departure, date, personsCount, token, id } =
     mainRoute.params;
   const navigation = useNavigation();
   const route = useRoute();
-  const [tripsList, setTripsList] = useState([]);
-  const [tripSearchRequests, setTripSearchRequests] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const isFocused = useIsFocused();
+
   useScreenArrowBack(navigation, PageNames.SEARCH);
   useScreenIconRight({
     navigation,
@@ -46,11 +48,35 @@ const TripsSearchResults = ({ mainRoute }) => {
   });
 
   useEffect(() => {
+    if (!isFocused) return;
+    const fetchTrips = async () => {
+      if (route.params?.query) return;
+
+      setIsLoading(true);
+      try {
+        const { data } = await axios.get("/trips", {
+          params: {
+            destination: destination?.city,
+            departure: departure?.city,
+            date,
+            personsCount,
+          },
+          headers: { Authorization: token },
+        });
+
+        setTripsList(data?.trips);
+      } catch (error) {
+        printError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchTrips();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
-    if (!activeSearchType || tripSearchRequests) return;
+    if (!activeSearchType || tripSearchRequests || !isFocused) return;
     const fetchTripSearchRequests = async () => {
       setIsLoading(true);
       try {
@@ -64,6 +90,7 @@ const TripsSearchResults = ({ mainRoute }) => {
           headers: { Authorization: token },
         });
 
+        console.log(data.tripSearchRequests);
         setTripSearchRequests(data.tripSearchRequests);
       } catch (error) {
         printError(error);
@@ -73,7 +100,7 @@ const TripsSearchResults = ({ mainRoute }) => {
     };
 
     fetchTripSearchRequests();
-  }, [activeSearchType]);
+  }, [activeSearchType, isFocused]);
 
   useEffect(() => {
     if (!route.params?.query) return;
@@ -82,28 +109,6 @@ const TripsSearchResults = ({ mainRoute }) => {
     setFilteres(query);
     filterTrips(query);
   }, [route.params?.query]);
-
-  const fetchTrips = async () => {
-    if (route.params?.query) return;
-
-    try {
-      const { data } = await axios.get("/trips", {
-        params: {
-          destination: destination?.city,
-          departure: departure?.city,
-          date,
-          personsCount,
-        },
-        headers: { Authorization: token },
-      });
-
-      setTripsList(data?.trips);
-    } catch (error) {
-      printError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const filterTrips = async (query) => {
     setIsLoading(true);
@@ -172,16 +177,26 @@ const TripsSearchResults = ({ mainRoute }) => {
             }
           />
         ) : (
-          <TripsList
-            tripsList={tripSearchRequests}
-            onPress={(id) =>
-              navigation.navigate(PageNames.TRIP_SEARCH_REQUEST_INFORMATION, {
-                id,
-              })
-            }
-          />
+          renderTripSearchRequests()
         )}
       </View>
+    );
+
+  const renderTripSearchRequests = () =>
+    !isLoading && !tripSearchRequests?.length ? (
+      <NoResults
+        primaryText="Nerasta jokių kelionių užklausų pagal paieškos kriterijus"
+        secondaryText="Atnaujinkite paiešką arba bandykite vėliau "
+      />
+    ) : (
+      <TripsList
+        tripsList={tripSearchRequests}
+        onPress={(id) =>
+          navigation.navigate(PageNames.TRIP_SEARCH_REQUEST_INFORMATION, {
+            id,
+          })
+        }
+      />
     );
 
   return (
