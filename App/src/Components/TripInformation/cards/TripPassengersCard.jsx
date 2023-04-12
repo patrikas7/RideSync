@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
-import TripInformationStyles from "./TripInformationStyle";
+import TripInformationStyles from "../TripInformationStyle";
 import PassengerInformation from "./PassengerInformation";
-import PageNames from "../../Constants/pageNames";
+import PageNames from "../../../Constants/pageNames";
 
 const TripPassengersCard = ({ passengers, navigation, userId }) => {
   return (

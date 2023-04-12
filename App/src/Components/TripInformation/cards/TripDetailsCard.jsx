@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import TripInformationStyles from "./TripInformationStyle";
+import TripInformationStyles from "../TripInformationStyle";
 import TripDetail from "./TripDetail";
 
 const TripDetailsCard = ({ personsCount, comments, price }) => {

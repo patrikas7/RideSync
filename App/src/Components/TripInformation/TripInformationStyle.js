@@ -177,6 +177,10 @@ const TripInformationStyles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
   },
+  searchRequestDetails: {
+    alignSelf: "center",
+    alignItems: "center",
+  },
 });
 
 export default TripInformationStyles;

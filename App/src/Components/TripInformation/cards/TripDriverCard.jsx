@@ -2,8 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 import { generatePictureUri } from "../../../Utils/utils";
 import TripInformationStyles from "../TripInformationStyle";
+import TripPersonProfile from "../TripPersonProfile";
 import TripPersonRating from "../TripPersonRating";
-
 import Colors from "../../../Constants/colors";
 import Sizes from "../../../Constants/sizes";
 import IconButton from "../../Button/IconButton";

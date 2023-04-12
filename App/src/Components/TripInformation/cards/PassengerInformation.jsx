@@ -1,11 +1,11 @@
 import { View, TouchableHighlight, Image, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import TripDetail from "./TripDetail";
-import Colors from "../../Constants/colors";
-import Sizes from "../../Constants/sizes";
-import TripInformationStyles from "./TripInformationStyle";
-import TripPersonRating from "./TripPersonRating";
-import { generatePictureUri } from "../../Utils/utils";
+import Colors from "../../../Constants/colors";
+import Sizes from "../../../Constants/sizes";
+import TripInformationStyles from "../TripInformationStyle";
+import TripPersonRating from "../TripPersonRating";
+import { generatePictureUri } from "../../../Utils/utils";
 
 const PassengerInformation = ({ styling, onPress, passenger, seatsBooked }) => {
   const profilePictureUri = generatePictureUri(passenger.profilePicture);
@@ -22,7 +22,7 @@ const PassengerInformation = ({ styling, onPress, passenger, seatsBooked }) => {
           source={
             profilePictureUri
               ? { uri: profilePictureUri }
-              : require("../../../assets/pictures/avatar.png")
+              : require("../../../../assets/pictures/avatar.png")
           }
           style={TripInformationStyles.avatar}
         />

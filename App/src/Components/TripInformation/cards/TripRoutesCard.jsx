@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
-import TripInformationStyles from "./TripInformationStyle";
-import MainStop from "../StopsList/MainStop";
-import Colors from "../../Constants/colors";
+import TripInformationStyles from "../TripInformationStyle";
+import MainStop from "../../StopsList/MainStop";
+import Colors from "../../../Constants/colors";
 import { Fragment } from "react";
 
 const TripRoutesCard = ({ departure, destination, time, stops }) => {

@@ -1,6 +1,6 @@
 import { TouchableHighlight, Image, Text, View } from "react-native";
 import Colors from "../../Constants/colors";
-import TripInformationStyles from "../TripInformationStyle";
+import TripInformationStyles from "./TripInformationStyle";
 
 const TripPersonProfile = ({ onPress, profilePictureUri, user }) => {
   return (

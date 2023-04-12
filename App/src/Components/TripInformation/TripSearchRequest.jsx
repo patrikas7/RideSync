@@ -1,10 +1,10 @@
 import { View, ScrollView } from "react-native";
 import TripInformationStyles from "./TripInformationStyle";
-import TripRoutesCard from "./card/TripRoutesCard";
+import TripRoutesCard from "./cards/TripRoutesCard";
 import TripSearchRequestDetailsCard from "./cards/TripSearchRequestDetailsCard";
+import Button from "../Button/Button";
 
 const TripSearchRequest = ({ tripSearchRequest }) => {
-  console.log(tripSearchRequest);
   return (
     <View style={TripInformationStyles.inforamtionWrapper}>
       <View style={TripInformationStyles.scrollWrapper}>
@@ -15,8 +15,16 @@ const TripSearchRequest = ({ tripSearchRequest }) => {
             time={tripSearchRequest.time}
           />
 
-          <TripSearchRequestDetailsCard />
+          <TripSearchRequestDetailsCard
+            user={tripSearchRequest.user}
+            passengersCount={tripSearchRequest.passengersCount}
+            comments={tripSearchRequest.comments}
+          />
         </ScrollView>
+        <Button
+          text={"Rašyti pranešimą"}
+          styling={TripInformationStyles.button}
+        />
       </View>
     </View>
   );
