@@ -179,7 +179,7 @@ const Schemas = {
       destination: citySchema.required(),
       date: Joi.string().required(),
       time: Joi.string().required(),
-      passengersCount: Joi.string().required(),
+      passengersCount: Joi.number().required(),
       comments: Joi.string().allow(null, ""),
     }),
   },

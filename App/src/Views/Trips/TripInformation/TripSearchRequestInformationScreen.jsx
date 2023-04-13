@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { printError } from "../../../Utils/utils";
+import { useIsFocused } from "@react-navigation/native";
+import { alert, isObjectEmpty, printError } from "../../../Utils/utils";
 import { showMessage } from "react-native-flash-message";
 import useUserData from "../../../hooks/useUserData";
 import PageNames from "../../../Constants/pageNames";
@@ -13,7 +14,8 @@ import Colors from "../../../Constants/colors";
 
 const TripSearchRequestInformationScreen = ({ navigation, route }) => {
   const [tripSearchRequest, setTripSearchRequest] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const isFocused = useIsFocused();
   const { id } = route.params;
   const { token, id: userId } = useUserData();
 
@@ -34,10 +36,11 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
     onPress: handleOnEditPress,
     shouldRender: tripSearchRequest.isUsersPost,
     color: Colors.BLACK,
+    dependency: tripSearchRequest,
   });
 
   useEffect(() => {
-    if (!id || !token) return;
+    if (!id || !token || !isFocused) return;
 
     const fetchTripSearchRequest = async () => {
       setIsLoading(true);
@@ -46,7 +49,6 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
           headers: { Authorization: token },
         });
 
-        console.log(data);
         setTripSearchRequest(data.tripSearchRequest);
       } catch (error) {
         printError(error);
@@ -56,15 +58,18 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
     };
 
     fetchTripSearchRequest();
-  }, [id, token]);
-
-  useEffect(() => {
-    if (!route.params?.tripSearchRequest) return;
-    setTripSearchRequest(route.params?.tripSearchRequest);
-  }, [route.params?.tripSearchRequest]);
+  }, [id, token, isFocused]);
 
   const handleOnButtonPress = () => {
-    if (tripSearchRequest.isUsersPost) deleteRequest();
+    if (tripSearchRequest.isUsersPost) handleOnDelete();
+  };
+
+  const handleOnDelete = () => {
+    alert(
+      "Kelionės paieškos naikinimas",
+      "Ar tikrai norite pašalinti šią kelionės paiešką?",
+      deleteRequest
+    );
   };
 
   const deleteRequest = async () => {
@@ -89,7 +94,7 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
 
   return (
     <Container>
-      {isLoading ? (
+      {isObjectEmpty(tripSearchRequest) ? (
         <Spinner visible={isLoading} />
       ) : (
         <TripSearchRequest

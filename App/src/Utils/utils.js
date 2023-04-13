@@ -1,3 +1,5 @@
+import { Alert } from "react-native";
+
 export const hasObjectEmptyValues = (obj) => Object.values(obj).some((x) => !x);
 
 export const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
@@ -64,3 +66,15 @@ export const constructCarsList = (carsList) =>
     label: `${car.manufacturer} ${car.model} ${car.licensePlateNumber}`,
     value: car._id,
   }));
+
+export const alert = (headline, secondaryText, onPress) => {
+  Alert.alert(headline, secondaryText, [
+    {
+      text: "Ne",
+    },
+    {
+      text: "Taip",
+      onPress,
+    },
+  ]);
+};

@@ -76,7 +76,8 @@ const TripsSearchResults = ({ mainRoute }) => {
   }, [isFocused]);
 
   useEffect(() => {
-    if (!activeSearchType || tripSearchRequests || !isFocused) return;
+    if (!activeSearchType || !isFocused) return;
+
     const fetchTripSearchRequests = async () => {
       setIsLoading(true);
       try {
@@ -90,7 +91,6 @@ const TripsSearchResults = ({ mainRoute }) => {
           headers: { Authorization: token },
         });
 
-        console.log(data.tripSearchRequests);
         setTripSearchRequests(data.tripSearchRequests);
       } catch (error) {
         printError(error);

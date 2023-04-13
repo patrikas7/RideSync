@@ -87,15 +87,8 @@ const updateTripSearchRequest = async (req, res) => {
         .status(StatusCodes.NOT_FOUND)
         .send(ErrorMessages.TRIP_NOT_FOUND);
 
-    updatedTripSearchRequest.user = parseUserProfilePicture(
-      updatedTripSearchRequest.user
-    );
-
     res.status(StatusCodes.OK).json({
-      tripSearchRequest: {
-        ...updatedTripSearchRequest,
-        isUsersPost: true,
-      },
+      tripSearchRequest: updatedTripSearchRequest,
     });
   } catch (error) {
     Logging.error(error);

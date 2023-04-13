@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import Logging from "../library/Logging.js";
 import BasicUser from "./BasicUser.js";
 import { cityType } from "./Trip.js";
 

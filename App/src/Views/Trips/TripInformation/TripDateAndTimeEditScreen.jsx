@@ -79,15 +79,15 @@ const TripDateAndTimeEditScreen = ({ route, navigation }) => {
   };
 
   const updateTripSearchRequest = async () => {
-    const { data } = await axios.put(
+    await axios.put(
       `/trip-search-requests/${trip._id}`,
       {
         departure: trip.departure,
         destination: trip.destination,
-        date: trip.date,
-        time: trip.time,
+        date,
+        time,
         passengersCount: trip.passengersCount,
-        comments: trip.passengersCount,
+        comments: trip.comments,
       },
       { headers: { Authorization: token } }
     );
@@ -98,7 +98,7 @@ const TripDateAndTimeEditScreen = ({ route, navigation }) => {
     });
 
     navigation.navigate(PageNames.TRIP_SEARCH_REQUEST_INFORMATION, {
-      tripSearchRequest: data.tripSearchRequest,
+      id: trip._id,
     });
   };
 
