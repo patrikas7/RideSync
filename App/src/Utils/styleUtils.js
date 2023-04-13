@@ -36,6 +36,12 @@ const StyleUtils = {
     shadowRadius: 3.84,
     elevation: 5,
   },
+  headline: {
+    color: Colors.GREY_600,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
+    fontWeight: "bold",
+    marginTop: 8,
+  },
 };
 
 export default StyleUtils;

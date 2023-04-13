@@ -1,55 +1,64 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import Container from "../../../Components/Container/Container";
 import NoResults from "../../../Components/NoResults/NoResults";
 import useUserData from "../../../hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import axios from "axios";
-import TripsList from "../../../Components/TripsList/TripsList";
-import PageNames from "../../../Constants/pageNames";
+import FutureTripsList from "../../../Components/MyTrips/FutureTripsList";
 
 const FutureTrips = ({ navigation }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [futureTrips, setFutureTrips] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [futureTrips, setFutureTrips] = useState({});
+  const isFocused = useIsFocused();
   const { token, id } = useUserData();
 
   useEffect(() => {
-    if (!id || !token) return;
+    if (!id || !token || !isFocused) return;
+    const fetchFutureTrips = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await axios.get("/user/my-trips", {
+          params: { id },
+          headers: { Authorization: token },
+        });
+
+        setFutureTrips(data);
+      } catch (error) {
+        console.log(error.response.data);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchFutureTrips();
-  }, [id, token]);
+  }, [id, token, isFocused]);
 
-  const fetchFutureTrips = async () => {
-    try {
-      const { data } = await axios.get("/trips/my-trips/future-trips", {
-        params: { id },
-        headers: { Authorization: token },
-      });
+  const countTotalLength = () => {
+    let totalLength = 0;
 
-      setFutureTrips(data?.trips);
-    } catch (error) {
-      console.log(error.response.data);
-    } finally {
-      setIsLoading(false);
+    for (let key in futureTrips) {
+      totalLength += futureTrips[key].length;
     }
-  };
 
-  const handleOnTripPress = (id) => {
-    navigation.navigate(PageNames.TRIP_INFORMATION, { id });
+    return totalLength;
   };
 
   return (
     <Container>
       <Spinner visible={isLoading} />
-      {!isLoading && !futureTrips.length ? (
+      {!isLoading && !countTotalLength() ? (
         <NoResults
           primaryText="Jūs neturite jokių suplanuotų kelionių"
           secondaryText="Sukurkite naują kelionę arba užsirezervuokite vietą per kelionių paiešką"
           buttonText="Mano kelionių istorija"
         />
       ) : (
-        <TripsList
-          tripsList={futureTrips}
-          onPress={(id) => handleOnTripPress(id)}
+        <FutureTripsList
+          driverTrips={futureTrips.driverTrips}
+          passengerTrips={futureTrips.passengerTrips}
+          tripSearchRequests={futureTrips.tripSearchRequests}
         />
       )}
     </Container>

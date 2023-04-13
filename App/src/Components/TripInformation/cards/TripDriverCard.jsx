@@ -40,12 +40,12 @@ const TripDriverCard = ({ driver, isUserDriver, navigation, car }) => {
         />
         <TripPersonRating />
       </View>
-      <View>
+      <View style={TripInformationStyles.driverCardRight}>
         <View style={TripInformationStyles.vehicleDetails}>
           <Ionicons name="car" size={Sizes.ICON} />
           <View>
             <Text style={TripInformationStyles.primaryText}>
-              {`${car?.manufacturer} ${car?.model} ${car?.manufactureYear} ${car?.type}`}
+              {`${car?.manufacturer} ${car?.model} ${car?.manufactureYear} `}
             </Text>
             <Text style={TripInformationStyles.secondaryText}>
               {car?.licensePlateNumber}

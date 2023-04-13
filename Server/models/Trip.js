@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import Logging from "../library/Logging.js";
 import BasicUser from "./BasicUser.js";
 
 export const cityType = {
@@ -33,14 +34,18 @@ const TripSchema = new Schema({
 });
 
 TripSchema.pre("save", async function (next) {
-  try {
-    const user = await BasicUser.findById(this.driver);
-    user.trips.push(this._id);
-    await user.save();
+  if (this.isNew) {
+    try {
+      const user = await BasicUser.findById(this.driver);
+      user.trips.push(this._id);
+      await user.save();
 
+      next();
+    } catch (error) {
+      next(error);
+    }
+  } else {
     next();
-  } catch (error) {
-    next(error);
   }
 });
 

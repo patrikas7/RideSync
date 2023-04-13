@@ -195,6 +195,7 @@ const seatBooking = async (req, res) => {
     userId,
     body: { passengersCount, tripId },
   } = req;
+
   const today = new Date().toISOString().slice(0, 10);
 
   try {
@@ -314,8 +315,7 @@ const addTripToUsersTripsHistory = async (userId, tripId) => {
 
 const removeTripFromUsersTripHistory = async (userId, tripId) => {
   const user = await User.findById(userId);
-  user.trips = user.trips.filter((id) => id !== tripId);
-  Logging.info(user.trips);
+  user.trips = user.trips.filter((id) => id.toString() !== tripId);
   await user.save();
 };
 

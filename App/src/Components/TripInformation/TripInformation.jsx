@@ -11,6 +11,7 @@ import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";
 import TripPassengersCard from "./cards/TripPassengersCard";
+import { alert } from "../../Utils/utils";
 
 const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,15 +28,11 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
   };
 
   const handleOnDelete = () => {
-    Alert.alert("Kelionės atšaukimas", "Ar tikrai norite atšaukti kelionę?", [
-      {
-        text: "Ne",
-      },
-      {
-        text: "Taip",
-        onPress: () => deleteTrip(),
-      },
-    ]);
+    alert(
+      "Kelionės atšaukimas",
+      "Ar tikrai norite atšaukti kelionę?",
+      deleteTrip
+    );
   };
 
   const deleteTrip = async () => {

@@ -4,6 +4,7 @@ import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import bcrypt from "bcryptjs";
 import BasicUser from "../models/BasicUser.js";
+import { parseUserProfilePicture } from "./Trip/TripControllerUtils.js";
 
 const checkUserByEmail = async (req, res) => {
   const { email } = req.query;
@@ -153,19 +154,38 @@ const deleteUser = async (req, res) => {
 
 const getUserTrips = async (req, res) => {
   const { userId } = req;
-  try {
-    const user = await BasicUser.findById(userId).populate({
-      path: "trips",
-      populate: {
-        path: "driver",
-        model: "BasicUser",
-        select: "name profilePicture",
-      },
-    });
 
-    const driverTrips = user.trips.filter((trip) => {
-      console.log(trip.driver._id.toString(), userId);
-    });
+  try {
+    const user = await BasicUser.findById(userId)
+      .populate({
+        path: "trips",
+        populate: {
+          path: "driver",
+          model: "BasicUser",
+          select: "name profilePicture",
+        },
+      })
+      .populate({
+        path: "tripSearchRequests",
+        populate: {
+          path: "user",
+          model: "BasicUser",
+          select: "name profilePicture",
+        },
+      })
+      .lean();
+
+    user.trips.forEach((trip) => [
+      (trip.driver = parseUserProfilePicture(trip.driver)),
+    ]);
+
+    user.tripSearchRequests.forEach((trip) => [
+      (trip.user = parseUserProfilePicture(trip.user)),
+    ]);
+
+    const driverTrips = user.trips.filter(
+      (trip) => trip.driver._id.toString() === userId
+    );
 
     const passengerTrips = user.trips.filter((trip) =>
       trip.passengers
@@ -173,7 +193,11 @@ const getUserTrips = async (req, res) => {
         .includes(userId)
     );
 
-    Logging.info(passengerTrips);
+    res.status(StatusCodes.OK).json({
+      driverTrips,
+      passengerTrips,
+      tripSearchRequests: user.tripSearchRequests,
+    });
   } catch (error) {
     Logging.error(error);
     return res

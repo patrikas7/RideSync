@@ -30,6 +30,9 @@ const TripInformationStyles = StyleSheet.create({
   driverCardLeft: {
     alignItems: "center",
   },
+  driverCardRight: {
+    flex: 1,
+  },
   driverInformation: {
     alignItems: "center",
   },
