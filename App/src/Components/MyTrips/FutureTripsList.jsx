@@ -1,4 +1,5 @@
 import { View, Text, ScrollView } from "react-native";
+import PageNames from "../../Constants/pageNames";
 import TextButton from "../Button/TextButton";
 import TripCard from "../TripsList/TripCard";
 import { FutureTripsStyles } from "./MyTripsStyle";
@@ -7,6 +8,7 @@ const FutureTripsList = ({
   driverTrips,
   passengerTrips,
   tripSearchRequests,
+  onTripPress,
 }) => {
   return (
     <ScrollView>
@@ -19,6 +21,7 @@ const FutureTripsList = ({
             <TripCard
               key={index}
               trip={trip}
+              onPress={(id) => onTripPress(id, PageNames.TRIP_INFORMATION)}
               containerStyling={
                 index > 0
                   ? FutureTripsStyles.notFirstItem
@@ -37,6 +40,7 @@ const FutureTripsList = ({
             <TripCard
               key={index}
               trip={trip}
+              onPress={(id) => onTripPress(id, PageNames.TRIP_INFORMATION)}
               containerStyling={
                 index > 0
                   ? FutureTripsStyles.notFirstItem
@@ -55,6 +59,9 @@ const FutureTripsList = ({
             <TripCard
               key={index}
               trip={trip}
+              onPress={(id) =>
+                onTripPress(id, PageNames.TRIP_SEARCH_REQUEST_INFORMATION)
+              }
               containerStyling={
                 index > 0
                   ? FutureTripsStyles.notFirstItem

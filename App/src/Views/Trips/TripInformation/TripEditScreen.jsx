@@ -75,7 +75,7 @@ const TripEditScreen = ({ route, navigation }) => {
       value: trip[inputType].addressLine1,
       prevScreen: PageNames.TRIP_EDIT,
       navigateToPrev: true,
-      props: { trip, token, id },
+      props: { trip, token, id, isTripSearchRequest },
     });
 
     Keyboard.dismiss();
@@ -84,7 +84,7 @@ const TripEditScreen = ({ route, navigation }) => {
   const handleOnNext = () => {
     setErrors({ personsCount: "", price: "" });
 
-    const carIsRequired = !isTripSearchRequest && !trip.car._id;
+    const carIsRequired = !isTripSearchRequest && !trip?.car._id;
     if (carIsRequired) {
       showMessage({ message: ErrorMessages.CAR_IS_REQUIRED, type: "danger" });
       return;
@@ -170,7 +170,6 @@ const TripEditScreen = ({ route, navigation }) => {
             ))}
           </>
         )}
-
         {!isTripSearchRequest && (
           <>
             <Text

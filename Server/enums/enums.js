@@ -39,3 +39,10 @@ export const CarTypes = {
   COUPE: "Kupė",
   MINIVAN: "Minivenas",
 };
+
+export const NotificationTypes = {
+  CHAT_MESSAGE: "CHAT_MESSAGE",
+  TRIP_WAS_EDITED: "TRIP_WAS_EDITED",
+  TRIP_WAS_CANCELED: "TRIP_WAS_CANCELED",
+  TRIP_PASSENGER_REQUEST: "TRIP_PASSENGER_REQUEST",
+};

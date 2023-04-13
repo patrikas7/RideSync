@@ -7,6 +7,7 @@ import useUserData from "../../../hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
 import axios from "axios";
 import FutureTripsList from "../../../Components/MyTrips/FutureTripsList";
+import PageNames from "../../../Constants/pageNames";
 
 const FutureTrips = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +46,10 @@ const FutureTrips = ({ navigation }) => {
     return totalLength;
   };
 
+  const handleOnTripPress = (id, screen) => {
+    navigation.navigate(screen, { id });
+  };
+
   return (
     <Container>
       <Spinner visible={isLoading} />
@@ -59,6 +64,7 @@ const FutureTrips = ({ navigation }) => {
           driverTrips={futureTrips.driverTrips}
           passengerTrips={futureTrips.passengerTrips}
           tripSearchRequests={futureTrips.tripSearchRequests}
+          onTripPress={handleOnTripPress}
         />
       )}
     </Container>
