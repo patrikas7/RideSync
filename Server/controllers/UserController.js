@@ -3,6 +3,7 @@ import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import bcrypt from "bcryptjs";
+import BasicUser from "../models/BasicUser.js";
 
 const checkUserByEmail = async (req, res) => {
   const { email } = req.query;
@@ -150,6 +151,37 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const getUserTrips = async (req, res) => {
+  const { userId } = req;
+  try {
+    const user = await BasicUser.findById(userId).populate({
+      path: "trips",
+      populate: {
+        path: "driver",
+        model: "BasicUser",
+        select: "name profilePicture",
+      },
+    });
+
+    const driverTrips = user.trips.filter((trip) => {
+      console.log(trip.driver._id.toString(), userId);
+    });
+
+    const passengerTrips = user.trips.filter((trip) =>
+      trip.passengers
+        .map((passenger) => passenger.passenger.toString())
+        .includes(userId)
+    );
+
+    Logging.info(passengerTrips);
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
@@ -158,4 +190,5 @@ export default {
   changePassword,
   uploadPicture,
   deleteUser,
+  getUserTrips,
 };

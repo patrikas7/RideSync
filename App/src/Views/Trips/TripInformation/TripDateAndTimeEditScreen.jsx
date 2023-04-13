@@ -12,11 +12,12 @@ import axios from "axios";
 import PageNames from "../../../Constants/pageNames";
 
 const TripDateAndTimeEditScreen = ({ route, navigation }) => {
-  const { prevScreen, trip, isReturn, token } = route.params;
+  const { prevScreen, trip, isReturn, token, isTripSearchRequest } =
+    route.params;
   const [date, setDate] = useState(isReturn ? trip.returnDate : trip.date);
   const [time, setTime] = useState(isReturn ? trip.returnTime : trip.time);
   const [isLoading, setIsLoading] = useState(false);
-  useScreenArrowBack(navigation, prevScreen);
+  useScreenArrowBack(navigation, prevScreen, route.params);
 
   const handleOnPress = () => {
     if (!isReturn) validateUpdate();
@@ -32,44 +33,73 @@ const TripDateAndTimeEditScreen = ({ route, navigation }) => {
       return;
     }
 
-    updateTrip();
+    updateData();
   };
 
-  const updateTrip = async () => {
+  const updateData = async () => {
     setIsLoading(true);
-    console.log(trip);
     try {
-      const { data } = await axios.put(
-        "/trips",
-        {
-          departure: trip.departure,
-          destination: trip.destination,
-          stops: trip.stops,
-          date,
-          time,
-          personsCount: trip.personsCount,
-          price: trip.price,
-          comments: trip.comments,
-          isTripFree: trip.isTripFree,
-          isRoundTrip: trip.isRoundTrip,
-          returnDate: trip.returnDate,
-          returnTime: trip.returnTime,
-          car: trip.car._id,
-        },
-        { params: { id: trip._id }, headers: { Authorization: token } }
-      );
-
-      showMessage({
-        message: "Kelionė buvo sėkmingai atnaujinta",
-        type: "success",
-      });
-
-      navigation.navigate(PageNames.TRIP_INFORMATION, { trip: data.trip });
+      isTripSearchRequest
+        ? await updateTripSearchRequest()
+        : await updateTrip();
     } catch (error) {
       printError(error);
     }
 
     setIsLoading(false);
+  };
+
+  const updateTrip = async () => {
+    const { data } = await axios.put(
+      "/trips",
+      {
+        departure: trip.departure,
+        destination: trip.destination,
+        stops: trip.stops,
+        date,
+        time,
+        personsCount: trip.personsCount,
+        price: trip.price,
+        comments: trip.comments,
+        isTripFree: trip.isTripFree,
+        isRoundTrip: trip.isRoundTrip,
+        returnDate: trip.returnDate,
+        returnTime: trip.returnTime,
+        car: trip.car._id,
+      },
+      { params: { id: trip._id }, headers: { Authorization: token } }
+    );
+
+    showMessage({
+      message: "Kelionė buvo sėkmingai atnaujinta",
+      type: "success",
+    });
+
+    navigation.navigate(PageNames.TRIP_INFORMATION, { trip: data.trip });
+  };
+
+  const updateTripSearchRequest = async () => {
+    const { data } = await axios.put(
+      `/trip-search-requests/${trip._id}`,
+      {
+        departure: trip.departure,
+        destination: trip.destination,
+        date: trip.date,
+        time: trip.time,
+        passengersCount: trip.passengersCount,
+        comments: trip.passengersCount,
+      },
+      { headers: { Authorization: token } }
+    );
+
+    showMessage({
+      message: "Kelionės paieškos užklausa buvo sėkmingai atnaujinta",
+      type: "success",
+    });
+
+    navigation.navigate(PageNames.TRIP_SEARCH_REQUEST_INFORMATION, {
+      tripSearchRequest: data.tripSearchRequest,
+    });
   };
 
   return (

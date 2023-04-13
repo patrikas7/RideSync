@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Alert } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import TripInformationStyles from "./TripInformationStyle";
 import TripRoutesCard from "./cards/TripRoutesCard";
@@ -16,7 +16,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnButtonClick = async () => {
-    if (trip.isUserDriver) await deleteTrip();
+    if (trip.isUserDriver) handleOnDelete();
     else if (trip.isUserPassenger) await cancelReservation();
     else
       navigation.navigate(PageNames.TRIP_PASSENGERS_COUNT_SELECT, {
@@ -24,6 +24,18 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
         token,
         tripId: trip._id,
       });
+  };
+
+  const handleOnDelete = () => {
+    Alert.alert("Kelionės atšaukimas", "Ar tikrai norite atšaukti kelionę?", [
+      {
+        text: "Ne",
+      },
+      {
+        text: "Taip",
+        onPress: () => deleteTrip(),
+      },
+    ]);
   };
 
   const deleteTrip = async () => {

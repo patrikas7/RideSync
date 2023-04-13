@@ -16,15 +16,22 @@ import axios from "axios";
 import ErrorMessages from "../../../Constants/errorMessages";
 
 const TripEditScreen = ({ route, navigation }) => {
-  const { token, id, trip: currentTrip } = route.params;
+  const {
+    token,
+    id,
+    trip: currentTrip,
+    prevScreen,
+    isTripSearchRequest,
+  } = route.params;
   const [trip, setTrip] = useState(currentTrip);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [userCars, setUserCars] = useState([]);
   const [errors, setErrors] = useState({ personsCount: "", price: "" });
-  useScreenArrowBack(navigation, PageNames.TRIP_INFORMATION);
+  useScreenArrowBack(navigation, prevScreen);
 
   useEffect(() => {
     if (!route.params?.departure) return;
+
     setTrip((prevState) => ({
       ...prevState,
       departure: route.params.departure,
@@ -33,6 +40,7 @@ const TripEditScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     if (!route.params?.destination) return;
+
     setTrip((prevState) => ({
       ...prevState,
       destination: route.params.destination,
@@ -40,7 +48,7 @@ const TripEditScreen = ({ route, navigation }) => {
   }, [route.params?.destination]);
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || isTripSearchRequest) return;
 
     const fetchUsersVehicle = async () => {
       setIsLoading(true);
@@ -59,7 +67,7 @@ const TripEditScreen = ({ route, navigation }) => {
     };
 
     fetchUsersVehicle();
-  }, [token]);
+  }, [token, isTripSearchRequest]);
 
   const handleOnInputFocus = (inputType) => {
     navigation.navigate(PageNames.CITY_SEARCH, {
@@ -75,25 +83,23 @@ const TripEditScreen = ({ route, navigation }) => {
 
   const handleOnNext = () => {
     setErrors({ personsCount: "", price: "" });
-    if (!trip.car._id) {
-      showMessage({
-        message: ErrorMessages.CAR_IS_REQUIRED,
-        type: "danger",
-      });
 
+    const carIsRequired = !isTripSearchRequest && !trip.car._id;
+    if (carIsRequired) {
+      showMessage({ message: ErrorMessages.CAR_IS_REQUIRED, type: "danger" });
       return;
     }
 
-    if (trip.departure.city === trip.destination.city) {
-      showMessage({
-        message: ErrorMessages.SAME_CITIES,
-        type: "danger",
-      });
-
+    const sameCitiesError = trip.departure.city === trip.destination.city;
+    if (sameCitiesError) {
+      showMessage({ message: ErrorMessages.SAME_CITIES, type: "danger" });
       return;
     }
 
-    if (!trip.personsCount) {
+    const personsCountIsRequired =
+      (!isTripSearchRequest && !trip.personsCount) ||
+      (isTripSearchRequest && !trip.passengersCount);
+    if (personsCountIsRequired) {
       setErrors((prevState) => ({
         ...prevState,
         personsCount: ErrorMessages.REQUIRED_FIELD,
@@ -101,12 +107,12 @@ const TripEditScreen = ({ route, navigation }) => {
       return;
     }
 
-    if (!trip.price) {
+    const priceIsRequired = !isTripSearchRequest && !trip.price;
+    if (priceIsRequired) {
       setErrors((prevState) => ({
         ...prevState,
         price: ErrorMessages.REQUIRED_FIELD,
       }));
-
       return;
     }
 
@@ -115,7 +121,15 @@ const TripEditScreen = ({ route, navigation }) => {
       token,
       id,
       prevScreen: route.name,
+      isTripSearchRequest,
     });
+  };
+
+  const handlePersonsCountChange = (count) => {
+    const updatedTrip = isTripSearchRequest
+      ? { ...trip, passengersCount: count }
+      : { ...trip, personsCount: count };
+    setTrip(updatedTrip);
   };
 
   return (
@@ -139,7 +153,7 @@ const TripEditScreen = ({ route, navigation }) => {
           onFocus={() => handleOnInputFocus("destination")}
         />
 
-        {trip.stops.length > 0 && (
+        {trip?.stops?.length > 0 && (
           <>
             <Text
               style={[TripEditStyles.headline, TripEditStyles.headlineNotFirst]}
@@ -157,19 +171,23 @@ const TripEditScreen = ({ route, navigation }) => {
           </>
         )}
 
-        <Text
-          style={[TripEditStyles.headline, TripEditStyles.headlineNotFirst]}
-        >
-          Kelionės automobilis
-        </Text>
-        <Dropdown
-          value={trip.car._id}
-          items={userCars}
-          placeholder={"Pasirinkite automobilį"}
-          onValueChange={(id) =>
-            setTrip((prevState) => ({ ...prevState, car: { _id: id } }))
-          }
-        />
+        {!isTripSearchRequest && (
+          <>
+            <Text
+              style={[TripEditStyles.headline, TripEditStyles.headlineNotFirst]}
+            >
+              Kelionės automobilis
+            </Text>
+            <Dropdown
+              value={trip.car._id}
+              items={userCars}
+              placeholder={"Pasirinkite automobilį"}
+              onValueChange={(id) =>
+                setTrip((prevState) => ({ ...prevState, car: { _id: id } }))
+              }
+            />
+          </>
+        )}
 
         <Text
           style={[TripEditStyles.headline, TripEditStyles.headlineNotFirst]}
@@ -181,29 +199,31 @@ const TripEditScreen = ({ route, navigation }) => {
           placeholder={"Keleivių skaičius"}
           icon={"people-outline"}
           inputMode={"numeric"}
-          value={trip.personsCount.toString()}
-          containerStyling={{ marginTop: 16 }}
-          onChange={(personsCount) =>
-            setTrip((prevState) => ({ ...prevState, personsCount }))
+          value={
+            trip?.personsCount?.toString() || trip?.passengersCount?.toString()
           }
+          containerStyling={{ marginTop: 16 }}
+          onChange={handlePersonsCountChange}
           hasError={!!errors.personsCount}
           errorText={errors.personsCount}
           maxLength={2}
         />
 
-        <Input
-          placeholder={"Kaina vienam keleiviui"}
-          icon={"cash-outline"}
-          inputMode={"numeric"}
-          value={trip.price}
-          onChange={(price) =>
-            setTrip((prevState) => ({ ...prevState, price }))
-          }
-          hasError={!!errors.price}
-          errorText={errors.price}
-          maxLength={5}
-          disabled={trip.isTripFree}
-        />
+        {!isTripSearchRequest && (
+          <Input
+            placeholder={"Kaina vienam keleiviui"}
+            icon={"cash-outline"}
+            inputMode={"numeric"}
+            value={trip.price}
+            onChange={(price) =>
+              setTrip((prevState) => ({ ...prevState, price }))
+            }
+            hasError={!!errors.price}
+            errorText={errors.price}
+            maxLength={5}
+            disabled={trip.isTripFree}
+          />
+        )}
 
         <Input
           placeholder={"Papildomi komentarai"}
@@ -216,25 +236,32 @@ const TripEditScreen = ({ route, navigation }) => {
           containerStyling={{ marginTop: 16 }}
         />
 
-        <InputSwitch
-          isEnabled={trip.isTripFree}
-          onChange={() =>
-            setTrip((prevState) => ({ ...prevState, isTripFree: !isTripFree }))
-          }
-          text="Ar kelionė yra nemokama?"
-        />
+        {!isTripSearchRequest && (
+          <>
+            <InputSwitch
+              isEnabled={trip.isTripFree}
+              onChange={() =>
+                setTrip((prevState) => ({
+                  ...prevState,
+                  isTripFree: !isTripFree,
+                }))
+              }
+              text="Ar kelionė yra nemokama?"
+            />
 
-        <InputSwitch
-          isEnabled={trip.isRoundTrip}
-          onChange={() =>
-            setTrip((prevState) => ({
-              ...prevState,
-              isRoundTrip: !isRoundTrip,
-            }))
-          }
-          text="Ar bus grįžtama tuo pačiu maršrutu?"
-          styling={{ marginBottom: 32 }}
-        />
+            <InputSwitch
+              isEnabled={trip.isRoundTrip}
+              onChange={() =>
+                setTrip((prevState) => ({
+                  ...prevState,
+                  isRoundTrip: !isRoundTrip,
+                }))
+              }
+              text="Ar bus grįžtama tuo pačiu maršrutu?"
+              styling={{ marginBottom: 32 }}
+            />
+          </>
+        )}
       </ScrollView>
       <Button
         text={"Toliau"}

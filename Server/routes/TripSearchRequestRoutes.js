@@ -16,6 +16,11 @@ TripSearchRequestRouter.route("/")
 
 TripSearchRequestRouter.route("/:id")
   .get(authMiddleware, controller.getTripSearchRequest)
+  .put(
+    authMiddleware,
+    ValidateSchema(Schemas.tripSearchRequest.create),
+    controller.updateTripSearchRequest
+  )
   .delete(authMiddleware, controller.deleteTripSearchRequest);
 
 export default TripSearchRequestRouter;

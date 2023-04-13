@@ -26,7 +26,7 @@ TripSearchRequestSchema.pre("save", async function (next) {
 
 TripSearchRequestSchema.pre("delete", async function (next) {
   try {
-    const user = await BasicUser.findById(this.userId);
+    const user = await BasicUser.findById(this.user);
     user.tripSearchRequests.pull(this._id);
     await user.save();
 

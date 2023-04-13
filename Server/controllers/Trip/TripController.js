@@ -142,34 +142,6 @@ const postTrip = async (req, res) => {
   }
 };
 
-const getUsersFutureTrips = async (req, res) => {
-  const { id } = req.query;
-  const now = new Date();
-
-  try {
-    const trips = await Trip.find({
-      $or: [{ driver: id }, { passengers: id }],
-      // date: { $gte: now.toISOString().slice(0, 10) },
-      // $or: [
-      //   { date: { $gt: now.toISOString().slice(0, 10) } },
-      //   {
-      //     date: now.toISOString().slice(0, 10),
-      //     time: { $gt: now.toISOString().slice(11, 5) },
-      //   },
-      // ],
-    }).populate("driver", "name surname");
-
-    const tripsWithUserType = getTripsWithUserType(id, trips);
-
-    res.status(StatusCodes.OK).json({ trips: tripsWithUserType });
-  } catch (error) {
-    Logging.error(error);
-    res
-      .status(StatusCodes.UNEXPECTED_ERROR)
-      .send(ErrorMessages.UNEXPECTED_ERROR);
-  }
-};
-
 const filterTrips = async (req, res) => {
   const { isAddToFavouritesSelcted } = req.query;
   const userId = req.userId;
@@ -343,6 +315,7 @@ const addTripToUsersTripsHistory = async (userId, tripId) => {
 const removeTripFromUsersTripHistory = async (userId, tripId) => {
   const user = await User.findById(userId);
   user.trips = user.trips.filter((id) => id !== tripId);
+  Logging.info(user.trips);
   await user.save();
 };
 
@@ -388,7 +361,6 @@ export default {
   getTrips,
   postTrip,
   getTripInformation,
-  getUsersFutureTrips,
   filterTrips,
   deleteTrip,
   seatBooking,

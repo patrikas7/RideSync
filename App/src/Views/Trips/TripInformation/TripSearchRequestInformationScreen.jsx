@@ -15,9 +15,17 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
   const [tripSearchRequest, setTripSearchRequest] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { id } = route.params;
-  const { token } = useUserData();
+  const { token, id: userId } = useUserData();
 
-  const handleOnEditPress = () => {};
+  const handleOnEditPress = () => {
+    navigation.navigate(PageNames.TRIP_EDIT, {
+      trip: tripSearchRequest,
+      token,
+      userId,
+      prevScreen: PageNames.TRIP_SEARCH_REQUEST_INFORMATION,
+      isTripSearchRequest: true,
+    });
+  };
 
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
   useScreenIconRight({
@@ -49,6 +57,11 @@ const TripSearchRequestInformationScreen = ({ navigation, route }) => {
 
     fetchTripSearchRequest();
   }, [id, token]);
+
+  useEffect(() => {
+    if (!route.params?.tripSearchRequest) return;
+    setTripSearchRequest(route.params?.tripSearchRequest);
+  }, [route.params?.tripSearchRequest]);
 
   const handleOnButtonPress = () => {
     if (tripSearchRequest.isUsersPost) deleteRequest();

@@ -40,12 +40,6 @@ TripRouter.route("/information")
   .get(authMiddleware, validateIdMiddleware, controller.getTripInformation)
   .delete(authMiddleware, validateIdMiddleware, controller.deleteTrip);
 
-TripRouter.route("/my-trips/future-trips").get(
-  authMiddleware,
-  validateIdMiddleware,
-  controller.getUsersFutureTrips
-);
-
 TripRouter.route("/bookings")
   .post(
     authMiddleware,

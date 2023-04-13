@@ -17,7 +17,12 @@ const TripInformationScreen = ({ navigation, route }) => {
   useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
 
   const handleOnEditPress = () => {
-    navigation.navigate(PageNames.TRIP_EDIT, { trip, token, id: userId });
+    navigation.navigate(PageNames.TRIP_EDIT, {
+      trip,
+      token,
+      id: userId,
+      prevScreen: PageNames.TRIP_INFORMATION,
+    });
   };
 
   useScreenIconRight({

@@ -36,4 +36,6 @@ UserRouter.route("/profilePicture").post(
   controller.uploadPicture
 );
 
+UserRouter.route("/my-trips").get(authMiddleware, controller.getUserTrips);
+
 export default UserRouter;

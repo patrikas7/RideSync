@@ -50,21 +50,20 @@ const getTripSearchRequest = async (req, res) => {
   const { userId } = req;
 
   try {
-    const tripSearchRequest = await TripSearchRequest.findById(id).populate(
-      "user",
-      "name surname gender dateOfBirth phoneNumber profilePicture trips"
-    );
+    const tripSearchRequest = await populateUser(
+      TripSearchRequest.findById(id)
+    ).lean();
 
     if (!tripSearchRequest)
       return res
         .status(StatusCodes.NOT_FOUND)
         .send(ErrorMessages.TRIP_SEARCH_REQUEST_NOT_FOUND);
 
-    tripSearchRequest.user = parseUserProfilePicture(tripSearchRequest.user);
     const isUsersPost = tripSearchRequest.user._id.toString() === userId;
+    tripSearchRequest.user = parseUserProfilePicture(tripSearchRequest.user);
 
     res.status(StatusCodes.OK).json({
-      tripSearchRequest: { ...tripSearchRequest.toObject(), isUsersPost },
+      tripSearchRequest: { ...tripSearchRequest, isUsersPost },
     });
   } catch (error) {
     Logging.error(error);
@@ -72,6 +71,45 @@ const getTripSearchRequest = async (req, res) => {
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
+};
+
+const updateTripSearchRequest = async (req, res) => {
+  const { id } = req.params;
+  const updateData = req.body;
+
+  try {
+    const updatedTripSearchRequest = await populateUser(
+      TripSearchRequest.findByIdAndUpdate(id, updateData, { new: true })
+    ).lean();
+
+    if (!updatedTripSearchRequest)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send(ErrorMessages.TRIP_NOT_FOUND);
+
+    updatedTripSearchRequest.user = parseUserProfilePicture(
+      updatedTripSearchRequest.user
+    );
+
+    res.status(StatusCodes.OK).json({
+      tripSearchRequest: {
+        ...updatedTripSearchRequest,
+        isUsersPost: true,
+      },
+    });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+const populateUser = (query) => {
+  return query.populate(
+    "user",
+    "name surname gender dateOfBirth phoneNumber profilePicture trips"
+  );
 };
 
 const deleteTripSearchRequest = async (req, res) => {
@@ -93,4 +131,5 @@ export default {
   getTripSearchRequests,
   getTripSearchRequest,
   deleteTripSearchRequest,
+  updateTripSearchRequest,
 };
