@@ -3,14 +3,35 @@ import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
+import { parseUserProfilePicture } from "./Trip/TripControllerUtils.js";
 
 const getUsersNotification = async (req, res) => {
   const { userId } = req;
 
   try {
-    const user = await User.findById(userId);
+    const { notifications } = await User.findById(userId)
+      .populate({
+        path: "notifications",
+        populate: {
+          path: "sender",
+          select: "profilePicture",
+        },
+      })
+      .lean();
 
-    res.status(StatusCodes.OK).json({ notifications: user.notifications });
+    notifications.forEach((notification) => {
+      notification.sender = parseUserProfilePicture(notification.sender);
+    });
+    const todaysNotifications = filterNotificationsByDate(notifications);
+    const yesterdaysNotifications = filterNotificationsByDate(notifications, 1);
+    const olderNotifications = filterOldNotifications(notifications);
+
+    res.status(StatusCodes.OK).json({
+      todaysNotifications,
+      yesterdaysNotifications,
+      olderNotifications,
+      resultsCount: notifications.length,
+    });
   } catch (error) {
     Logging.error(error);
     return res
@@ -55,6 +76,29 @@ export const sendNotificationsForPassengers = async (
       await notification.save();
     })
   );
+};
+
+const filterNotificationsByDate = (notifications, daysAgo = 0) => {
+  const targetDate = new Date();
+  targetDate.setDate(targetDate.getDate() - daysAgo);
+  return notifications.filter(({ createdAt }) => {
+    const createAt = new Date(createdAt);
+    return (
+      createAt.getFullYear() === targetDate.getFullYear() &&
+      createAt.getMonth() === targetDate.getMonth() &&
+      createAt.getDate() === targetDate.getDate()
+    );
+  });
+};
+
+const filterOldNotifications = (notifications) => {
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 2);
+  return notifications.filter((notification) => {
+    const createdAt = new Date(notification.createdAt);
+    return createdAt < yesterday || createdAt > today;
+  });
 };
 
 export default { getUsersNotification, getUsersUnreadNotificationsCount };

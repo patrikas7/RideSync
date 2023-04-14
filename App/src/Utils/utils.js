@@ -18,6 +18,16 @@ export const getFormatedTodaysDate = () => {
   return date.toISOString().split("T")[0];
 };
 
+export const getFormatedDateTime = (date) => {
+  const isoString = new Date(date).toISOString();
+  const year = isoString.slice(0, 4);
+  const month = isoString.slice(5, 7);
+  const day = isoString.slice(8, 10);
+  const hours = isoString.slice(11, 13);
+  const minutes = isoString.slice(14, 16);
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
 export const isTimeLaterOrEqual = (time) => {
   const now = new Date();
   const [hours, minutes] = time.split(":");
