@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import User from "./User";
+import User from "./User.js";
 
 const NotificationSchema = new Schema({
   user: {
@@ -11,6 +11,10 @@ const NotificationSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
+  },
+  trip: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Trip",
   },
   notificationType: {
     type: String,

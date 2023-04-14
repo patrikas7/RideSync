@@ -1,4 +1,6 @@
 import mongoose, { Schema } from "mongoose";
+import { sendNotificationsForPassengers } from "../controllers/NotificationController.js";
+import { NotificationTypes } from "../enums/enums.js";
 import Logging from "../library/Logging.js";
 import BasicUser from "./BasicUser.js";
 
@@ -49,11 +51,34 @@ TripSchema.pre("save", async function (next) {
   }
 });
 
+TripSchema.pre("findOneAndUpdate", async function (next) {
+  const trip = await this.model.findOne(this.getQuery());
+
+  try {
+    await sendNotificationsForPassengers(
+      trip.passengers,
+      NotificationTypes.TRIP_WAS_EDITED,
+      trip.driver,
+      trip._id
+    );
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 TripSchema.pre("delete", async function (next) {
   try {
     const user = await BasicUser.findById(this.driver);
     user.trips.pull(this._id);
     await user.save();
+
+    await sendNotificationsForPassengers(
+      this.passengers,
+      NotificationTypes.TRIP_WAS_CANCELED,
+      this.driver,
+      this
+    );
 
     await Promise.all(
       this.passengers.map(async (passenger) => {

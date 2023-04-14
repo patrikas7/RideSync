@@ -265,15 +265,13 @@ const cancelBooking = async (req, res) => {
     parseUserProfilePicture(trip.driver);
     parsePassengersProfilePictures(trip.passengers);
 
-    res
-      .status(StatusCodes.OK)
-      .json({
-        trip: {
-          ...trip.toObject(),
-          isUserPassenger: false,
-          isUserDriver: !!passengerId,
-        },
-      });
+    res.status(StatusCodes.OK).json({
+      trip: {
+        ...trip.toObject(),
+        isUserPassenger: false,
+        isUserDriver: !!passengerId,
+      },
+    });
   } catch (error) {
     Logging.error(error);
     res
