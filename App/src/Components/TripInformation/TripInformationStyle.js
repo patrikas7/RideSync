@@ -113,7 +113,7 @@ const TripInformationStyles = StyleSheet.create({
     marginTop: 8,
   },
   reviewContainerPassenger: {
-    marginTop: 16,
+    marginTop: 8,
   },
   primaryText: {
     marginLeft: 8,
@@ -174,15 +174,26 @@ const TripInformationStyles = StyleSheet.create({
     marginLeft: "auto",
   },
   passengersCount: {
-    marginLeft: "auto",
+    alignItems: "center",
+    flex: 1,
   },
   passengerHighlight: {
     paddingHorizontal: 16,
     borderRadius: Sizes.DEFAULT_BORDER_RADIUS,
+    flexDirection: "row",
+    alignItems: "center",
   },
   searchRequestDetails: {
     alignSelf: "center",
     alignItems: "center",
+  },
+  passengerIcons: {
+    flexDirection: "row",
+    marginTop: 12,
+    marginLeft: "auto",
+  },
+  removeIcon: {
+    marginLeft: 16,
   },
 });
 

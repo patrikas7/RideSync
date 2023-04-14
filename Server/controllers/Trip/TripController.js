@@ -240,14 +240,16 @@ const seatBooking = async (req, res) => {
 const cancelBooking = async (req, res) => {
   const {
     userId,
-    query: { id },
+    query: { id, passengerId },
   } = req;
+
+  const userToRemove = passengerId || userId;
 
   try {
     const trip = await findTripById(id);
 
     const passenger = trip.passengers.find(
-      ({ passenger }) => passenger._id.toString() === userId
+      ({ passenger }) => passenger._id.toString() === userToRemove
     );
 
     if (!passenger)
@@ -259,13 +261,19 @@ const cancelBooking = async (req, res) => {
     trip.passengers.pull(passenger._id);
 
     await trip.save();
-    await removeTripFromUsersTripHistory(userId, id);
+    await removeTripFromUsersTripHistory(userToRemove, id);
     parseUserProfilePicture(trip.driver);
     parsePassengersProfilePictures(trip.passengers);
 
     res
       .status(StatusCodes.OK)
-      .json({ trip: { ...trip.toObject(), isUserPassenger: false } });
+      .json({
+        trip: {
+          ...trip.toObject(),
+          isUserPassenger: false,
+          isUserDriver: !!passengerId,
+        },
+      });
   } catch (error) {
     Logging.error(error);
     res

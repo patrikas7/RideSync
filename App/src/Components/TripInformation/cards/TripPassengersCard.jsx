@@ -3,7 +3,13 @@ import TripInformationStyles from "../TripInformationStyle";
 import PassengerInformation from "./PassengerInformation";
 import PageNames from "../../../Constants/pageNames";
 
-const TripPassengersCard = ({ passengers, navigation, userId }) => {
+const TripPassengersCard = ({
+  passengers,
+  navigation,
+  userId,
+  isUserDriver,
+  onPassangerRemove,
+}) => {
   return (
     <View
       style={[
@@ -19,6 +25,8 @@ const TripPassengersCard = ({ passengers, navigation, userId }) => {
             key={index}
             passenger={passenger.passenger}
             seatsBooked={passenger.seatsBooked}
+            isUserDriver={isUserDriver}
+            onPassangerRemove={onPassangerRemove}
             onPress={(profilePictureUri) =>
               navigation.navigate(PageNames.USER_INFORMATION, {
                 user: passenger.passenger,

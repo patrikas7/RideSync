@@ -18,7 +18,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
 
   const handleOnButtonClick = async () => {
     if (trip.isUserDriver) handleOnDelete();
-    else if (trip.isUserPassenger) await cancelReservation();
+    else if (trip.isUserPassenger) cancelReservation();
     else
       navigation.navigate(PageNames.TRIP_PASSENGERS_COUNT_SELECT, {
         availableSeats: trip.personsCount,
@@ -32,6 +32,12 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
       "Kelionės atšaukimas",
       "Ar tikrai norite atšaukti kelionę?",
       deleteTrip
+    );
+  };
+
+  const handleOnPassangerRemove = (passengerId) => {
+    alert("Keleivio šalinimas", "Ar tikrai norite pašalinti keleivį?", () =>
+      cancelReservation(passengerId)
     );
   };
 
@@ -51,11 +57,11 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
     }
   };
 
-  const cancelReservation = async () => {
+  const cancelReservation = async (passengerId) => {
     setIsLoading(true);
     try {
       const { data } = await axios.delete("/trips/bookings", {
-        params: { id: trip._id },
+        params: { id: trip._id, passengerId },
         headers: { Authorization: token },
       });
 
@@ -107,6 +113,8 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
               passengers={trip.passengers}
               navigation={navigation}
               userId={userId}
+              isUserDriver={trip.isUserDriver}
+              onPassangerRemove={handleOnPassangerRemove}
             />
           )}
 
