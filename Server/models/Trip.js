@@ -67,23 +67,24 @@ TripSchema.pre("findOneAndUpdate", async function (next) {
   }
 });
 
-TripSchema.pre("delete", async function (next) {
+TripSchema.pre("findOneAndDelete", async function (next) {
   try {
-    const user = await BasicUser.findById(this.driver);
-    user.trips.pull(this._id);
+    const trip = await Trip.findOne({ _id: this.getFilter()._id });
+    const user = await BasicUser.findById(trip.driver);
+    user.trips.pull(trip._id);
     await user.save();
 
     await sendNotificationsForPassengers(
-      this.passengers,
+      trip.passengers,
       NotificationTypes.TRIP_WAS_CANCELED,
-      this.driver,
-      this
+      trip.driver,
+      trip
     );
 
     await Promise.all(
-      this.passengers.map(async (passenger) => {
+      trip.passengers.map(async (passenger) => {
         const passengerUser = await BasicUser.findById(passenger.passenger);
-        passengerUser.trips.pull(this._id);
+        passengerUser.trips.pull(trip._id);
         await passengerUser.save();
       })
     );

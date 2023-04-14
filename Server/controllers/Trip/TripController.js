@@ -12,6 +12,7 @@ import {
   parseUserProfilePicture,
   parsePassengersProfilePictures,
 } from "./TripControllerUtils.js";
+import { sendNotificationForRemovedUser } from "../NotificationController.js";
 
 // PAGINATIONS
 // Add rating calculation
@@ -262,6 +263,10 @@ const cancelBooking = async (req, res) => {
 
     await trip.save();
     await removeTripFromUsersTripHistory(userToRemove, id);
+
+    if (passengerId)
+      await sendNotificationForRemovedUser(passengerId, userId, trip._id);
+
     parseUserProfilePicture(trip.driver);
     parsePassengersProfilePictures(trip.passengers);
 

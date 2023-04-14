@@ -11,6 +11,7 @@ export const NotificationPreviewStyles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: 16,
+    maxWidth: "75%",
   },
   textPrimary: {
     fontSize: Sizes.DEFAULT_TEXT_SIZE,
@@ -24,7 +25,6 @@ export const NotificationPreviewStyles = StyleSheet.create({
   icon: {
     marginLeft: "auto",
     alignSelf: "top",
-    marginRight: 12,
   },
   highlight: {
     paddingVertical: 16,

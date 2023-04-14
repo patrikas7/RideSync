@@ -4,6 +4,7 @@ import ErrorMessages from "../enums/errorMessages.js";
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
 import { parseUserProfilePicture } from "./Trip/TripControllerUtils.js";
+import { NotificationTypes } from "../enums/enums.js";
 
 const getUsersNotification = async (req, res) => {
   const { userId } = req;
@@ -76,6 +77,16 @@ export const sendNotificationsForPassengers = async (
       await notification.save();
     })
   );
+};
+
+export const sendNotificationForRemovedUser = async (user, sender, trip) => {
+  const notification = new Notification(
+    user,
+    sender,
+    trip,
+    NotificationTypes.I_WAS_REMOVED_FROM_TRIP
+  );
+  await notification.save();
 };
 
 const filterNotificationsByDate = (notifications, daysAgo = 0) => {
