@@ -85,6 +85,16 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
     return "Rezervuoti vietą";
   };
 
+  const handleOnChatPress = (id, profilePictureUri, name, surname) => {
+    navigation.navigate(PageNames.CHAT, {
+      prevScreen: PageNames.TRIP_INFORMATION,
+      token,
+      profilePictureUri,
+      receiver: id,
+      receiverName: `${name} ${surname}`,
+    });
+  };
+
   return (
     <View style={TripInformationStyles.inforamtionWrapper}>
       <Spinner visible={isLoading} />
@@ -106,7 +116,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
             car={trip?.car}
             isUserDriver={trip.isUserDriver}
             navigation={navigation}
-            token={token}
+            onChat={handleOnChatPress}
           />
 
           {trip?.passengers?.length > 0 && (
@@ -116,6 +126,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
               userId={userId}
               isUserDriver={trip.isUserDriver}
               onPassangerRemove={handleOnPassangerRemove}
+              onChat={handleOnChatPress}
             />
           )}
 

@@ -9,31 +9,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomColor: Colors.GREY_600,
     borderBottomWidth: 1,
-    paddingBottom: 24,
-    marginTop: 16,
+    paddingBottom: 16,
   },
   avatar: {
     ...StyleUtils.avatar,
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderColor: Colors.GREY_600,
+    marginLeft: 16,
   },
   headerText: {
     marginLeft: 16,
     fontSize: Sizes.DEFAULT_TEXT_SIZE,
     fontWeight: "bold",
-  },
-  closeIcon: {
-    marginLeft: "auto",
-  },
-  chatContainer: {
-    flex: 1,
-  },
-  inputContainer: {
-    marginBottom: 32,
-    backgroundColor: Colors.CHAT_BACKGROUND,
-    borderWidth: 0,
-    paddingVertical: 12,
   },
 });
 

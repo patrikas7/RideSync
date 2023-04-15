@@ -1,22 +1,25 @@
 import { useState, useEffect } from "react";
+import { TouchableOpacity, View, Image, Text } from "react-native";
 import { GiftedChat } from "react-native-gifted-chat";
 import { io } from "socket.io-client";
+import { Ionicons } from "@expo/vector-icons";
 import { SOCKET_URL } from "../../API/constants";
 import { fetchUserChat } from "../../API/userApi";
-import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import Container from "../../Components/Container/Container";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import Sizes from "../../Constants/sizes";
+import Colors from "../../Constants/colors";
+import styles from "./ChatStyles";
 
 const socket = io(SOCKET_URL);
 
 const ChatScreen = ({ navigation, route }) => {
-  const { prevScreen, token, receiver } = route.params;
+  const { prevScreen, token, receiver, profilePictureUri, receiverName } =
+    route.params;
   const [messages, setMessages] = useState([]);
   const [user, setUser] = useState(null);
   const [chat, setChat] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  useScreenArrowBack(navigation, prevScreen, {}, "close-outline");
 
   useEffect(() => {
     if (!token) return;
@@ -55,6 +58,26 @@ const ChatScreen = ({ navigation, route }) => {
 
   return (
     <Container>
+      <View style={styles.chatHeader}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(prevScreen, route.params)}
+        >
+          <Ionicons
+            name="close-outline"
+            size={Sizes.ICON}
+            color={Colors.GREY_700}
+          />
+        </TouchableOpacity>
+        <Image
+          source={
+            profilePictureUri
+              ? { uri: profilePictureUri }
+              : require("../../../assets/pictures/avatar.png")
+          }
+          style={styles.avatar}
+        />
+        <Text style={styles.headerText}>{receiverName}</Text>
+      </View>
       {isLoading || !user ? (
         <Spinner visible={isLoading} />
       ) : (

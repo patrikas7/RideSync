@@ -14,15 +14,20 @@ const PassengerInformation = ({
   seatsBooked,
   isUserDriver,
   onPassangerRemove,
+  onChat,
 }) => {
   const profilePictureUri = generatePictureUri(passenger.profilePicture);
+
+  const handleOnChatPress = () => {
+    onChat(passenger._id, profilePictureUri, passenger.name, passenger.surname);
+  };
 
   return (
     <View style={[TripInformationStyles.passengerHighlight, styling]}>
       <View>
         <View style={TripInformationStyles.passengerInfo}>
           <TouchableHighlight
-            onPress={() => onPress(profilePictureUri)}
+            onPress={() => onPress(profilePictureUri, handleOnChatPress)}
             underlayColor={Colors.WHITE}
             activeOpacity={0.8}
           >
@@ -60,6 +65,7 @@ const PassengerInformation = ({
               name={"chatbox-outline"}
               size={38}
               backgroundColor={Colors.BLUE_500}
+              onPress={handleOnChatPress}
             />
 
             <IconButton

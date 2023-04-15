@@ -9,14 +9,11 @@ import Sizes from "../../../Constants/sizes";
 import IconButton from "../../Button/IconButton";
 import PageNames from "../../../Constants/pageNames";
 
-const TripDriverCard = ({ driver, isUserDriver, navigation, car, token }) => {
+const TripDriverCard = ({ driver, isUserDriver, navigation, car, onChat }) => {
   const profilePictureUri = generatePictureUri(driver?.profilePicture);
+
   const handleOnChatPress = () => {
-    navigation.navigate(PageNames.CHAT, {
-      prevScreen: PageNames.TRIP_INFORMATION,
-      token,
-      receiver: driver._id,
-    });
+    onChat(driver._id, profilePictureUri, driver.name, driver.surname);
   };
 
   const handleOnProfilePress = () => {
@@ -25,6 +22,7 @@ const TripDriverCard = ({ driver, isUserDriver, navigation, car, token }) => {
       profilePictureUri,
       isMyProfile: isUserDriver,
       prevScreen: PageNames.TRIP_INFORMATION,
+      onChat: handleOnChatPress,
     });
   };
 

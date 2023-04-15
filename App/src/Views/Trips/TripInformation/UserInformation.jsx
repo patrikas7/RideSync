@@ -8,7 +8,8 @@ import ListItem from "../../../Components/List/ListItem";
 import Button from "../../../Components/Button/Button";
 
 const UserInformation = ({ navigation, route }) => {
-  const { user, profilePictureUri, isMyProfile, prevScreen } = route.params;
+  const { user, profilePictureUri, isMyProfile, prevScreen, onChat } =
+    route.params;
   useScreenArrowBack(navigation, prevScreen);
 
   return (
@@ -68,6 +69,7 @@ const UserInformation = ({ navigation, route }) => {
         <Button
           text={"Siųsti pranešimą"}
           styling={UserInformationStyles.button}
+          onClick={onChat}
         />
       )}
     </Container>

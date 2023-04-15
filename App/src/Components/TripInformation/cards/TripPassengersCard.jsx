@@ -9,6 +9,7 @@ const TripPassengersCard = ({
   userId,
   isUserDriver,
   onPassangerRemove,
+  onChat,
 }) => {
   return (
     <View
@@ -27,12 +28,14 @@ const TripPassengersCard = ({
             seatsBooked={passenger.seatsBooked}
             isUserDriver={isUserDriver}
             onPassangerRemove={onPassangerRemove}
-            onPress={(profilePictureUri) =>
+            onChat={onChat}
+            onPress={(profilePictureUri, handleOnChatPress) =>
               navigation.navigate(PageNames.USER_INFORMATION, {
                 user: passenger.passenger,
                 profilePictureUri,
                 isMyProfile: passenger.passenger._id === userId,
                 prevScreen: PageNames.TRIP_INFORMATION,
+                onChat: handleOnChatPress,
               })
             }
             styling={
