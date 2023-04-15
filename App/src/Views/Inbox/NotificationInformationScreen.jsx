@@ -2,6 +2,9 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { fetchNotificationData } from "../../API/notificationApi";
+import { NotificationTypes } from "../../Constants/notifications";
+import { getFormatedDateTime } from "../../Utils/utils";
+import { getHeadlineText } from "./inboxUtils";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
@@ -42,25 +45,34 @@ const NotificationInformationScreen = ({ token, tabsNavigation }) => {
 
   return (
     <Container>
-      <Spinner visible={isLoading} />
-      <View style={styles.notificationContainer}>
-        <Text style={styles.notificationHeadline}>
-          Dėmesio, kelionės vairuotojas atliko pakeitimus susisjusius su
-          kelionės informacija!
-        </Text>
-        <Text style={styles.notificationDate}>2023-04-04 17:00</Text>
-        <TripRoutesCard
-          departure={notification.trip.departure}
-          destination={notification.trip.destination}
-          time={notification.trip.time}
-          stops={notification.stops}
-        />
-      </View>
-      <Button
-        text={"Kelionės informacija"}
-        styling={styles.button}
-        onClick={handleOnPress}
-      />
+      {!notification ? (
+        <Spinner visible={isLoading} />
+      ) : (
+        <>
+          <View style={styles.notificationContainer}>
+            <Text style={styles.notificationHeadline}>
+              {getHeadlineText(notification.notificationType)}
+            </Text>
+            <Text style={styles.notificationDate}>
+              {getFormatedDateTime(notification.createdAt)}
+            </Text>
+            <TripRoutesCard
+              departure={notification.trip.departure}
+              destination={notification.trip.destination}
+              time={notification.trip.time}
+              stops={notification.stops}
+            />
+          </View>
+          {notification.notificationType ===
+            NotificationTypes.TRIP_WAS_EDITED && (
+            <Button
+              text={"Kelionės informacija"}
+              styling={styles.button}
+              onClick={handleOnPress}
+            />
+          )}
+        </>
+      )}
     </Container>
   );
 };

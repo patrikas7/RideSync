@@ -32,13 +32,10 @@ const InboxScreen = ({ token }) => {
     fetchNotifications();
   }, [token, isFocused]);
 
-  const handleOnNotificationPress = (notificationId, notificationType) => {
-    if (notificationType === NotificationTypes.TRIP_WAS_EDITED) {
-      navigation.navigate(PageNames.TRIP_WAS_EDITED_NOTIFICATION, {
-        notificationId,
-      });
-      return;
-    }
+  const handleOnNotificationPress = (notificationId) => {
+    navigation.navigate(PageNames.NOTIFICATION_INFO, {
+      notificationId,
+    });
   };
 
   const renderContent = () =>

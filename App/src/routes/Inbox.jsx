@@ -1,7 +1,4 @@
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
 import InboxScreen from "../Views/Inbox/InboxScreen";
 import NotificationInformationScreen from "../Views/Inbox/NotificationInformationScreen";
@@ -19,7 +16,7 @@ const Inbox = ({ token, tabsNavigation }) => {
         }}
       />
       <Stack.Screen
-        name={PageNames.TRIP_WAS_EDITED_NOTIFICATION}
+        name={PageNames.NOTIFICATION_INFO}
         children={() => (
           <NotificationInformationScreen
             token={token}
