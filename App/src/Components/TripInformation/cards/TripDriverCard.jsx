@@ -9,10 +9,13 @@ import Sizes from "../../../Constants/sizes";
 import IconButton from "../../Button/IconButton";
 import PageNames from "../../../Constants/pageNames";
 
-const TripDriverCard = ({ driver, isUserDriver, navigation, car }) => {
+const TripDriverCard = ({ driver, isUserDriver, navigation, car, token }) => {
   const profilePictureUri = generatePictureUri(driver?.profilePicture);
   const handleOnChatPress = () => {
-    navigation.navigate(PageNames.CHAT);
+    navigation.navigate(PageNames.CHAT, {
+      prevScreen: PageNames.TRIP_INFORMATION,
+      token,
+    });
   };
 
   const handleOnProfilePress = () => {

@@ -28,6 +28,9 @@ const NotificationSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  text: {
+    type: String,
+  },
 });
 
 NotificationSchema.pre("save", async function (next) {

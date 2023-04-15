@@ -5,6 +5,7 @@ import ErrorMessages from "../enums/errorMessages.js";
 import bcrypt from "bcryptjs";
 import BasicUser from "../models/BasicUser.js";
 import { parseUserProfilePicture } from "./Trip/TripControllerUtils.js";
+import { NotificationTypes } from "../enums/enums.js";
 
 const checkUserByEmail = async (req, res) => {
   const { email } = req.query;
@@ -31,20 +32,10 @@ const getUserDetails = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const user = await User.findById(userId);
-
-    delete user.password;
+    const { user } = await findUserById(userId);
 
     res.status(StatusCodes.OK).json({
-      user: {
-        ...user.toObject(),
-        ...(user.profilePicture?.buffer && {
-          profilePicture: {
-            type: user.profilePicture.type,
-            buffer: user.profilePicture.buffer.toString("base64"),
-          },
-        }),
-      },
+      user,
     });
   } catch (error) {
     Logging.error(error);
@@ -206,6 +197,59 @@ const getUserTrips = async (req, res) => {
   }
 };
 
+const getUserChatHistory = async (req, res) => {
+  const userId = req.userId;
+
+  try {
+    const { user } = await findUserById(userId, ["notifications"]);
+    const messages = user.notifications.filter(
+      (notification) =>
+        notification.notificationType === NotificationTypes.CHAT_MESSAGE
+    );
+
+    res.status(StatusCodes.OK).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        surname: user.surname,
+        profilePicture: user.profilePicture,
+      },
+      messages,
+    });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+const findUserById = async (id, fieldsToPopulate = []) => {
+  let query = User.findById(id);
+
+  fieldsToPopulate.forEach((field) => {
+    query = query.populate(field);
+  });
+
+  const user = await query.exec();
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  delete user.password;
+
+  const userObject = user.toObject();
+
+  if (userObject.profilePicture?.buffer) {
+    userObject.profilePicture = {
+      type: user.profilePicture.type,
+      buffer: user.profilePicture.buffer.toString("base64"),
+    };
+  }
+
+  return { user: userObject };
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
@@ -215,4 +259,5 @@ export default {
   uploadPicture,
   deleteUser,
   getUserTrips,
+  getUserChatHistory,
 };

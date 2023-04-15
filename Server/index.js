@@ -13,8 +13,12 @@ import TripBookmarkRouter from "./routes/TripBookmarkRoutes.js";
 import NotificationRouter from "./routes/NotificationRoutes.js";
 import TripSearchRequestRouter from "./routes/TripSearchRequestRoutes.js";
 import mongoose from "mongoose";
+import chatService from "./services/ChatService.js";
+import { Server } from "socket.io";
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
@@ -24,6 +28,7 @@ mongoose
   .then(() => {
     Logging.info("connected");
     startServer();
+    chatService(io);
   })
   .catch((error) => {
     Logging.error("Connection failed");
@@ -63,13 +68,11 @@ const startServer = () => {
     next();
   });
 
-  http
-    .createServer(app)
-    .listen(config.server.port, () =>
-      Logging.info(
-        `⚡️[server]: Server is running at http://localhost:${config.server.port}`
-      )
-    );
+  server.listen(config.server.port, () =>
+    Logging.info(
+      `⚡️[server]: Server is running at http://localhost:${config.server.port}`
+    )
+  );
 
   app.use("/auth", AuthRouter);
   app.use("/user", UserRouter);

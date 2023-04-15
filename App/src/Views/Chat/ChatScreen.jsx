@@ -1,46 +1,92 @@
-import { Image, View, Text, TouchableOpacity } from "react-native";
-import PageNames from "../../Constants/pageNames";
+import { useState, useEffect } from "react";
+import { GiftedChat } from "react-native-gifted-chat";
+import { io } from "socket.io-client";
+import { SOCKET_URL } from "../../API/constants";
+import { fetchUserChats } from "../../API/userApi";
+import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import Container from "../../Components/Container/Container";
-import styles from "./ChatStyles";
-import { Ionicons } from "@expo/vector-icons";
-import Sizes from "../../Constants/sizes";
-import Colors from "../../Constants/colors";
-import InputSearch from "../../Components/Form/InputSearch";
-import { useState } from "react";
+import Spinner from "react-native-loading-spinner-overlay/lib";
 
 const ChatScreen = ({ navigation, route }) => {
-  const [messsage, setMessage] = useState("");
+  const { prevScreen, token } = route.params;
+  const [messages, setMessages] = useState([]);
+  const [socket, setSocket] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useScreenArrowBack(navigation, prevScreen, {}, "close-outline");
+
+  useEffect(() => {
+    if (!token) return;
+
+    const fetchUserChatHistory = async () => {
+      setIsLoading(true);
+      const { user, messages } = await fetchUserChats(token);
+      setUser(user);
+      setMessages(messages);
+      setIsLoading(false);
+    };
+
+    const initializeSocket = async () => {
+      const newSocket = io(SOCKET_URL);
+      setSocket(newSocket);
+
+      newSocket.on("message", (message) => {
+        setMessages((previousMessages) =>
+          GiftedChat.append(previousMessages, message)
+        );
+      });
+
+      return () => {
+        newSocket.disconnect();
+      };
+    };
+
+    const setupAndCleanup = async () => {
+      await fetchUserChatHistory();
+      const cleanup = await initializeSocket();
+
+      return () => {
+        if (cleanup) {
+          cleanup();
+        }
+      };
+    };
+
+    const cleanup = setupAndCleanup();
+
+    return () => {
+      if (cleanup) {
+        cleanup();
+      }
+    };
+  }, [token]);
+
+  const onSend = (newMessages = []) => {
+    if (socket) {
+      newMessages.forEach((message) => {
+        socket.emit("message", message);
+      });
+    }
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, newMessages)
+    );
+  };
 
   return (
     <Container>
-      <View style={styles.chatHeader}>
-        <Image
-          source={require("../../../assets/pictures/avatar.png")}
-          style={styles.avatar}
+      {isLoading || !user ? (
+        <Spinner visible={isLoading} />
+      ) : (
+        <GiftedChat
+          messages={messages}
+          onSend={(newMessages) => onSend(newMessages)}
+          user={{
+            _id: user.id,
+            name: user.name,
+          }}
         />
-        <Text style={styles.headerText}>Patrikas Voicechovski</Text>
-        <TouchableOpacity
-          style={styles.closeIcon}
-          onPress={() =>
-            navigation.navigate(PageNames.TRIP_INFORMATION, { ...route.params })
-          }
-          activeOpacity={0.6}
-        >
-          <Ionicons
-            name="close-outline"
-            size={Sizes.ICON_LARGE}
-            color={Colors.GREY_600}
-          />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.chatContainer}></View>
-      <InputSearch
-        placeholder={"Rašyti žinutę..."}
-        styling={styles.inputContainer}
-        value={messsage}
-        onChange={setMessage}
-        multiline={true}
-      />
+      )}
     </Container>
   );
 };

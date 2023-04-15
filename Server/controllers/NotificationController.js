@@ -80,12 +80,12 @@ export const sendNotificationsForPassengers = async (
 };
 
 export const sendNotificationForRemovedUser = async (user, sender, trip) => {
-  const notification = new Notification(
+  const notification = new Notification({
     user,
     sender,
     trip,
-    NotificationTypes.I_WAS_REMOVED_FROM_TRIP
-  );
+    notificationType: NotificationTypes.I_WAS_REMOVED_FROM_TRIP,
+  });
   await notification.save();
 };
 

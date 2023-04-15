@@ -17,6 +17,12 @@ const NotificationPreview = ({ notification, styling }) => {
 
     if (notification.notificationType === NotificationTypes.TRIP_WAS_CANCELED)
       return "Jūsų būsima kelionė buvo atšaukta!";
+
+    if (
+      notification.notificationType ===
+      NotificationTypes.I_WAS_REMOVED_FROM_TRIP
+    )
+      return "Kelionės vairuotojas atšaukė jūsų rezervaciją!";
   };
 
   return (

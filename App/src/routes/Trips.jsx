@@ -72,7 +72,8 @@ const Trips = ({ route }) => {
         name={PageNames.CHAT}
         component={ChatScreen}
         options={{
-          headerShown: false,
+          headerShadowVisible: false,
+          title: "",
           ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
       />

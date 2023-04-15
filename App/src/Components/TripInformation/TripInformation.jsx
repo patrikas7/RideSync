@@ -106,6 +106,7 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
             car={trip?.car}
             isUserDriver={trip.isUserDriver}
             navigation={navigation}
+            token={token}
           />
 
           {trip?.passengers?.length > 0 && (

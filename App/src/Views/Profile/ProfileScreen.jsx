@@ -35,6 +35,7 @@ const ProfileScreen = ({ token }) => {
         headers: { Authorization: token },
       });
 
+      console.log(data.user);
       setUser(data.user);
       if (data.user.profilePicture)
         setProfilePicture(
