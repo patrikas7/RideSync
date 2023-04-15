@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 import { NotificationsListStyles } from "./NotificationStyles";
 import NotificationPreview from "./NotificationPreview";
 
-const renderSection = (headline, notifications, styling) => {
+const renderSection = (headline, notifications, onPress, styling) => {
   return (
     <>
       <Text style={[NotificationsListStyles.headline, styling]}>
@@ -12,6 +12,7 @@ const renderSection = (headline, notifications, styling) => {
         <NotificationPreview
           key={index}
           notification={notification}
+          onPress={onPress}
           styling={index > 0 && NotificationsListStyles.notificationNotFirst}
         />
       ))}
@@ -19,21 +20,23 @@ const renderSection = (headline, notifications, styling) => {
   );
 };
 
-const NotificationsList = ({ notifications }) => {
+const NotificationsList = ({ notifications, onPress }) => {
   return (
     <View style={NotificationsListStyles.container}>
       {notifications.todaysNotifications.length > 0 &&
-        renderSection("ŠIANDIEN", notifications.todaysNotifications)}
+        renderSection("ŠIANDIEN", notifications.todaysNotifications, onPress)}
       {notifications.yesterdaysNotifications.length > 0 &&
         renderSection(
           "VAKAR",
           notifications.yesterdaysNotifications,
+          onPress,
           NotificationsListStyles.headlineNotFirst
         )}
       {notifications.olderNotifications.length > 0 &&
         renderSection(
           "SENESNI PRANEŠIMAI",
           notifications.olderNotifications,
+          onPress,
           NotificationsListStyles.headlineNotFirst
         )}
     </View>

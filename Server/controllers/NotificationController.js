@@ -112,4 +112,35 @@ const filterOldNotifications = (notifications) => {
   });
 };
 
-export default { getUsersNotification, getUsersUnreadNotificationsCount };
+const getNotification = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const notification = await Notification.findById(id).populate(
+      "trip",
+      "departure destination time stops"
+    );
+    if (!notification)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .send(ErrorMessages.NOTIFICATION_NOT_FOUND);
+
+    if (!notification.isRead) {
+      notification.isRead = true;
+      await notification.save();
+    }
+
+    res.status(StatusCodes.OK).json({ notification });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+export default {
+  getUsersNotification,
+  getUsersUnreadNotificationsCount,
+  getNotification,
+};

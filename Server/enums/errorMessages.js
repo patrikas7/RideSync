@@ -15,6 +15,7 @@ const ErrorMessages = {
   CAR_IS_IN_ACTIVE_TRIP:
     "Automobilis yra registruotas į kelionę, pašalinkite kelionę norint pašalinti automobilį",
   TRIP_SEARCH_REQUEST_NOT_FOUND: "Kelionės paieškos užklausta buvo nerasta",
+  NOTIFICATION_NOT_FOUND: "Pranešimas buvo nerastas",
 };
 
 export default ErrorMessages;

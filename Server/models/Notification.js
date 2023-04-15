@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { NotificationTypes } from "../enums/enums.js";
+import Logging from "../library/Logging.js";
 import User from "./User.js";
 
 const NotificationSchema = new Schema({
@@ -29,12 +30,10 @@ const NotificationSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  text: {
-    type: String,
-  },
 });
 
 NotificationSchema.pre("save", async function (next) {
+  if (!this.isNew) next();
   try {
     const user = await User.findById(this.user);
     user.notifications.push(this._id);

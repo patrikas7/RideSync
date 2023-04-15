@@ -14,4 +14,9 @@ NotificationRouter.route("/user/unread").get(
   controller.getUsersUnreadNotificationsCount
 );
 
+NotificationRouter.route("/:id").get(
+  authMiddleware,
+  controller.getNotification
+);
+
 export default NotificationRouter;

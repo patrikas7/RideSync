@@ -6,7 +6,7 @@ import { NotificationTypes } from "../../Constants/notifications";
 import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
 
-const NotificationPreview = ({ notification, styling }) => {
+const NotificationPreview = ({ notification, styling, onPress }) => {
   const profilePictureUri = generatePictureUri(
     notification.sender?.profilePicture
   );
@@ -27,7 +27,7 @@ const NotificationPreview = ({ notification, styling }) => {
 
   return (
     <TouchableHighlight
-      onPress={() => console.log()}
+      onPress={() => onPress(notification._id, notification.notificationType)}
       underlayColor={Colors.HIGHLIGHT_UNDERLAY}
       activeOpacity={0.8}
       style={NotificationPreviewStyles.highlight}
