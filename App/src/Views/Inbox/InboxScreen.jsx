@@ -31,9 +31,19 @@ const InboxScreen = ({ token, id }) => {
     fetchNotifications();
   }, [token, isFocused]);
 
-  const handleOnNotificationPress = (notificationId) => {
-    navigation.navigate(PageNames.NOTIFICATION_INFO, {
-      notificationId,
+  const handleOnNotificationPress = (notificationId, props) => {
+    if (!props) {
+      navigation.navigate(PageNames.NOTIFICATION_INFO, {
+        notificationId,
+      });
+
+      return;
+    }
+
+    navigation.navigate(PageNames.CHAT, {
+      prevScreen: PageNames.INBOX_LIST,
+      token,
+      ...props,
     });
   };
 

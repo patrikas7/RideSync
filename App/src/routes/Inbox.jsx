@@ -1,7 +1,11 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
 import InboxScreen from "../Views/Inbox/InboxScreen";
 import NotificationInformationScreen from "../Views/Inbox/NotificationInformationScreen";
+import ChatScreen from "../Views/Chat/ChatScreen";
 
 const Inbox = ({ token, id, tabsNavigation }) => {
   const Stack = createStackNavigator();
@@ -26,6 +30,14 @@ const Inbox = ({ token, id, tabsNavigation }) => {
         options={{
           headerShadowVisible: false,
           title: "Pranešimo informacija",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.CHAT}
+        component={ChatScreen}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
       />
     </Stack.Navigator>

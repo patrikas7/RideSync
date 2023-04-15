@@ -23,17 +23,29 @@ export const getHeadlineText = (notificationType) => {
     return "Dėmesio, kelionės vairuotojas atšaukė jūsų rezervaciją!";
 };
 
-export const getChatNotificationHeadlne = (notification, id) => {
-  const { users } = notification;
-  const lastMessageSender = users.find(
-    (user) => user._id === notification.messages[0].user
+export const parseChatNotificationData = (notification, id) => {
+  const { users, messages } = notification;
+
+  if (!users || !messages || messages.length === 0) {
+    return null;
+  }
+
+  const lastMessage = messages[messages.length - 1];
+  const lastMessageSender = users.find((user) => user._id === lastMessage.user);
+  const lastMessageReceiver = users.find(
+    (user) => user._id !== lastMessage.user
   );
-  const isLastMessageSentByMe = lastMessageSender._id === id;
+
+  const isLastMessageSentByMe = lastMessageSender?._id === id;
 
   return {
-    text: `${isLastMessageSentByMe ? "Aš" : lastMessageSender.name}: ${
-      notification.messages[0].text
+    text: `${isLastMessageSentByMe ? "Aš" : lastMessageSender?.name}: ${
+      lastMessage.text
     }`,
-    profilePicture: generatePictureUri(lastMessageSender?.profilePicture),
+    profilePictureUri: generatePictureUri(lastMessageSender?.profilePicture),
+    receiverProfilePictureUri: generatePictureUri(
+      lastMessageReceiver?.profilePicture
+    ),
+    receiver: lastMessageReceiver,
   };
 };

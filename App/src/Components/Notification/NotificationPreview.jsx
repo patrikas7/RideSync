@@ -6,25 +6,32 @@ import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
 import {
   getNotificationHeadline,
-  getChatNotificationHeadlne,
+  parseChatNotificationData,
 } from "../../Views/Inbox/inboxUtils";
 
 const NotificationPreview = ({ notification, styling, onPress, userId }) => {
   const isNotification = !!notification.notificationType;
+  const chatNotificationData = parseChatNotificationData(notification, userId);
   const profilePictureUri = isNotification
     ? generatePictureUri(notification.sender?.profilePicture)
-    : getChatNotificationHeadlne(notification, userId).profilePicture;
+    : chatNotificationData.profilePictureUri;
 
-  let text;
-  if (isNotification) {
-    text = getNotificationHeadline(notification.notificationType);
-  } else {
-    text = getChatNotificationHeadlne(notification, userId).text;
-  }
+  const handleOnPress = () => {
+    if (isNotification) {
+      onPress(notification._id);
+      return;
+    }
+
+    onPress(notification._id, {
+      receiver: chatNotificationData.receiver._id,
+      profilePictureUri: chatNotificationData.receiverProfilePictureUri,
+      receiverName: chatNotificationData.receiver.name,
+    });
+  };
 
   return (
     <TouchableHighlight
-      onPress={() => onPress(notification._id)}
+      onPress={handleOnPress}
       underlayColor={Colors.HIGHLIGHT_UNDERLAY}
       activeOpacity={0.8}
       style={NotificationPreviewStyles.highlight}
@@ -39,7 +46,11 @@ const NotificationPreview = ({ notification, styling, onPress, userId }) => {
           style={NotificationPreviewStyles.avatar}
         />
         <View style={NotificationPreviewStyles.textContainer}>
-          <Text style={NotificationPreviewStyles.textPrimary}>{text}</Text>
+          <Text style={NotificationPreviewStyles.textPrimary}>
+            {isNotification
+              ? getNotificationHeadline(notification.notificationType)
+              : chatNotificationData.text}
+          </Text>
           <Text style={NotificationPreviewStyles.textSecondary}>
             {getFormatedDateTime(
               isNotification
