@@ -11,9 +11,8 @@ import Header from "../../Components/Form/Header";
 import Sizes from "../../Constants/sizes";
 import NotificationsList from "../../Components/Notification/NotificationsList";
 import PageNames from "../../Constants/pageNames";
-import { NotificationTypes } from "../../Constants/notifications";
 
-const InboxScreen = ({ token }) => {
+const InboxScreen = ({ token, id }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState({});
   const isFocused = useIsFocused();
@@ -51,6 +50,7 @@ const InboxScreen = ({ token }) => {
         <NotificationsList
           notifications={notifications}
           onPress={handleOnNotificationPress}
+          userId={id}
         />
       </View>
     );

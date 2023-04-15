@@ -10,7 +10,7 @@ const getUsersNotification = async (req, res) => {
   const { userId } = req;
 
   try {
-    const { notifications } = await User.findById(userId)
+    const { notifications, chats } = await User.findById(userId)
       .populate({
         path: "notifications",
         populate: {
@@ -18,14 +18,43 @@ const getUsersNotification = async (req, res) => {
           select: "profilePicture",
         },
       })
+      .populate({
+        path: "chats",
+        populate: [
+          {
+            path: "users",
+            select: "name profilePicture",
+          },
+          {
+            path: "messages",
+            options: { sort: { createdAt: -1 }, limit: 1 },
+          },
+        ],
+      })
       .lean();
 
     notifications.forEach((notification) => {
       notification.sender = parseUserProfilePicture(notification.sender);
     });
-    const todaysNotifications = filterNotificationsByDate(notifications);
-    const yesterdaysNotifications = filterNotificationsByDate(notifications, 1);
-    const olderNotifications = filterOldNotifications(notifications);
+
+    chats.forEach((chat) => {
+      chat.users.forEach((user) => {
+        user = parseUserProfilePicture(user);
+      });
+    });
+
+    const todaysNotifications = filterNotificationsByDate([
+      ...notifications,
+      ...chats,
+    ]);
+    const yesterdaysNotifications = filterNotificationsByDate(
+      [...notifications, ...chats],
+      1
+    );
+    const olderNotifications = filterOldNotifications([
+      ...notifications,
+      ...chats,
+    ]);
 
     res.status(StatusCodes.OK).json({
       todaysNotifications,
@@ -92,13 +121,15 @@ export const sendNotificationForRemovedUser = async (user, sender, trip) => {
 const filterNotificationsByDate = (notifications, daysAgo = 0) => {
   const targetDate = new Date();
   targetDate.setDate(targetDate.getDate() - daysAgo);
-  return notifications.filter(({ createdAt }) => {
+
+  return notifications.filter((notification) => {
+    const createdAt = notification.notificationType
+      ? notification.createdAt
+      : notification.messages[0]?.createdAt;
+
     const createAt = new Date(createdAt);
-    return (
-      createAt.getFullYear() === targetDate.getFullYear() &&
-      createAt.getMonth() === targetDate.getMonth() &&
-      createAt.getDate() === targetDate.getDate()
-    );
+
+    return createAt.toDateString() === targetDate.toDateString();
   });
 };
 
@@ -107,7 +138,11 @@ const filterOldNotifications = (notifications) => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 2);
   return notifications.filter((notification) => {
-    const createdAt = new Date(notification.createdAt);
+    const date = notification.notificationType
+      ? notification.createdAt
+      : notification.messages[0]?.createdAt;
+
+    const createdAt = new Date(date);
     return createdAt < yesterday || createdAt > today;
   });
 };

@@ -3,14 +3,14 @@ import PageNames from "../Constants/pageNames";
 import InboxScreen from "../Views/Inbox/InboxScreen";
 import NotificationInformationScreen from "../Views/Inbox/NotificationInformationScreen";
 
-const Inbox = ({ token, tabsNavigation }) => {
+const Inbox = ({ token, id, tabsNavigation }) => {
   const Stack = createStackNavigator();
 
   return (
     <Stack.Navigator>
       <Stack.Screen
         name={PageNames.INBOX_LIST}
-        children={() => <InboxScreen token={token} />}
+        children={() => <InboxScreen token={token} id={id} />}
         options={{
           headerShown: false,
         }}

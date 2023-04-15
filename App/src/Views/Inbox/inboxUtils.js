@@ -1,4 +1,5 @@
 import { NotificationTypes } from "../../Constants/notifications";
+import { generatePictureUri } from "../../Utils/utils";
 
 export const getNotificationHeadline = (notificationType) => {
   if (notificationType === NotificationTypes.TRIP_WAS_EDITED)
@@ -20,4 +21,19 @@ export const getHeadlineText = (notificationType) => {
 
   if (notificationType === NotificationTypes.I_WAS_REMOVED_FROM_TRIP)
     return "Dėmesio, kelionės vairuotojas atšaukė jūsų rezervaciją!";
+};
+
+export const getChatNotificationHeadlne = (notification, id) => {
+  const { users } = notification;
+  const lastMessageSender = users.find(
+    (user) => user._id === notification.messages[0].user
+  );
+  const isLastMessageSentByMe = lastMessageSender._id === id;
+
+  return {
+    text: `${isLastMessageSentByMe ? "Aš" : lastMessageSender.name}: ${
+      notification.messages[0].text
+    }`,
+    profilePicture: generatePictureUri(lastMessageSender?.profilePicture),
+  };
 };

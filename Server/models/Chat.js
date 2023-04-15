@@ -13,7 +13,11 @@ const ChatSchema = new Schema({
 });
 
 ChatSchema.pre("save", async function (next) {
-  if (!this.isNew) next();
+  if (!this.isNew) {
+    next();
+    return;
+  }
+
   try {
     await Promise.all(
       this.users.map(async (id) => {

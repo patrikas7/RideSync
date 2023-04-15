@@ -4,12 +4,23 @@ import { Ionicons } from "@expo/vector-icons";
 import { getFormatedDateTime, generatePictureUri } from "../../Utils/utils";
 import Sizes from "../../Constants/sizes";
 import Colors from "../../Constants/colors";
-import { getNotificationHeadline } from "../../Views/Inbox/inboxUtils";
+import {
+  getNotificationHeadline,
+  getChatNotificationHeadlne,
+} from "../../Views/Inbox/inboxUtils";
 
-const NotificationPreview = ({ notification, styling, onPress }) => {
-  const profilePictureUri = generatePictureUri(
-    notification.sender?.profilePicture
-  );
+const NotificationPreview = ({ notification, styling, onPress, userId }) => {
+  const isNotification = !!notification.notificationType;
+  const profilePictureUri = isNotification
+    ? generatePictureUri(notification.sender?.profilePicture)
+    : getChatNotificationHeadlne(notification, userId).profilePicture;
+
+  let text;
+  if (isNotification) {
+    text = getNotificationHeadline(notification.notificationType);
+  } else {
+    text = getChatNotificationHeadlne(notification, userId).text;
+  }
 
   return (
     <TouchableHighlight
@@ -28,11 +39,13 @@ const NotificationPreview = ({ notification, styling, onPress }) => {
           style={NotificationPreviewStyles.avatar}
         />
         <View style={NotificationPreviewStyles.textContainer}>
-          <Text style={NotificationPreviewStyles.textPrimary}>
-            {getNotificationHeadline(notification.notificationType)}
-          </Text>
+          <Text style={NotificationPreviewStyles.textPrimary}>{text}</Text>
           <Text style={NotificationPreviewStyles.textSecondary}>
-            {getFormatedDateTime(notification.createdAt)}
+            {getFormatedDateTime(
+              isNotification
+                ? notification.createdAt
+                : notification.messages[0].createdAt
+            )}
           </Text>
         </View>
         {!notification.isRead && (
@@ -47,5 +60,4 @@ const NotificationPreview = ({ notification, styling, onPress }) => {
     </TouchableHighlight>
   );
 };
-
 export default NotificationPreview;

@@ -94,7 +94,7 @@ const Tabs = ({ route, navigation }) => {
       <Tab.Screen
         name={PageNames.INBOX}
         children={({ navigation: tabsNavigation }) => (
-          <Inbox token={token} tabsNavigation={tabsNavigation} />
+          <Inbox token={token} tabsNavigation={tabsNavigation} id={id} />
         )}
         options={{
           tabBarLabel: "Žinutės",

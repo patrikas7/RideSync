@@ -40,5 +40,5 @@ export const NotificationsListStyles = StyleSheet.create({
   headlineNotFirst: {
     marginTop: 16,
   },
-  notificationNotFirst: { marginTop: 24 },
+  notificationNotFirst: {},
 });

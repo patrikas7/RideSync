@@ -215,7 +215,8 @@ const ProfileNewVehicleScreen = ({ token }) => {
             setVehicle((prevState) => ({
               ...prevState,
               manufacturer,
-              model: "",
+              model:
+                prevState.manufacturer === manufacturer ? prevState.model : "",
             }))
           }
         />
