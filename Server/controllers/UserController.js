@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import BasicUser from "../models/BasicUser.js";
 import { parseUserProfilePicture } from "./Trip/TripControllerUtils.js";
 import { NotificationTypes } from "../enums/enums.js";
+import { initChat } from "../services/ChatService.js";
 
 const checkUserByEmail = async (req, res) => {
   const { email } = req.query;
@@ -197,15 +198,13 @@ const getUserTrips = async (req, res) => {
   }
 };
 
-const getUserChatHistory = async (req, res) => {
+const getUserChat = async (req, res) => {
   const userId = req.userId;
+  const { receiver } = req.query;
 
   try {
-    const { user } = await findUserById(userId, ["notifications"]);
-    const messages = user.notifications.filter(
-      (notification) =>
-        notification.notificationType === NotificationTypes.CHAT_MESSAGE
-    );
+    const chat = await initChat([userId, receiver]);
+    const { user } = await findUserById(userId);
 
     res.status(StatusCodes.OK).json({
       user: {
@@ -214,7 +213,13 @@ const getUserChatHistory = async (req, res) => {
         surname: user.surname,
         profilePicture: user.profilePicture,
       },
-      messages,
+      chat: {
+        ...chat,
+        messages: chat.messages.map((message) => ({
+          ...message,
+          user: { _id: message.user._id },
+        })),
+      },
     });
   } catch (error) {
     Logging.error(error);
@@ -259,5 +264,5 @@ export default {
   uploadPicture,
   deleteUser,
   getUserTrips,
-  getUserChatHistory,
+  getUserChat,
 };

@@ -15,6 +15,7 @@ const TripDriverCard = ({ driver, isUserDriver, navigation, car, token }) => {
     navigation.navigate(PageNames.CHAT, {
       prevScreen: PageNames.TRIP_INFORMATION,
       token,
+      receiver: driver._id,
     });
   };
 

@@ -14,13 +14,14 @@ export const fetchUserData = async (token) => {
   }
 };
 
-export const fetchUserChats = async (token) => {
+export const fetchUserChat = async (token, receiver) => {
   try {
     const { data } = await axios.get("/user/my-chats", {
+      params: { receiver },
       headers: { Authorization: token },
     });
 
-    return { user: data.user, messages: data.messages };
+    return { user: data.user, chat: data.chat };
   } catch (error) {
     printError(error);
     return { error };

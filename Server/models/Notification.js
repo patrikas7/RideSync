@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { NotificationTypes } from "../enums/enums.js";
 import User from "./User.js";
 
 const NotificationSchema = new Schema({
@@ -38,6 +39,12 @@ NotificationSchema.pre("save", async function (next) {
     const user = await User.findById(this.user);
     user.notifications.push(this._id);
     await user.save();
+
+    if (this.notificationType === NotificationTypes.CHAT_MESSAGE) {
+      const sender = await User.findById(this.sender);
+      sender.notifications.push(this._id);
+      await sender.save();
+    }
 
     next();
   } catch (error) {

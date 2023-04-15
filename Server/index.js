@@ -13,7 +13,7 @@ import TripBookmarkRouter from "./routes/TripBookmarkRoutes.js";
 import NotificationRouter from "./routes/NotificationRoutes.js";
 import TripSearchRequestRouter from "./routes/TripSearchRequestRoutes.js";
 import mongoose from "mongoose";
-import chatService from "./services/ChatService.js";
+import { chatService } from "./services/ChatService.js";
 import { Server } from "socket.io";
 
 const app = express();

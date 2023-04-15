@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import { io } from "socket.io-client";
 import { SOCKET_URL } from "../../API/constants";
-import { fetchUserChats } from "../../API/userApi";
+import { fetchUserChat } from "../../API/userApi";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import Container from "../../Components/Container/Container";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 
+const socket = io(SOCKET_URL);
+
 const ChatScreen = ({ navigation, route }) => {
-  const { prevScreen, token } = route.params;
+  const { prevScreen, token, receiver } = route.params;
   const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
   const [user, setUser] = useState(null);
+  const [chat, setChat] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useScreenArrowBack(navigation, prevScreen, {}, "close-outline");
@@ -21,56 +23,34 @@ const ChatScreen = ({ navigation, route }) => {
 
     const fetchUserChatHistory = async () => {
       setIsLoading(true);
-      const { user, messages } = await fetchUserChats(token);
+      const { chat, user } = await fetchUserChat(token, receiver);
       setUser(user);
-      setMessages(messages);
+      setChat(chat);
+      setMessages(chat.messages);
       setIsLoading(false);
     };
 
-    const initializeSocket = async () => {
-      const newSocket = io(SOCKET_URL);
-      setSocket(newSocket);
-
-      newSocket.on("message", (message) => {
-        setMessages((previousMessages) =>
-          GiftedChat.append(previousMessages, message)
-        );
-      });
-
-      return () => {
-        newSocket.disconnect();
-      };
-    };
-
-    const setupAndCleanup = async () => {
-      await fetchUserChatHistory();
-      const cleanup = await initializeSocket();
-
-      return () => {
-        if (cleanup) {
-          cleanup();
-        }
-      };
-    };
-
-    const cleanup = setupAndCleanup();
-
-    return () => {
-      if (cleanup) {
-        cleanup();
-      }
-    };
+    fetchUserChatHistory();
   }, [token]);
 
+  useEffect(() => {
+    if (!chat) return;
+    socket.emit("joinChat", chat._id);
+
+    socket.on("message", (newMessage) => {
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, newMessage)
+      );
+    });
+
+    return () => {
+      socket.off("message");
+    };
+  }, [chat]);
+
   const onSend = (newMessages = []) => {
-    if (socket) {
-      newMessages.forEach((message) => {
-        socket.emit("message", message);
-      });
-    }
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, newMessages)
-    );
+    const message = newMessages[0];
+    socket.emit("message", { chatId: chat._id, message });
   };
 
   return (

@@ -88,3 +88,7 @@ export const alert = (headline, secondaryText, onPress) => {
     },
   ]);
 };
+
+export const isMessageBetweenUsers = (message, user, receiver) =>
+  (message.user === user.id || message.sender === user.id) &&
+  (message.user === receiver || message.sender === receiver);

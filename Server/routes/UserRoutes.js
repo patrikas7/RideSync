@@ -37,9 +37,6 @@ UserRouter.route("/profilePicture").post(
 );
 
 UserRouter.route("/my-trips").get(authMiddleware, controller.getUserTrips);
-UserRouter.route("/my-chats").get(
-  authMiddleware,
-  controller.getUserChatHistory
-);
+UserRouter.route("/my-chats").get(authMiddleware, controller.getUserChat);
 
 export default UserRouter;
