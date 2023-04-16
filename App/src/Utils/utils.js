@@ -18,6 +18,12 @@ export const getFormatedTodaysDate = () => {
   return date.toISOString().split("T")[0];
 };
 
+export const isDateInPast = (dateString) => {
+  const date = new Date(dateString);
+  const today = new Date();
+  return date < today;
+};
+
 export const getFormatedDateTime = (date) => {
   const isoString = new Date(date).toISOString();
   const year = isoString.slice(0, 4);
@@ -88,7 +94,3 @@ export const alert = (headline, secondaryText, onPress) => {
     },
   ]);
 };
-
-export const isMessageBetweenUsers = (message, user, receiver) =>
-  (message.user === user.id || message.sender === user.id) &&
-  (message.user === receiver || message.sender === receiver);

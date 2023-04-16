@@ -60,7 +60,10 @@ const getUsersNotification = async (req, res) => {
       todaysNotifications,
       yesterdaysNotifications,
       olderNotifications,
-      resultsCount: notifications.length,
+      resultsCount:
+        todaysNotifications.length +
+        yesterdaysNotifications.length +
+        olderNotifications.length,
     });
   } catch (error) {
     Logging.error(error);

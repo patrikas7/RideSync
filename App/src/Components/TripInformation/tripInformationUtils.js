@@ -6,9 +6,16 @@ export const getActivePassengersCount = (passengers) => {
 export const getButtonText = (
   isUserDriver,
   isUserPassenger,
-  isUserRemovedFromTrip
+  isUserRemovedFromTrip,
+  hasTripFinished
 ) => {
-  if (isUserDriver) return "Atšaukti kelionę";
-  if (isUserPassenger && !isUserRemovedFromTrip) return "Atšaukti rezervaciją";
+  if (isUserDriver) {
+    if (hasTripFinished) return "Įvertinti keleivius";
+    return "Atšaukti kelionę";
+  }
+  if (isUserPassenger && !isUserRemovedFromTrip) {
+    if (hasTripFinished) return "Įvertinti vairuotoją";
+    return "Atšaukti rezervaciją";
+  }
   return "Rezervuoti vietą";
 };

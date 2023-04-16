@@ -183,6 +183,13 @@ const Schemas = {
       comments: Joi.string().allow(null, ""),
     }),
   },
+  review: {
+    create: Joi.object({
+      trip: Joi.string().required(),
+      recipient: Joi.string().required(),
+      rating: Joi.number().min(1).max(5).required(),
+    }),
+  },
 };
 
 export default Schemas;

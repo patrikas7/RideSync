@@ -149,7 +149,7 @@ const getRemainingTime = (dateStr, timeStr) => {
 };
 
 export const parseUserProfilePicture = (user) => {
-  if (user.profilePicture?.buffer)
+  if (user?.profilePicture?.buffer)
     user.profilePicture.buffer = user.profilePicture.buffer.toString("base64");
 
   return user;

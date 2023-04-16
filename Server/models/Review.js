@@ -1,17 +1,18 @@
 import mongoose, { Schema } from "mongoose";
+import BasicUser from "./BasicUser";
 
 const ReviewSchema = new Schema({
-  tripId: {
+  trip: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "Trip",
   },
-  recipientId: {
+  recipient: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "BasicUser",
   },
-  reviewerId: {
+  reviewer: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "BasicUser",
@@ -26,6 +27,25 @@ const ReviewSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+ReviewSchema.pre("save", async function (next) {
+  try {
+    const recipient = await BasicUser.findById(this.recipient);
+    const reviewer = await BasicUser.findById(this.reviewer);
+
+    if (recipient && reviewer) {
+      recipient.reviews.push(this._id);
+      reviewer.reviews.push(this._id);
+
+      await recipient.save();
+      await reviewer.save();
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 const Review = mongoose.model("Review", ReviewSchema);

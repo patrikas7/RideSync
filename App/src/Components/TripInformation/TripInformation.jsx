@@ -17,8 +17,21 @@ import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";
 import TripPassengersCard from "./cards/TripPassengersCard";
 
-const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
+const TripInformation = ({
+  trip,
+  id,
+  token,
+  navigation,
+  setTrip,
+  userId,
+  hasTripFinished,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
+  const isButtonVisible = !(
+    trip.isUserDriver &&
+    !getActivePassengersCount(trip.passengers) &&
+    hasTripFinished
+  );
 
   const handleOnButtonClick = async () => {
     if (trip.isUserDriver) {
@@ -137,16 +150,19 @@ const TripInformation = ({ trip, id, token, navigation, setTrip, userId }) => {
           )}
         </ScrollView>
 
-        <Button
-          text={getButtonText(
-            trip.isUserDriver,
-            trip.isUserPassenger,
-            trip.isUserRemovedFromTrip
-          )}
-          styling={TripInformationStyles.button}
-          disabled={trip.isUserRemovedFromTrip}
-          onClick={handleOnButtonClick}
-        />
+        {isButtonVisible && (
+          <Button
+            text={getButtonText(
+              trip.isUserDriver,
+              trip.isUserPassenger,
+              trip.isUserRemovedFromTrip,
+              hasTripFinished
+            )}
+            styling={TripInformationStyles.button}
+            disabled={trip.isUserRemovedFromTrip}
+            onClick={handleOnButtonClick}
+          />
+        )}
       </View>
     </View>
   );

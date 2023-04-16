@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { isDateInPast } from "../../../Utils/utils";
 import Container from "../../../Components/Container/Container";
 import TripInformation from "../../../Components/TripInformation/TripInformation";
 import PageNames from "../../../Constants/pageNames";
@@ -12,9 +13,10 @@ import Colors from "../../../Constants/colors";
 const TripInformationScreen = ({ navigation, route }) => {
   const [trip, setTrip] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const { id } = route.params;
+  const { id, prevScreen = PageNames.TRIP_SEARCH_RESULTS } = route.params;
   const { token, id: userId } = useUserData();
-  useScreenArrowBack(navigation, PageNames.TRIP_SEARCH_RESULTS);
+  const hasTripFinished = isDateInPast(trip?.date);
+  useScreenArrowBack(navigation, prevScreen);
 
   const handleOnEditPress = () => {
     navigation.navigate(PageNames.TRIP_EDIT, {
@@ -29,7 +31,7 @@ const TripInformationScreen = ({ navigation, route }) => {
     navigation,
     icons: ["create-outline"],
     onPress: handleOnEditPress,
-    shouldRender: trip.isUserDriver,
+    shouldRender: trip.isUserDriver && !hasTripFinished,
     color: Colors.BLACK,
   });
 
@@ -65,6 +67,7 @@ const TripInformationScreen = ({ navigation, route }) => {
       ) : (
         <TripInformation
           trip={trip}
+          hasTripFinished={hasTripFinished}
           id={id}
           token={token}
           navigation={navigation}
