@@ -27,3 +27,17 @@ export const fetchUserChat = async (token, receiver) => {
     return { error };
   }
 };
+
+export const fetchMyTrips = async (token, type) => {
+  try {
+    const { data } = await axios.get("/user/my-trips", {
+      params: { type },
+      headers: { Authorization: token },
+    });
+
+    return { data };
+  } catch (error) {
+    printError(error);
+    return { error };
+  }
+};

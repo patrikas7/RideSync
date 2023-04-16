@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
+import { fetchMyTrips } from "../../../API/userApi";
 import Container from "../../../Components/Container/Container";
 import NoResults from "../../../Components/NoResults/NoResults";
 import useUserData from "../../../hooks/useUserData";
 import Spinner from "react-native-loading-spinner-overlay";
-import axios from "axios";
 import FutureTripsList from "../../../Components/MyTrips/FutureTripsList";
 import PageNames from "../../../Constants/pageNames";
+import { TripQueryTypes } from "../../../API/constants";
 
 const FutureTrips = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,20 +18,13 @@ const FutureTrips = ({ navigation }) => {
 
   useEffect(() => {
     if (!id || !token || !isFocused) return;
+
     const fetchFutureTrips = async () => {
       setIsLoading(true);
-      try {
-        const { data } = await axios.get("/user/my-trips", {
-          params: { id },
-          headers: { Authorization: token },
-        });
+      const { data } = await fetchMyTrips(token, TripQueryTypes.FUTURE);
+      setIsLoading(false);
 
-        setFutureTrips(data);
-      } catch (error) {
-        console.log(error.response.data);
-      } finally {
-        setIsLoading(false);
-      }
+      if (data) setFutureTrips(data);
     };
 
     fetchFutureTrips();
@@ -46,8 +40,8 @@ const FutureTrips = ({ navigation }) => {
     return totalLength;
   };
 
-  const handleOnTripPress = (id, screen) => {
-    navigation.navigate(screen, { id });
+  const handleOnHistoryPress = () => {
+    navigation.navigate(PageNames.TRIPS_HISTORY, { token });
   };
 
   return (
@@ -58,13 +52,15 @@ const FutureTrips = ({ navigation }) => {
           primaryText="Jūs neturite jokių suplanuotų kelionių"
           secondaryText="Sukurkite naują kelionę arba užsirezervuokite vietą per kelionių paiešką"
           buttonText="Mano kelionių istorija"
+          onPress={handleOnHistoryPress}
         />
       ) : (
         <FutureTripsList
           driverTrips={futureTrips.driverTrips}
           passengerTrips={futureTrips.passengerTrips}
           tripSearchRequests={futureTrips.tripSearchRequests}
-          onTripPress={handleOnTripPress}
+          onTripPress={(id, screen) => navigation.navigate(screen, { id })}
+          onHistoryPress={handleOnHistoryPress}
         />
       )}
     </Container>

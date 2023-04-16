@@ -11,6 +11,7 @@ import ChatScreen from "../Views/Chat/ChatScreen";
 import TripEditScreen from "../Views/Trips/TripInformation/TripEditScreen";
 import CitySearchScreen from "../Views/Search/CitySearchScreen";
 import TripDateAndTimeEditScreen from "../Views/Trips/TripInformation/TripDateAndTimeEditScreen";
+import TripsHistoryScreen from "../Views/Trips/TripsHistory/TripsHistoryScreen";
 
 const MyRides = () => {
   const Stack = createStackNavigator();
@@ -83,6 +84,14 @@ const MyRides = () => {
       <Stack.Screen
         name={PageNames.TRIP_RETURN_DATE_AND_TIME_EDIT}
         component={TripDateAndTimeEditScreen}
+        options={{
+          headerShadowVisible: false,
+          title: "",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.TRIPS_HISTORY}
+        component={TripsHistoryScreen}
         options={{
           headerShadowVisible: false,
           title: "",

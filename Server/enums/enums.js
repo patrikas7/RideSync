@@ -47,3 +47,8 @@ export const NotificationTypes = {
   I_WAS_REMOVED_FROM_TRIP: "I_WAS_REMOVED_FROM_TRIP",
   TRIP_PASSENGER_REQUEST: "TRIP_PASSENGER_REQUEST",
 };
+
+export const TripQueryTypes = {
+  FUTURE: "FUTURE",
+  HISTORY: "HISTORY",
+};

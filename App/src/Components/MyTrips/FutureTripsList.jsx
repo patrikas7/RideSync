@@ -9,6 +9,7 @@ const FutureTripsList = ({
   passengerTrips,
   tripSearchRequests,
   onTripPress,
+  onHistoryPress,
 }) => {
   return (
     <ScrollView>
@@ -73,7 +74,7 @@ const FutureTripsList = ({
       )}
       <TextButton
         text={"Kelionių istorija"}
-        onPress={() => console.log()}
+        onPress={onHistoryPress}
         styling={{ marginVertical: 32 }}
         icon={"time-outline"}
       />

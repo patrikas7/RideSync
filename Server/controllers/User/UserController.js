@@ -1,12 +1,16 @@
-import User from "../models/User.js";
-import Logging from "../library/Logging.js";
-import StatusCodes from "../enums/statusCodes.js";
-import ErrorMessages from "../enums/errorMessages.js";
+import User from "../../models/User.js";
+import Logging from "../../library/Logging.js";
+import StatusCodes from "../../enums/statusCodes.js";
+import ErrorMessages from "../../enums/errorMessages.js";
 import bcrypt from "bcryptjs";
-import BasicUser from "../models/BasicUser.js";
-import { parseUserProfilePicture } from "./Trip/TripControllerUtils.js";
-import { NotificationTypes } from "../enums/enums.js";
-import { initChat } from "../services/ChatService.js";
+import BasicUser from "../../models/BasicUser.js";
+import { parseUserProfilePicture } from "../Trip/TripControllerUtils.js";
+import { initChat } from "../../services/ChatService.js";
+import {
+  getDateFilter,
+  getTripSearchRequestPopulation,
+  findUserById,
+} from "./UserControllerUtils.js";
 
 const checkUserByEmail = async (req, res) => {
   const { email } = req.query;
@@ -146,6 +150,8 @@ const deleteUser = async (req, res) => {
 
 const getUserTrips = async (req, res) => {
   const { userId } = req;
+  const { type } = req.query;
+  const dateFilter = getDateFilter(type);
 
   try {
     const user = await BasicUser.findById(userId)
@@ -156,22 +162,16 @@ const getUserTrips = async (req, res) => {
           model: "BasicUser",
           select: "name profilePicture",
         },
+        match: dateFilter,
       })
-      .populate({
-        path: "tripSearchRequests",
-        populate: {
-          path: "user",
-          model: "BasicUser",
-          select: "name profilePicture",
-        },
-      })
+      .populate(getTripSearchRequestPopulation(type))
       .lean();
 
     user.trips.forEach((trip) => [
       (trip.driver = parseUserProfilePicture(trip.driver)),
     ]);
 
-    user.tripSearchRequests.forEach((trip) => [
+    user?.tripSearchRequests?.forEach((trip) => [
       (trip.user = parseUserProfilePicture(trip.user)),
     ]);
 
@@ -227,32 +227,6 @@ const getUserChat = async (req, res) => {
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
   }
-};
-
-const findUserById = async (id, fieldsToPopulate = []) => {
-  let query = User.findById(id);
-
-  fieldsToPopulate.forEach((field) => {
-    query = query.populate(field);
-  });
-
-  const user = await query.exec();
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  delete user.password;
-
-  const userObject = user.toObject();
-
-  if (userObject.profilePicture?.buffer) {
-    userObject.profilePicture = {
-      type: user.profilePicture.type,
-      buffer: user.profilePicture.buffer.toString("base64"),
-    };
-  }
-
-  return { user: userObject };
 };
 
 export default {
