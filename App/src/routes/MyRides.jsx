@@ -12,6 +12,7 @@ import TripEditScreen from "../Views/Trips/TripInformation/TripEditScreen";
 import CitySearchScreen from "../Views/Search/CitySearchScreen";
 import TripDateAndTimeEditScreen from "../Views/Trips/TripInformation/TripDateAndTimeEditScreen";
 import TripsHistoryScreen from "../Views/Trips/TripsHistory/TripsHistoryScreen";
+import ReviewScreen from "../Views/Trips/Review/ReviewScreen";
 
 const MyRides = ({ navigation }) => {
   const Stack = createStackNavigator();
@@ -95,6 +96,15 @@ const MyRides = ({ navigation }) => {
         options={{
           headerShadowVisible: false,
           title: "Kelionių istorija",
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.REVIEW}
+        component={ReviewScreen}
+        options={{
+          headerShadowVisible: false,
+          title: "",
+          ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
       />
     </Stack.Navigator>

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import BasicUser from "./BasicUser";
+import BasicUser from "./BasicUser.js";
 
 const ReviewSchema = new Schema({
   trip: {

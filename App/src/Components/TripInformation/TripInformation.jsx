@@ -5,7 +5,8 @@ import { alert } from "../../Utils/utils";
 import { deleteBooking, deleteTrip } from "../../API/tripApi";
 import {
   getActivePassengersCount,
-  getButtonText,
+  getPossibleAction,
+  Actions,
 } from "./tripInformationUtils";
 import TripInformationStyles from "./TripInformationStyle";
 import TripRoutesCard from "./cards/TripRoutesCard";
@@ -27,19 +28,21 @@ const TripInformation = ({
   hasTripFinished,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const isButtonVisible = !(
-    trip.isUserDriver &&
-    !getActivePassengersCount(trip.passengers) &&
+  const action = getPossibleAction(
+    trip.isUserDriver,
+    trip.isUserPassenger,
+    trip.isUserRemovedFromTrip,
     hasTripFinished
   );
+  const hasActivePassengers = getActivePassengersCount(trip.passengers) > 0;
+  const isUserRemovedFromTrip =
+    trip.isUserPassenger && trip.isUserRemovedFromTrip;
+  const isButtonVisible =
+    !(trip.isUserDriver && !hasActivePassengers && hasTripFinished) &&
+    !(isUserRemovedFromTrip && hasTripFinished);
 
   const handleOnButtonClick = async () => {
-    if (trip.isUserDriver) {
-      handleOnDelete();
-      return;
-    }
-
-    if (trip.isUserRemovedFromTrip) {
+    if (trip.isUserPassenger && trip.isUserRemovedFromTrip) {
       showMessage({
         message:
           "Rezervacija negalima, kadangi vairuotojas jus pašalino iš kelionės",
@@ -48,17 +51,31 @@ const TripInformation = ({
       return;
     }
 
-    if (trip.isUserPassenger) {
-      cancelReservation();
-      return;
+    switch (action) {
+      case Actions.RATE_PASSENGERS:
+        break;
+      case Actions.RATE_DRIVER:
+        navigation.navigate(PageNames.REVIEW, { token, tripId: trip._id });
+        break;
+      case Actions.CANCEL_TRIP:
+        handleOnDelete();
+        break;
+      case Actions.CANCEL_RESERVATION:
+        cancelReservation();
+        break;
+      case Actions.RESERVE_SEAT:
+        navigation.navigate(PageNames.TRIP_PASSENGERS_COUNT_SELECT, {
+          availableSeats: trip.personsCount,
+          token,
+          tripId: trip._id,
+        });
+        break;
+      default:
+        break;
     }
-
-    navigation.navigate(PageNames.TRIP_PASSENGERS_COUNT_SELECT, {
-      availableSeats: trip.personsCount,
-      token,
-      tripId: trip._id,
-    });
   };
+
+  const handleOnReview = async () => {};
 
   const handleOnDelete = () => {
     alert(
@@ -129,7 +146,7 @@ const TripInformation = ({
             onChat={handleOnChatPress}
           />
 
-          {getActivePassengersCount(trip.passengers) > 0 && (
+          {hasActivePassengers && (
             <TripPassengersCard
               passengers={trip.passengers}
               navigation={navigation}
@@ -152,12 +169,7 @@ const TripInformation = ({
 
         {isButtonVisible && (
           <Button
-            text={getButtonText(
-              trip.isUserDriver,
-              trip.isUserPassenger,
-              trip.isUserRemovedFromTrip,
-              hasTripFinished
-            )}
+            text={action}
             styling={TripInformationStyles.button}
             disabled={trip.isUserRemovedFromTrip}
             onClick={handleOnButtonClick}

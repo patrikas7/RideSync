@@ -1,7 +1,7 @@
 import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
-import Review from "../models/Review";
+import Review from "../models/Review.js";
 
 const createReview = async (req, res) => {
   const { userId } = req;

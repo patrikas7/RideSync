@@ -12,7 +12,7 @@ import CarRouter from "./routes/CarRoutes.js";
 import TripBookmarkRouter from "./routes/TripBookmarkRoutes.js";
 import NotificationRouter from "./routes/NotificationRoutes.js";
 import TripSearchRequestRouter from "./routes/TripSearchRequestRoutes.js";
-import ReviewRouter from "./routes/ReviewRoutes";
+import ReviewRouter from "./routes/ReviewRoutes.js";
 import mongoose from "mongoose";
 import { chatService } from "./services/ChatService.js";
 import { Server } from "socket.io";

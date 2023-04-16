@@ -1,5 +1,5 @@
 import express from "express";
-import controller from "../controllers/ReviewController";
+import controller from "../controllers/ReviewController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 import Schemas from "../middleware/Schemas.js";
 import { ValidateSchema } from "../middleware/SchemaValidator.js";

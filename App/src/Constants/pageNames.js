@@ -53,6 +53,7 @@ const PageNames = {
   PROFILE_GENDER_EDIT: "PROFILE_GENDER_EDIT",
   PROFILE_PICTURE_EDIT: "PROFILE_PICTURE_EDIT",
   CHAT: "CHAT",
+  REVIEW: "REVIEW",
 };
 
 export default PageNames;
