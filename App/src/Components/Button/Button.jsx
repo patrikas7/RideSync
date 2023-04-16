@@ -6,22 +6,24 @@ export const ButtonColor = {
   WHITE: "Grey",
 };
 
-const Button = ({ text, onClick, styling, color = ButtonColor.BLUE }) => {
+const Button = ({
+  text,
+  onClick,
+  styling,
+  disabled,
+  color = ButtonColor.BLUE,
+}) => {
   const buttonContainerColor = ButtonStyles[`buttonInnerContainer${color}`];
-
   return (
     <View style={{ ...ButtonStyles.buttonOuterContainer, ...styling }}>
       <Pressable
         onPress={onClick}
-        style={({ pressed }) =>
-          pressed
-            ? [
-                ButtonStyles.pressed,
-                ButtonStyles.buttonInnerContainer,
-                buttonContainerColor,
-              ]
-            : [ButtonStyles.buttonInnerContainer, buttonContainerColor]
-        }
+        style={({ pressed }) => [
+          ButtonStyles.buttonInnerContainer,
+          buttonContainerColor,
+          pressed ? ButtonStyles.pressed : {},
+          disabled ? ButtonStyles.disabledButton : {},
+        ]}
       >
         <Text
           style={[

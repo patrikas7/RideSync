@@ -164,3 +164,11 @@ export const parsePassengersProfilePictures = (passengers) => {
 
   return passengers;
 };
+
+export const findPassenger = (passengers, userId, wasRemoved) => {
+  return passengers?.find(
+    (passenger) =>
+      passenger.passenger._id.toString() === userId &&
+      passenger.wasRemoved === wasRemoved
+  );
+};

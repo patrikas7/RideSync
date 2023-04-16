@@ -21,28 +21,31 @@ const TripPassengersCard = ({
     >
       <Text style={TripInformationStyles.passengersHeadline}>Keleiviai</Text>
       <View style={TripInformationStyles.passengersList}>
-        {passengers.map((passenger, index) => (
-          <PassengerInformation
-            key={index}
-            passenger={passenger.passenger}
-            seatsBooked={passenger.seatsBooked}
-            isUserDriver={isUserDriver}
-            onPassangerRemove={onPassangerRemove}
-            onChat={onChat}
-            onPress={(profilePictureUri, handleOnChatPress) =>
-              navigation.navigate(PageNames.USER_INFORMATION, {
-                user: passenger.passenger,
-                profilePictureUri,
-                isMyProfile: passenger.passenger._id === userId,
-                prevScreen: PageNames.TRIP_INFORMATION,
-                onChat: handleOnChatPress,
-              })
-            }
-            styling={
-              index > 0 ? TripInformationStyles.passengerInfoNotFirst : {}
-            }
-          />
-        ))}
+        {passengers.map((passenger, index) => {
+          if (passenger.wasRemoved) return null;
+          return (
+            <PassengerInformation
+              key={index}
+              passenger={passenger.passenger}
+              seatsBooked={passenger.seatsBooked}
+              isUserDriver={isUserDriver}
+              onPassangerRemove={onPassangerRemove}
+              onChat={onChat}
+              onPress={(profilePictureUri, handleOnChatPress) =>
+                navigation.navigate(PageNames.USER_INFORMATION, {
+                  user: passenger.passenger,
+                  profilePictureUri,
+                  isMyProfile: passenger.passenger._id === userId,
+                  prevScreen: PageNames.TRIP_INFORMATION,
+                  onChat: handleOnChatPress,
+                })
+              }
+              styling={
+                index > 0 ? TripInformationStyles.passengerInfoNotFirst : {}
+              }
+            />
+          );
+        })}
       </View>
     </View>
   );

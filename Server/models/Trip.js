@@ -1,7 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { sendNotificationsForPassengers } from "../controllers/NotificationController.js";
 import { NotificationTypes } from "../enums/enums.js";
-import Logging from "../library/Logging.js";
 import BasicUser from "./BasicUser.js";
 
 export const cityType = {
@@ -31,6 +30,7 @@ const TripSchema = new Schema({
     {
       passenger: { type: Schema.Types.ObjectId, ref: "BasicUser" },
       seatsBooked: { type: Number },
+      wasRemoved: { type: Boolean, default: false },
     },
   ],
 });

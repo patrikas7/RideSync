@@ -41,4 +41,7 @@ export const ButtonStyles = StyleSheet.create({
   pressed: {
     opacity: 0.75,
   },
+  disabledButton: {
+    backgroundColor: Colors.DISABLED,
+  },
 });

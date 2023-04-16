@@ -7,10 +7,10 @@ import User from "../../models/User.js";
 import TripBookmark from "../../models/TripBookmark.js";
 import {
   buildSearchQuery,
-  getTripsWithUserType,
   buildFiltersQuery,
   parseUserProfilePicture,
   parsePassengersProfilePictures,
+  findPassenger,
 } from "./TripControllerUtils.js";
 import { sendNotificationForRemovedUser } from "../NotificationController.js";
 
@@ -75,9 +75,8 @@ const getTripInformation = async (req, res) => {
     const trip = await findTripById(id, true);
     const { driver, passengers } = trip;
     const isUserDriver = userId === driver._id.toString();
-    const isUserPassenger = trip?.passengers?.some(
-      (passenger) => passenger.passenger._id.toString() === userId
-    );
+    const isUserPassenger = findPassenger(trip?.passengers, userId, false);
+    const isUserRemovedFromTrip = findPassenger(trip?.passengers, userId, true);
     // const {rating, reviewCount} = getUserRatingAndReviewCount(trips.driver._id)
 
     trip.driver = parseUserProfilePicture(driver);
@@ -88,6 +87,7 @@ const getTripInformation = async (req, res) => {
         ...trip,
         isUserDriver,
         isUserPassenger,
+        isUserRemovedFromTrip,
       },
     });
   } catch (error) {
@@ -245,6 +245,7 @@ const cancelBooking = async (req, res) => {
   } = req;
 
   const userToRemove = passengerId || userId;
+  const isPassengerRemovedByDriver = !!passengerId;
 
   try {
     const trip = await findTripById(id);
@@ -259,12 +260,17 @@ const cancelBooking = async (req, res) => {
         .send(ErrorMessages.PASSENGER_NOT_FOUND);
 
     trip.personsCount += passenger.seatsBooked;
-    trip.passengers.pull(passenger._id);
+
+    if (isPassengerRemovedByDriver) {
+      passenger.wasRemoved = true;
+    } else {
+      trip.passengers.pull(passenger._id);
+    }
 
     await trip.save();
     await removeTripFromUsersTripHistory(userToRemove, id);
 
-    if (passengerId)
+    if (isPassengerRemovedByDriver)
       await sendNotificationForRemovedUser(passengerId, userId, trip._id);
 
     parseUserProfilePicture(trip.driver);
@@ -274,7 +280,7 @@ const cancelBooking = async (req, res) => {
       trip: {
         ...trip.toObject(),
         isUserPassenger: false,
-        isUserDriver: !!passengerId,
+        isUserDriver: isPassengerRemovedByDriver,
       },
     });
   } catch (error) {
