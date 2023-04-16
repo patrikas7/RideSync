@@ -17,6 +17,7 @@ import TextButton from "../Button/TextButton";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";
 import TripPassengersCard from "./cards/TripPassengersCard";
+import { canReviewBeDone } from "../../API/reviewApi";
 
 const TripInformation = ({
   trip,
@@ -55,7 +56,7 @@ const TripInformation = ({
       case Actions.RATE_PASSENGERS:
         break;
       case Actions.RATE_DRIVER:
-        navigation.navigate(PageNames.REVIEW, { token, tripId: trip._id });
+        handleOnReview();
         break;
       case Actions.CANCEL_TRIP:
         handleOnDelete();
@@ -75,7 +76,32 @@ const TripInformation = ({
     }
   };
 
-  const handleOnReview = async () => {};
+  const handleOnReview = async () => {
+    setIsLoading(true);
+    const { doesReviewExists } = await canReviewBeDone(
+      token,
+      trip._id,
+      trip.driver._id
+    );
+
+    console.log(doesReviewExists);
+    setIsLoading(false);
+
+    if (!doesReviewExists) {
+      navigation.navigate(PageNames.REVIEW, {
+        token,
+        trip: trip._id,
+        recipient: trip.driver._id,
+        name: trip.driver.name,
+      });
+      return;
+    }
+
+    showMessage({
+      message: "Kelionės įvertinimas jau yra atliktas",
+      type: "danger",
+    });
+  };
 
   const handleOnDelete = () => {
     alert(

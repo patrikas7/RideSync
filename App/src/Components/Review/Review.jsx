@@ -2,12 +2,10 @@ import { Text, View } from "react-native";
 import styles from "./ReviewStyles";
 import { AirbnbRating } from "react-native-ratings";
 
-const Review = ({ styling }) => {
+const Review = ({ styling, onChange, headline }) => {
   return (
     <View style={[styles.container, styling]}>
-      <Text style={styles.headline}>
-        Kaip vertinate savo kelionę su Paulius?
-      </Text>
+      <Text style={styles.headline}>{headline}</Text>
       <View></View>
       <AirbnbRating
         count={5}
@@ -21,6 +19,7 @@ const Review = ({ styling }) => {
         defaultRating={3}
         size={28}
         ratingContainerStyle={styles.rating}
+        onFinishRating={onChange}
       />
     </View>
   );

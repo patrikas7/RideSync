@@ -189,6 +189,10 @@ const Schemas = {
       recipient: Joi.string().required(),
       rating: Joi.number().min(1).max(5).required(),
     }),
+    existence: Joi.object({
+      trip: Joi.string().required(),
+      recipient: Joi.string().required(),
+    })
   },
 };
 

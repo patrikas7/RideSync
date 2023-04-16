@@ -13,6 +13,7 @@ import CitySearchScreen from "../Views/Search/CitySearchScreen";
 import TripDateAndTimeEditScreen from "../Views/Trips/TripInformation/TripDateAndTimeEditScreen";
 import TripsHistoryScreen from "../Views/Trips/TripsHistory/TripsHistoryScreen";
 import ReviewScreen from "../Views/Trips/Review/ReviewScreen";
+import ReviewSuccessScreen from "../Views/Trips/Review/ReviewSuccessScreen";
 
 const MyRides = ({ navigation }) => {
   const Stack = createStackNavigator();
@@ -105,6 +106,13 @@ const MyRides = ({ navigation }) => {
           headerShadowVisible: false,
           title: "",
           ...TransitionPresets.ModalSlideFromBottomIOS,
+        }}
+      />
+      <Stack.Screen
+        name={PageNames.REVIEW_SUCCESS}
+        component={ReviewSuccessScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

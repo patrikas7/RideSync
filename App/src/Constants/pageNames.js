@@ -54,6 +54,7 @@ const PageNames = {
   PROFILE_PICTURE_EDIT: "PROFILE_PICTURE_EDIT",
   CHAT: "CHAT",
   REVIEW: "REVIEW",
+  REVIEW_SUCCESS: "REVIEW_SUCCESS",
 };
 
 export default PageNames;
