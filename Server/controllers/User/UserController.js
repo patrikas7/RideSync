@@ -10,6 +10,7 @@ import {
   getDateFilter,
   getTripSearchRequestPopulation,
   findUserById,
+  buildUserTripsResponse,
 } from "./UserControllerUtils.js";
 
 const checkUserByEmail = async (req, res) => {
@@ -175,21 +176,7 @@ const getUserTrips = async (req, res) => {
       (trip.user = parseUserProfilePicture(trip.user)),
     ]);
 
-    const driverTrips = user.trips.filter(
-      (trip) => trip.driver._id.toString() === userId
-    );
-
-    const passengerTrips = user.trips.filter((trip) =>
-      trip.passengers
-        .map((passenger) => passenger.passenger.toString())
-        .includes(userId)
-    );
-
-    res.status(StatusCodes.OK).json({
-      driverTrips,
-      passengerTrips,
-      tripSearchRequests: user.tripSearchRequests,
-    });
+    res.status(StatusCodes.OK).json(buildUserTripsResponse(type, user, userId));
   } catch (error) {
     Logging.error(error);
     return res

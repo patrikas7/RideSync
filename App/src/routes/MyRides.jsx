@@ -13,7 +13,7 @@ import CitySearchScreen from "../Views/Search/CitySearchScreen";
 import TripDateAndTimeEditScreen from "../Views/Trips/TripInformation/TripDateAndTimeEditScreen";
 import TripsHistoryScreen from "../Views/Trips/TripsHistory/TripsHistoryScreen";
 
-const MyRides = () => {
+const MyRides = ({ navigation }) => {
   const Stack = createStackNavigator();
 
   return (
@@ -91,10 +91,10 @@ const MyRides = () => {
       />
       <Stack.Screen
         name={PageNames.TRIPS_HISTORY}
-        component={TripsHistoryScreen}
+        children={() => <TripsHistoryScreen tabsNavigation={navigation} />}
         options={{
           headerShadowVisible: false,
-          title: "",
+          title: "Kelionių istorija",
         }}
       />
     </Stack.Navigator>

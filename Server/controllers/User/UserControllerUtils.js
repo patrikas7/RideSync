@@ -57,3 +57,25 @@ export const findUserById = async (id, fieldsToPopulate = []) => {
 
   return { user: userObject };
 };
+
+export const buildUserTripsResponse = (type, user, userId) => {
+  if (type === TripQueryTypes.FUTURE) {
+    const driverTrips = user.trips.filter(
+      (trip) => trip.driver._id.toString() === userId
+    );
+
+    const passengerTrips = user.trips.filter((trip) =>
+      trip.passengers
+        .map((passenger) => passenger.passenger.toString())
+        .includes(userId)
+    );
+
+    return {
+      driverTrips,
+      passengerTrips,
+      tripSearchRequests: user.tripSearchRequests,
+    };
+  }
+
+  return { trips: user.trips };
+};
