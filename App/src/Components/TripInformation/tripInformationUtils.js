@@ -6,7 +6,7 @@ export const getActivePassengersCount = (passengers) => {
 export const Actions = {
   RATE_PASSENGERS: "Įvertinti keleivius",
   RATE_DRIVER: "Įvertinti vairuotoją",
-  CANCEL_TRIP: "Įvertinti keleivius",
+  CANCEL_TRIP: "Atšaukti kelionę",
   CANCEL_RESERVATION: "Atšaukti rezervaciją",
   RESERVE_SEAT: "Rezervuoti vietą",
 };

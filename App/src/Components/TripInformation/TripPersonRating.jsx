@@ -5,7 +5,6 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
 const TripPersonRating = ({ styling, averageRating, reviewsCount }) => {
-  console.log(averageRating);
   return (
     <View style={[TripInformationStyles.reviewContainer, styling]}>
       <Ionicons name="star" color={Colors.GOLD} size={Sizes.ICON_SMALL} />

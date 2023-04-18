@@ -83,8 +83,13 @@ const TripCard = ({ trip, onPress, containerStyling }) => {
                   color={Colors.GOLD}
                   size={Sizes.ICON_SMALL}
                 />
-                <Text style={TripsListStyle.review}>0</Text>
-                <Text style={TripsListStyle.reviewCount}>- 0 įvertinimų</Text>
+                <Text style={TripsListStyle.review}>
+                  {trip?.driver?.averageRating || trip?.user?.averageRating}{" "}
+                </Text>
+                <Text style={TripsListStyle.reviewCount}>
+                  - {trip?.driver?.reviewsCount || trip?.user?.reviewsCount}{" "}
+                  įvertinimų
+                </Text>
               </View>
             )}
           </View>

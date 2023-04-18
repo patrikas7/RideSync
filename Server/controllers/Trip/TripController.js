@@ -23,8 +23,19 @@ const getTrips = async (req, res) => {
 
   try {
     const trips = await findTrips(query);
+    const tripsWithRating = trips.map((trip) => {
+      const { averageRating, reviewsCount } = getRatingAndReviewCount(
+        trip.driver._id,
+        trip.driver.reviews
+      );
 
-    res.status(StatusCodes.OK).json({ trips });
+      return {
+        ...trip,
+        driver: { ...trip.driver, averageRating, reviewsCount },
+      };
+    });
+
+    res.status(StatusCodes.OK).json({ trips: tripsWithRating });
   } catch (error) {
     Logging.error(error);
     res
@@ -277,7 +288,12 @@ const cancelBooking = async (req, res) => {
 const findTrips = async (query) => {
   const trips = await Trip.find(query)
     .select("departure.city destination.city date time personsCount price")
-    .populate("driver", "name profilePicture")
+    .populate({
+      path: "driver",
+      select:
+        "name surname gender dateOfBirth phoneNumber profilePicture trips",
+      populate: { path: "reviews", select: "recipient rating" },
+    })
     .lean();
 
   trips.forEach(({ driver }) => {

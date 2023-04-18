@@ -42,7 +42,7 @@ const TripInformation = ({
     !(trip.isUserDriver && !hasActivePassengers && hasTripFinished) &&
     !(isUserRemovedFromTrip && hasTripFinished);
 
-  console.log(trip.driver);
+  console.log(trip.isUserDriver);
 
   const handleOnButtonClick = async () => {
     if (trip.isUserPassenger && trip.isUserRemovedFromTrip) {
@@ -86,7 +86,6 @@ const TripInformation = ({
       trip.driver._id
     );
 
-    console.log(doesReviewExists);
     setIsLoading(false);
 
     if (!doesReviewExists) {

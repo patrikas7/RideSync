@@ -39,7 +39,10 @@ const TripSearchRequestDetailsCard = ({
             profilePictureUri={profilePictureUri}
             user={user}
           />
-          <TripPersonRating />
+          <TripPersonRating
+            reviewsCount={user.reviewsCount}
+            averageRating={user.averageRating}
+          />
         </View>
         <TripDetail
           icon={"people"}

@@ -3,6 +3,7 @@ import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import TripSearchRequest from "../models/TripSearchRequest.js";
 import { parseUserProfilePicture } from "./Trip/TripControllerUtils.js";
+import { getRatingAndReviewCount } from "./Trip/TripControllerUtils.js";
 
 const postTripSearchRequest = async (req, res) => {
   try {
@@ -34,9 +35,28 @@ const getTripSearchRequests = async (req, res) => {
 
   try {
     const tripSearchRequests = await TripSearchRequest.find(query)
-      .populate("user", "name surname")
+      .populate({
+        path: "user",
+        select: "name surname",
+        populate: { path: "reviews", select: "recipient rating" },
+      })
       .exec();
-    res.status(StatusCodes.OK).json({ tripSearchRequests });
+
+    const tripSearchRequestsWithRating = tripSearchRequests.map((request) => {
+      const { averageRating, reviewsCount } = getRatingAndReviewCount(
+        request.user._id,
+        request.user.reviews
+      );
+
+      return {
+        ...request.toObject(),
+        user: { ...request.user.toObject(), averageRating, reviewsCount },
+      };
+    });
+
+    res
+      .status(StatusCodes.OK)
+      .json({ tripSearchRequests: tripSearchRequestsWithRating });
   } catch (error) {
     Logging.error(error);
     res
@@ -62,8 +82,17 @@ const getTripSearchRequest = async (req, res) => {
     const isUsersPost = tripSearchRequest.user._id.toString() === userId;
     tripSearchRequest.user = parseUserProfilePicture(tripSearchRequest.user);
 
+    const { averageRating, reviewsCount } = getRatingAndReviewCount(
+      tripSearchRequest.user._id,
+      tripSearchRequest.user.reviews
+    );
+
     res.status(StatusCodes.OK).json({
-      tripSearchRequest: { ...tripSearchRequest, isUsersPost },
+      tripSearchRequest: {
+        ...tripSearchRequest,
+        isUsersPost,
+        user: { ...tripSearchRequest.user, averageRating, reviewsCount },
+      },
     });
   } catch (error) {
     Logging.error(error);

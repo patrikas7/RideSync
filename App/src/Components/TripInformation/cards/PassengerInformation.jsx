@@ -18,8 +18,6 @@ const PassengerInformation = ({
 }) => {
   const profilePictureUri = generatePictureUri(passenger.profilePicture);
 
-  console.log(passenger);
-
   const handleOnChatPress = () => {
     onChat(passenger._id, profilePictureUri, passenger.name, passenger.surname);
   };
