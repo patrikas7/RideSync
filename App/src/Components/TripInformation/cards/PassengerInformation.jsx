@@ -18,6 +18,8 @@ const PassengerInformation = ({
 }) => {
   const profilePictureUri = generatePictureUri(passenger.profilePicture);
 
+  console.log(passenger);
+
   const handleOnChatPress = () => {
     onChat(passenger._id, profilePictureUri, passenger.name, passenger.surname);
   };
@@ -47,6 +49,8 @@ const PassengerInformation = ({
             } ${passenger.surname.charAt(0)}.`}</Text>
             <TripPersonRating
               styling={TripInformationStyles.reviewContainerPassenger}
+              averageRating={passenger.averageRating}
+              reviewsCount={passenger.reviewsCount}
             />
           </View>
         </View>

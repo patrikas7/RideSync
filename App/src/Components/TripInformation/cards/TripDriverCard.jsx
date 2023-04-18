@@ -40,7 +40,10 @@ const TripDriverCard = ({ driver, isUserDriver, navigation, car, onChat }) => {
           profilePictureUri={profilePictureUri}
           user={driver}
         />
-        <TripPersonRating />
+        <TripPersonRating
+          averageRating={driver.averageRating}
+          reviewsCount={driver.reviewsCount}
+        />
       </View>
       <View style={TripInformationStyles.driverCardRight}>
         <View style={TripInformationStyles.vehicleDetails}>

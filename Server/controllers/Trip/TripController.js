@@ -11,6 +11,7 @@ import {
   parseUserProfilePicture,
   parsePassengersProfilePictures,
   findPassenger,
+  getRatingAndReviewCount,
 } from "./TripControllerUtils.js";
 import { sendNotificationForRemovedUser } from "../NotificationController.js";
 
@@ -32,41 +33,6 @@ const getTrips = async (req, res) => {
   }
 };
 
-const getUserRatingAndReviewCount = async (userId) => {
-  try {
-    const pipeline = [
-      { $match: { _id: userId } },
-      {
-        $lookup: {
-          from: "Review",
-          localField: "_id",
-          foreignField: "recipientId",
-          as: "reviews",
-        },
-      },
-      { $unwind: "$reviews" },
-      {
-        $group: {
-          _id: "$_id",
-          reviewCount: { $sum: 1 },
-          rating: { $sum: "$reviews.rating" },
-        },
-      },
-    ];
-
-    const userAggregate = await BasicUser.aggregate(pipeline);
-
-    if (userAggregate.length > 0) {
-      const { rating, reviewCount } = userAggregate[0];
-      return { rating, reviewCount };
-    } else {
-      return { rating: 0, reviewCount: 0 };
-    }
-  } catch (error) {
-    Logging.error(error);
-  }
-};
-
 const getTripInformation = async (req, res) => {
   const { id } = req.query;
   const userId = req.userId;
@@ -77,14 +43,31 @@ const getTripInformation = async (req, res) => {
     const isUserDriver = userId === driver._id.toString();
     const isUserPassenger = findPassenger(trip?.passengers, userId, false);
     const isUserRemovedFromTrip = findPassenger(trip?.passengers, userId, true);
-    // const {rating, reviewCount} = getUserRatingAndReviewCount(trips.driver._id)
+    const { averageRating, reviewsCount } = getRatingAndReviewCount(
+      driver._id,
+      driver.reviews
+    );
 
     trip.driver = parseUserProfilePicture(driver);
     trip.passengers = parsePassengersProfilePictures(passengers);
 
+    const passengersWithReviews = trip.passengers.map((passenger) => {
+      const { averageRating, reviewsCount } = getRatingAndReviewCount(
+        passenger.passenger._id,
+        passenger.passenger.reviews
+      );
+
+      return {
+        ...passenger,
+        passenger: { ...passenger.passenger, averageRating, reviewsCount },
+      };
+    });
+
     res.status(StatusCodes.OK).json({
       trip: {
         ...trip,
+        passengers: passengersWithReviews,
+        driver: { ...driver, averageRating, reviewsCount },
         isUserDriver,
         isUserPassenger,
         isUserRemovedFromTrip,
@@ -306,14 +289,18 @@ const findTrips = async (query) => {
 
 const findTripById = async (id, useLean) => {
   const query = Trip.findById(id)
-    .populate(
-      "driver",
-      "name surname gender dateOfBirth phoneNumber profilePicture trips"
-    )
-    .populate(
-      "passengers.passenger",
-      "name surname gender dateOfBirth phoneNumber profilePicture trips"
-    )
+    .populate({
+      path: "driver",
+      select:
+        "name surname gender dateOfBirth phoneNumber profilePicture trips",
+      populate: { path: "reviews", select: "recipient rating" },
+    })
+    .populate({
+      path: "passengers.passenger",
+      select:
+        "name surname gender dateOfBirth phoneNumber profilePicture trips",
+      populate: { path: "reviews", select: "recipient rating" },
+    })
     .populate("car");
 
   if (useLean) {
@@ -352,6 +339,7 @@ const updatedTrip = async (req, res) => {
         "passengers.passenger",
         "name surname gender dateOfBirth phoneNumber profilePicture trips"
       )
+
       .populate("car");
 
     if (!updatedTrip)

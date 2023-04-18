@@ -42,6 +42,8 @@ const TripInformation = ({
     !(trip.isUserDriver && !hasActivePassengers && hasTripFinished) &&
     !(isUserRemovedFromTrip && hasTripFinished);
 
+  console.log(trip.driver);
+
   const handleOnButtonClick = async () => {
     if (trip.isUserPassenger && trip.isUserRemovedFromTrip) {
       showMessage({

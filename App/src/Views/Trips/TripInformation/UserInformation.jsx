@@ -35,7 +35,10 @@ const UserInformation = ({ navigation, route }) => {
             </Text>
             <Text style={UserInformationStyles.secondaryText}>Kelionės</Text>
           </View>
-          <TripPersonRating />
+          <TripPersonRating
+            averageRating={user.averageRating}
+            reviewsCount={user.reviewsCount}
+          />
         </View>
 
         <View style={UserInformationStyles.detailsContainer}>

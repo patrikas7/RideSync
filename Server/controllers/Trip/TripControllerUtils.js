@@ -172,3 +172,17 @@ export const findPassenger = (passengers, userId, wasRemoved) => {
       passenger.wasRemoved === wasRemoved
   );
 };
+
+export const getRatingAndReviewCount = (userId, reviews) => {
+  if (!reviews?.length) return { averageRating: 0, reviewsCount: 0 };
+  const filteredReviews = reviews.filter(
+    (review) => review.recipient.toString() === userId.toString()
+  );
+  const reviewsCount = filteredReviews.length;
+  const totalRating = filteredReviews.reduce(
+    (acc, review) => acc + review.rating,
+    0
+  );
+  const averageRating = reviewsCount > 0 ? totalRating / reviewsCount : 0;
+  return { averageRating, reviewsCount };
+};

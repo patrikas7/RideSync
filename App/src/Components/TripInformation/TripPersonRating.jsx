@@ -4,12 +4,15 @@ import TripInformationStyles from "./TripInformationStyle";
 import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 
-const TripPersonRating = ({ styling }) => {
+const TripPersonRating = ({ styling, averageRating, reviewsCount }) => {
+  console.log(averageRating);
   return (
     <View style={[TripInformationStyles.reviewContainer, styling]}>
       <Ionicons name="star" color={Colors.GOLD} size={Sizes.ICON_SMALL} />
-      <Text style={TripInformationStyles.primaryText}>0</Text>
-      <Text style={TripInformationStyles.reviewCount}>- 0 įvertinimų</Text>
+      <Text style={TripInformationStyles.primaryText}>{averageRating}</Text>
+      <Text style={TripInformationStyles.reviewCount}>
+        - {reviewsCount} įvertinimų
+      </Text>
     </View>
   );
 };

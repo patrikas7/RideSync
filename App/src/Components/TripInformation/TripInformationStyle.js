@@ -118,7 +118,6 @@ const TripInformationStyles = StyleSheet.create({
   primaryText: {
     marginLeft: 8,
     fontWeight: "bold",
-    marginRight: 12,
   },
   reviewCount: {
     color: Colors.GREY_500,
