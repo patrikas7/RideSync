@@ -42,8 +42,6 @@ const TripInformation = ({
     !(trip.isUserDriver && !hasActivePassengers && hasTripFinished) &&
     !(isUserRemovedFromTrip && hasTripFinished);
 
-  console.log(trip.isUserDriver);
-
   const handleOnButtonClick = async () => {
     if (trip.isUserPassenger && trip.isUserRemovedFromTrip) {
       showMessage({
@@ -56,9 +54,10 @@ const TripInformation = ({
 
     switch (action) {
       case Actions.RATE_PASSENGERS:
+        handleOnReview(trip.passengers);
         break;
       case Actions.RATE_DRIVER:
-        handleOnReview();
+        handleOnReview([trip.driver]);
         break;
       case Actions.CANCEL_TRIP:
         handleOnDelete();
@@ -78,13 +77,9 @@ const TripInformation = ({
     }
   };
 
-  const handleOnReview = async () => {
+  const handleOnReview = async (recipients) => {
     setIsLoading(true);
-    const { doesReviewExists } = await canReviewBeDone(
-      token,
-      trip._id,
-      trip.driver._id
-    );
+    const { doesReviewExists } = await canReviewBeDone(token, trip._id);
 
     setIsLoading(false);
 
@@ -92,8 +87,7 @@ const TripInformation = ({
       navigation.navigate(PageNames.REVIEW, {
         token,
         trip: trip._id,
-        recipient: trip.driver._id,
-        name: trip.driver.name,
+        recipients,
       });
       return;
     }
