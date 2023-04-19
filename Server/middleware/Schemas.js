@@ -191,8 +191,7 @@ const Schemas = {
     }),
     existence: Joi.object({
       trip: Joi.string().required(),
-      recipient: Joi.string().required(),
-    })
+    }),
   },
 };
 

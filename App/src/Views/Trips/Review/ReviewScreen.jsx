@@ -11,8 +11,10 @@ import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
 const ReviewScreen = ({ navigation, route }) => {
   const [rating, setRating] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
-  const { token, trip, recipient, name } = route.params;
+  const [activeRecipient, setActiveRecipient] = useState(0);
+  const { token, trip, recipients } = route.params;
 
+  console.log(recipients);
   useScreenArrowBack(
     navigation,
     PageNames.TRIP_INFORMATION,
@@ -22,10 +24,19 @@ const ReviewScreen = ({ navigation, route }) => {
 
   const handleOnReview = async () => {
     setIsLoading(true);
-    const { error } = await postReview(token, { trip, recipient, rating });
+    const { error } = await postReview(token, {
+      trip,
+      recipient: recipients[activeRecipient]._id,
+      rating,
+    });
     setIsLoading(false);
 
-    if (!error) navigation.navigate(PageNames.REVIEW_SUCCESS, { token });
+    if (!error && activeRecipient + 1 >= recipients.length) {
+      navigation.navigate(PageNames.REVIEW_SUCCESS, { token });
+      return;
+    }
+
+    setActiveRecipient((prevState) => prevState + 1);
   };
 
   return (
@@ -34,7 +45,10 @@ const ReviewScreen = ({ navigation, route }) => {
       <View style={{ flex: 1 }}>
         <Review
           onChange={setRating}
-          headline={`Kaip vertinate savo kelionę su ${name}?`}
+          headline={`Kaip vertinate savo kelionę su ${
+            recipients[activeRecipient].name ||
+            recipients[activeRecipient].passenger.name
+          }?`}
         />
       </View>
       <Button

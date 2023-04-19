@@ -26,7 +26,7 @@ const createReview = async (req, res) => {
 
 const canReviewBeDone = async (req, res) => {
   const { userId } = req;
-  const { trip, recipient } = req.query;
+  const { trip } = req.query;
 
   try {
     const existingReview = await BasicUser.findById(userId)
@@ -34,7 +34,6 @@ const canReviewBeDone = async (req, res) => {
         path: "reviews",
         match: {
           trip,
-          recipient,
           reviewer: userId,
         },
       })
