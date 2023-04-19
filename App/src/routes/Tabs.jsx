@@ -25,7 +25,7 @@ const Tabs = ({ route, navigation }) => {
   if (!userType) return null;
 
   return userType === UserTypes.BUSINESS_USER ? (
-    <BusinessUserTabs />
+    <BusinessUserTabs token={token} />
   ) : (
     <BasicUserTabs
       route={route}

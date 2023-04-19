@@ -13,20 +13,32 @@ import ProfileSettingsScreen from "../Views/Profile/ProfileSettingsScreen";
 import ProfilePictureEditScren from "../Views/Profile/ProfilePictureEditScreen";
 import ProfileVehicleScreen from "../Views/Profile/ProfileVehicleScreen";
 import ProfileNewVehicleScreen from "../Views/Profile/ProfileNewVehicleScreen";
+import { UserTypes } from "../Constants/types";
 
 const Profile = ({ navigation }) => {
   const Stack = createStackNavigator();
   const { token, id, userType } = useUserData();
+
+  const basicUserOverviewScreenOptions = {
+    title: "Profilis",
+    headerShadowVisible: false,
+  };
+
+  const businessUserOverviewScreenOptions = {
+    headerShown: false,
+  };
+
+  const overviewScreenOptions =
+    userType === UserTypes.BASIC_USER
+      ? basicUserOverviewScreenOptions
+      : businessUserOverviewScreenOptions;
 
   return (
     <Stack.Navigator>
       <Stack.Screen
         name={PageNames.PROFILE_OVERVIEW}
         children={() => <ProfileScreen token={token} />}
-        options={{
-          title: "Profilis",
-          headerShadowVisible: false,
-        }}
+        options={overviewScreenOptions}
       />
       <Stack.Screen
         name={PageNames.PROFILE_DETAILS}

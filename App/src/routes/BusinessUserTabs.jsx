@@ -5,6 +5,7 @@ import Sizes from "../Constants/sizes";
 import Inbox from "./Inbox";
 import PageNames from "../Constants/pageNames";
 import Profile from "./Profile";
+import Drivers from "./Drivers";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -20,6 +21,26 @@ const BusinessUserTabs = ({
       barStyle={{ backgroundColor: Colors.WHITE }}
       activeColor={Colors.BLUE_400}
     >
+      <Tab.Screen
+        name={PageNames.BUSINESS_DRIVERS_SEARCH}
+        children={() => <Drivers token={token} />}
+        options={{
+          tabBarLabel: "Vairuotojai",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="car-outline" size={Sizes.ICON} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={PageNames.BUSINESS_MY_DRIVER_AD}
+        component={Drivers}
+        options={{
+          tabBarLabel: "Mano skelbimas",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="star-outline" size={Sizes.ICON} color={color} />
+          ),
+        }}
+      />
       <Tab.Screen
         name={PageNames.INBOX}
         children={({ navigation: tabsNavigation }) => (
