@@ -1,17 +1,15 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { View } from "react-native";
-import { printError } from "../../Utils/utils";
 import { ProfileVehicleStyles } from "./ProfileStyles";
+import { fetchUserCars } from "../../API/userApi";
 import Spinner from "react-native-loading-spinner-overlay";
 import Container from "../../Components/Container/Container";
 import PageNames from "../../Constants/pageNames";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
-import axios from "axios";
 import NoResults from "../../Components/NoResults/NoResults";
 import ListItem from "../../Components/List/ListItem";
 import Button from "../../Components/Button/Button";
-import { fetchUserCars } from "../../API/carApi";
 
 const ProfileVehicleScreen = ({ token }) => {
   const [isLoading, setIsLoading] = useState(false);

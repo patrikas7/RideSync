@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import Spinner from "react-native-loading-spinner-overlay/lib";
 import { fetchDriversList } from "../../API/DriversApi";
+import Spinner from "react-native-loading-spinner-overlay/lib";
 import Container from "../../Components/Container/Container";
 import NoResults from "../../Components/NoResults/NoResults";
+import PageNames from "../../Constants/pageNames";
 
-const DriversList = ({ token }) => {
+const DriversListScreen = ({ token, tabsNavigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [driversList, setDriversList] = useState([]);
 
@@ -31,10 +31,13 @@ const DriversList = ({ token }) => {
           primaryText="Nerasta jokių aktyvių vairuotojų skelbimų"
           secondaryText="Bandykite vėliau arba įkelkite savo vairuotojo skelbimą!"
           buttonText="Sukurti vairuotojo skelbimą"
+          onPress={() =>
+            tabsNavigation.navigate(PageNames.BUSINESS_MY_DRIVER_AD)
+          }
         />
       )}
     </Container>
   );
 };
 
-export default DriversList;
+export default DriversListScreen;

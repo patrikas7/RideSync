@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
-import DriversListScreen from "../Views/Drivers/DriversListScreen";
+import MyDriverAdOverviewScreen from "../Views/MyDriverAd/MyDriverAdOverviewScreen";
 
-const Drivers = ({ token }) => {
+const MyDriverAd = ({ token }) => {
   const navigation = useNavigation();
   const Stack = createStackNavigator();
 
@@ -11,13 +11,13 @@ const Drivers = ({ token }) => {
     <Stack.Navigator>
       <Stack.Screen
         children={() => (
-          <DriversListScreen token={token} tabsNavigation={navigation} />
+          <MyDriverAdOverviewScreen token={token} tabsNavigation={navigation} />
         )}
-        name={PageNames.BUSINESS_DRIVERS_LIST}
+        name={PageNames.BUSINESS_MY_DRIVER_AD_OVERVIEW}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
 };
 
-export default Drivers;
+export default MyDriverAd;

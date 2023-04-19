@@ -6,16 +6,11 @@ import Inbox from "./Inbox";
 import PageNames from "../Constants/pageNames";
 import Profile from "./Profile";
 import Drivers from "./Drivers";
+import MyDriverAd from "./MyDriverAd";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const BusinessUserTabs = ({
-  route,
-  navigation,
-  unreadNotifications,
-  id,
-  token,
-}) => {
+const BusinessUserTabs = ({ unreadNotifications, id, token }) => {
   return (
     <Tab.Navigator
       barStyle={{ backgroundColor: Colors.WHITE }}
@@ -33,7 +28,7 @@ const BusinessUserTabs = ({
       />
       <Tab.Screen
         name={PageNames.BUSINESS_MY_DRIVER_AD}
-        component={Drivers}
+        children={() => <MyDriverAd token={token} />}
         options={{
           tabBarLabel: "Mano skelbimas",
           tabBarIcon: ({ color }) => (
