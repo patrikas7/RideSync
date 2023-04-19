@@ -6,12 +6,6 @@ const BasicUserSchema = new Schema({
   destinationSearchHistory: [{ type: String }],
   tripsSearchHistory: [{ departure: String, destination: String }],
   tripBookmarks: [{ type: Schema.Types.ObjectId, ref: "TripBookmark" }],
-  cars: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Car",
-    },
-  ],
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
   tripSubscriptions: [
     { type: mongoose.Schema.Types.ObjectId, ref: "TripSubscription" },

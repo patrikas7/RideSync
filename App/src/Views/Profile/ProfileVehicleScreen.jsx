@@ -11,9 +11,10 @@ import axios from "axios";
 import NoResults from "../../Components/NoResults/NoResults";
 import ListItem from "../../Components/List/ListItem";
 import Button from "../../Components/Button/Button";
+import { fetchUserCars } from "../../API/carApi";
 
-const ProfileVehicleScreen = ({ token, id }) => {
-  const [isLoading, setIsLoading] = useState(true);
+const ProfileVehicleScreen = ({ token }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [cars, setCars] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
@@ -25,7 +26,15 @@ const ProfileVehicleScreen = ({ token, id }) => {
   );
 
   useEffect(() => {
-    fetchUserCars();
+    const getUserCars = async () => {
+      setIsLoading(true);
+      const { carsList, error } = await fetchUserCars(token);
+
+      if (!error) setCars(carsList);
+      setIsLoading(false);
+    };
+
+    getUserCars();
   }, []);
 
   useEffect(() => {
@@ -50,21 +59,6 @@ const ProfileVehicleScreen = ({ token, id }) => {
       setCars(updatedCatsList);
     }
   }, [route.params?.update]);
-
-  const fetchUserCars = async () => {
-    try {
-      const { data } = await axios.get("/user/car", {
-        params: { id },
-        headers: { Authorization: token },
-      });
-
-      setCars(data.carsList);
-    } catch (error) {
-      printError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const renderCarsList = () => (
     <>

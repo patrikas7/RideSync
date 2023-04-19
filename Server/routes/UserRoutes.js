@@ -19,12 +19,7 @@ UserRouter.route("/")
 
 UserRouter.route("/checkByEmail").get(controller.checkUserByEmail);
 
-UserRouter.route("/car").get(
-  authMiddleware,
-  validateIdMiddleware,
-  userCheckMiddleware,
-  controller.getUserCars
-);
+UserRouter.route("/car").get(authMiddleware, controller.getUserCars);
 UserRouter.route("/password").put(
   authMiddleware,
   ValidateSchema(Schemas.basicUser.password),

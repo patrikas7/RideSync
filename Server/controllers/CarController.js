@@ -1,7 +1,6 @@
 import ErrorMessages from "../enums/errorMessages.js";
 import StatusCodes from "../enums/statusCodes.js";
 import Logging from "../library/Logging.js";
-import User from "../models/User.js";
 import Car from "../models/Car.js";
 import BasicUser from "../models/BasicUser.js";
 import Trip from "../models/Trip.js";
@@ -23,11 +22,6 @@ const postCar = async (req, res) => {
 
   try {
     const newCar = await car.save();
-    const user = await User.findById(userId);
-
-    user.cars.push(newCar._id);
-    await user.save();
-
     res.status(StatusCodes.CREATION_SUCCESS).json({ car: newCar });
   } catch (error) {
     Logging.error(error);
