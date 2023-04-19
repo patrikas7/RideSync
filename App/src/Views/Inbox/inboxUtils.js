@@ -1,4 +1,4 @@
-import { NotificationTypes } from "../../Constants/notifications";
+import { NotificationTypes } from "../../Constants/types";
 import { generatePictureUri } from "../../Utils/utils";
 
 export const getNotificationHeadline = (notificationType) => {

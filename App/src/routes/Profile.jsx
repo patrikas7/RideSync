@@ -16,7 +16,7 @@ import ProfileNewVehicleScreen from "../Views/Profile/ProfileNewVehicleScreen";
 
 const Profile = ({ navigation }) => {
   const Stack = createStackNavigator();
-  const { token, id } = useUserData();
+  const { token, id, userType } = useUserData();
 
   return (
     <Stack.Navigator>

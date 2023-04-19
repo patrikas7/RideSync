@@ -55,6 +55,7 @@ const PageNames = {
   CHAT: "CHAT",
   REVIEW: "REVIEW",
   REVIEW_SUCCESS: "REVIEW_SUCCESS",
+  DRIVERS_SEARCH: "DRIVERS_SEARCH",
 };
 
 export default PageNames;

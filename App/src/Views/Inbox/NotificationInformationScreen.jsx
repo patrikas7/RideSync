@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { fetchNotificationData } from "../../API/notificationApi";
-import { NotificationTypes } from "../../Constants/notifications";
+import { NotificationTypes } from "../../Constants/types";
 import { getFormatedDateTime } from "../../Utils/utils";
 import { getHeadlineText } from "./inboxUtils";
 import Spinner from "react-native-loading-spinner-overlay/lib";
