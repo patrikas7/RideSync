@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { StyleSheet } from "react-native";
-import { printError } from "../Utils/utils";
+import { fetchUnreadNotifications } from "../API/notificationApi";
 import Colors from "../Constants/colors";
 import PageNames from "../Constants/pageNames";
 import Sizes from "../Constants/sizes";
@@ -12,30 +12,24 @@ import MyRides from "./MyRides";
 import Bookmarks from "./Bookmarks";
 import Inbox from "./Inbox";
 import useUserData from "../hooks/useUserData";
-import axios from "axios";
 
 const Tab = createMaterialBottomTabNavigator();
 
 const Tabs = ({ route, navigation }) => {
   const [unreadNotifications, setUnreadNotifications] = useState(0);
-  const { id, token } = useUserData();
+  const { id, token, userType } = useUserData();
 
   useEffect(() => {
     if (!token) return;
 
-    const fetchUnreadNotifications = async () => {
-      try {
-        const { data } = await axios.get("/notifications/user/unread", {
-          headers: { Authorization: token },
-        });
+    const getUnreadNotificationsCount = async () => {
+      const { unreadNotificationsCount, error } =
+        await fetchUnreadNotifications(token);
 
-        setUnreadNotifications(data.unreadNotificationsCount);
-      } catch (error) {
-        printError(error);
-      }
+      if (!error) setUnreadNotifications(unreadNotificationsCount);
     };
 
-    fetchUnreadNotifications();
+    getUnreadNotificationsCount();
   }, [token]);
 
   return (

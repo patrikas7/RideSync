@@ -26,6 +26,7 @@ const ProfileSettingsScreen = ({ mainNavigation, token }) => {
     try {
       await SecureStore.deleteItemAsync("token");
       await SecureStore.deleteItemAsync("id");
+      await SecureStore.deleteItemAsync("userType");
       mainNavigation.navigate(PageNames.LOGIN);
     } catch (error) {
     } finally {

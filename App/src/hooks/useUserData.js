@@ -9,7 +9,9 @@ const useUserData = () => {
       try {
         const id = await SecureStore.getItemAsync("id");
         const token = await SecureStore.getItemAsync("token");
-        setUserData({ id, token });
+        const userType = await SecureStore.getItemAsync("userType");
+
+        setUserData({ id, token, userType });
       } catch (error) {
         console.log(error);
       }

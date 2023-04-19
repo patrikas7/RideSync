@@ -26,3 +26,16 @@ export const fetchNotificationsData = async (token) => {
     return { error };
   }
 };
+
+export const fetchUnreadNotifications = async (token) => {
+  try {
+    const { data } = await axios.get("/notifications/user/unread", {
+      headers: { Authorization: token },
+    });
+
+    return { unreadNotificationsCount: data.unreadNotificationsCount };
+  } catch (error) {
+    printError(error);
+    return { error };
+  }
+};

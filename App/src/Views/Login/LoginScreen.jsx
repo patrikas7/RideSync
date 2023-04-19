@@ -33,7 +33,7 @@ const LoginScreen = ({ navigation }) => {
 
     try {
       const res = await axios.post("/auth/login", formState);
-      setSecureToken(res.data?.token, res.data?.id, res.data?.name);
+      setSecureToken(res.data?.token, res.data?.id, res.data?.userType);
     } catch (error) {
       setErrors({ ...initialState, password: error.response.data?.message });
     }
@@ -41,10 +41,11 @@ const LoginScreen = ({ navigation }) => {
     setIsLoading(false);
   };
 
-  const setSecureToken = async (token, id, name) => {
+  const setSecureToken = async (token, id, userType) => {
     try {
       await SecureStore.setItemAsync("token", token);
       await SecureStore.setItemAsync("id", id);
+      await SecureStore.setItemAsync("userType", userType);
       navigation.navigate(PageNames.HOME);
     } catch (error) {
       console.log(error);
