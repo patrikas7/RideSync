@@ -1,24 +1,36 @@
-import mongoose from "mongoose";
 import StatusCodes from "../enums/statusCodes.js";
 import Logging from "../library/Logging.js";
 import BasicUser from "../models/BasicUser.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import BusinessUser from "../models/BusinessUser.js";
 
-const registerBasicUser = async (req, res) => {
-  const newBasicUser = new BasicUser({
-    _id: new mongoose.Types.ObjectId(),
-    ...req.body,
-  });
+const registerUser = async (req, res) => {
+  const { isBussinessRegistration, ...data } = req.body;
 
   try {
-    const savedBasicUser = await newBasicUser.save();
-    return res.status(StatusCodes.CREATION_SUCCESS).json({ savedBasicUser });
+    isBussinessRegistration
+      ? await registerBusinessUser(data)
+      : await registerBasicur(data);
+
+    return res
+      .status(StatusCodes.CREATION_SUCCESS)
+      .json({ message: "created" });
   } catch (error) {
     Logging.error(error);
     res.status(StatusCodes.UNEXPECTED_ERROR).json({ error });
   }
+};
+
+const registerBusinessUser = async (data) => {
+  const newBusinessUser = new BusinessUser(data);
+  await newBusinessUser.save();
+};
+
+const registerBasicur = async (data) => {
+  const newBasicUser = new BasicUser(data);
+  await newBasicUser.save();
 };
 
 const login = async (req, res) => {
@@ -55,4 +67,4 @@ const login = async (req, res) => {
   }
 };
 
-export default { registerBasicUser, login };
+export default { registerUser, login };

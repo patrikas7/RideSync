@@ -5,9 +5,9 @@ import controller from "../controllers/AuthController.js";
 
 const AuthRouter = express.Router();
 
-AuthRouter.route("/register/basicUser").post(
-  ValidateSchema(Schemas.basicUser.create),
-  controller.registerBasicUser
+AuthRouter.route("/register").post(
+  ValidateSchema(Schemas.user.create),
+  controller.registerUser
 );
 
 AuthRouter.route("/login").post(

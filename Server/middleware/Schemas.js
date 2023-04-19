@@ -78,7 +78,7 @@ const tripSchema = {
 
 // Add password criteroa
 const Schemas = {
-  basicUser: {
+  user: {
     create: Joi.object({
       name: Joi.string().required(),
       surname: Joi.string().required(),
@@ -87,7 +87,10 @@ const Schemas = {
       dateOfBirth: Joi.date().max(getEligableDate()).required(),
       phoneNumber: Joi.string(),
       gender: Joi.string().valid(Genders.MALE, Genders.FEMALE).required(),
+      isBussinessRegistration: Joi.boolean().required(),
     }).options({ allowUnknown: true }),
+  },
+  basicUser: {
     update: Joi.object({
       field: Joi.string().required(),
       value: Joi.string().required(),

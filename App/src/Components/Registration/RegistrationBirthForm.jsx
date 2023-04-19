@@ -1,16 +1,18 @@
 import { View, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import InputDataPicker from "../Form/InputDatePicker";
-import InputRadioButton from "../Form/InputRadioButton";
-import RegistrationStyles from "./RegistrationFormStyles";
-import { Genders } from "../../Views/Registration/RegistrationUtils";
 import { Ionicons } from "@expo/vector-icons";
-import Colors from "../../Constants/colors";
-import Sizes from "../../Constants/sizes";
+import { Genders } from "../../Views/Registration/RegistrationUtils";
 import {
   setDateOfBirth,
   setGender,
+  toggleRegistrationType,
 } from "../../redux/registration/registrationSlices";
+import InputDataPicker from "../Form/InputDatePicker";
+import InputRadioButton from "../Form/InputRadioButton";
+import RegistrationStyles from "./RegistrationFormStyles";
+import Colors from "../../Constants/colors";
+import Sizes from "../../Constants/sizes";
+import Checkbox from "expo-checkbox";
 
 const RegistrationBirthForm = () => {
   const formState = useSelector((state) => state.registration);
@@ -47,6 +49,19 @@ const RegistrationBirthForm = () => {
             />
           ))}
         </View>
+      </View>
+
+      <View style={RegistrationStyles.checkboxInput}>
+        <Checkbox
+          value={formState.isBussinessRegistration}
+          onValueChange={() => dispatch(toggleRegistrationType())}
+          color={
+            formState.isBussinessRegistration ? Colors.BLUE_500 : undefined
+          }
+        />
+        <Text style={RegistrationStyles.checkboxLabel}>
+          Verslo kliento registracija
+        </Text>
       </View>
     </>
   );

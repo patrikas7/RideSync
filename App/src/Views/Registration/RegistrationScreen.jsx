@@ -1,3 +1,4 @@
+import { View } from "react-native";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getPrevPage, isEligableAge } from "./RegistrationUtils";
@@ -14,12 +15,13 @@ import {
   setErrors,
 } from "../../redux/registration/registrationSlices";
 import { showMessage } from "react-native-flash-message";
+import { postRegistration } from "../../API/authApi";
+import { checkUserByEmail } from "../../API/userApi";
 import PageNames from "../../Constants/pageNames";
 import Header from "../../Components/Form/Header";
 import RegistrationForm from "../../Components/Registration/RegistrationForm";
 import Button from "../../Components/Button/Button";
 import ErrorMessages from "../../Constants/errorMessages";
-import axios from "axios";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import Container from "../../Components/Container/Container";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -84,33 +86,22 @@ const RegistrationScreen = ({ route, mainNavigation }) => {
   };
 
   const userExists = async () => {
-    try {
-      const { data } = await axios.get("/user/checkByEmail", {
-        params: {
-          email: formState.email,
-        },
-      });
-
-      return data?.userExists;
-    } catch (error) {}
+    const response = await checkUserByEmail(formState.email);
+    return response?.userExists;
   };
 
   const register = async () => {
     setIsLoading(true);
+    await postRegistration(formState);
 
-    try {
-      await axios.post("/auth/register/basicUser", formState);
-      showMessage({
-        message: "Buvote sėkmingai užregistruotas, dabar galite prisijungti",
-        type: "success",
-      });
-      dispatch(resetState());
-      mainNavigation.navigate(PageNames.LOGIN);
-    } catch (error) {
-      console.log(error.response.data);
-    } finally {
-      setIsLoading(false);
-    }
+    showMessage({
+      message: "Buvote sėkmingai užregistruotas, dabar galite prisijungti",
+      type: "success",
+    });
+
+    dispatch(resetState());
+    mainNavigation.navigate(PageNames.LOGIN);
+    setIsLoading(false);
   };
 
   const navigate = () => {
@@ -123,8 +114,11 @@ const RegistrationScreen = ({ route, mainNavigation }) => {
   return (
     <Container>
       <Spinner visible={isLoading} />
-      <Header text={getHeaderLabel(route.name)} />
-      <RegistrationForm pageName={route.name} />
+      <View style={{ flex: 1 }}>
+        <Header text={getHeaderLabel(route.name)} />
+        <RegistrationForm pageName={route.name} />
+      </View>
+
       <Button
         text={
           route.name === PageNames.REGISTRATION_BIRTH
@@ -132,6 +126,7 @@ const RegistrationScreen = ({ route, mainNavigation }) => {
             : "Toliau"
         }
         onClick={handleOnClick}
+        styling={{ marginBottom: 32 }}
       />
     </Container>
   );

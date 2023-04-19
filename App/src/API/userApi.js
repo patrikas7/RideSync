@@ -41,3 +41,18 @@ export const fetchMyTrips = async (token, type) => {
     return { error };
   }
 };
+
+export const checkUserByEmail = async (email) => {
+  try {
+    const { data } = await axios.get("/user/checkByEmail", {
+      params: {
+        email,
+      },
+    });
+
+    return { userExists: data.userExists };
+  } catch (error) {
+    printError(error);
+    return { error };
+  }
+};

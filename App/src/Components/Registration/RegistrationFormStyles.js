@@ -9,6 +9,14 @@ const RegistrationStyles = StyleSheet.create({
   input: {
     marginTop: 16,
   },
+  checkboxInput: {
+    marginTop: 16,
+    flexDirection: "row",
+  },
+  checkboxLabel: {
+    marginLeft: 12,
+    fontSize: Sizes.DEFAULT_TEXT_SIZE,
+  },
   genderHeader: {
     flexDirection: "row",
     alignItems: "center",

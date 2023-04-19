@@ -15,6 +15,7 @@ export const registrationSlice = createSlice({
   initialState: {
     ...initialState,
     gender: Genders[0].value,
+    isBussinessRegistration: false,
   },
   reducers: {
     setName: (state, action) => {
@@ -37,6 +38,9 @@ export const registrationSlice = createSlice({
     },
     setGender: (state, action) => {
       state.gender = action.payload;
+    },
+    toggleRegistrationType: (state) => {
+      state.isBussinessRegistration = !state.isBussinessRegistration;
     },
     resetState: () => ({
       ...initialState,
@@ -63,5 +67,6 @@ export const {
   setDateOfBirth,
   setGender,
   resetState,
+  toggleRegistrationType,
 } = registrationSlice.actions;
 export const { resetErrors, setErrors } = registrationErrorsSlice.actions;
