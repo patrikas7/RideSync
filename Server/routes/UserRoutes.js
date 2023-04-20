@@ -1,8 +1,6 @@
 import express from "express";
 import controller from "../controllers/User/UserController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
-import userCheckMiddleware from "../middleware/userCheckMIddleware.js";
-import validateIdMiddleware from "../middleware/validateIdMiddleware.js";
 import { ValidateSchema } from "../middleware/SchemaValidator.js";
 import Schemas from "../middleware/Schemas.js";
 
@@ -33,5 +31,9 @@ UserRouter.route("/profilePicture").post(
 
 UserRouter.route("/my-trips").get(authMiddleware, controller.getUserTrips);
 UserRouter.route("/my-chats").get(authMiddleware, controller.getUserChat);
+UserRouter.route("/my-driver-ad").get(
+  authMiddleware,
+  controller.getUserDriverAd
+);
 
 export default UserRouter;

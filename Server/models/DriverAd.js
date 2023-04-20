@@ -21,6 +21,10 @@ const DriverAdSchema = new Schema({
     type: String,
     required: false,
   },
+  car: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Car",
+  },
 });
 
 DriverAdSchema.pre("save", async function (next) {

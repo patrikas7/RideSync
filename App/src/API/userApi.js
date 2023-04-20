@@ -69,3 +69,16 @@ export const fetchUserCars = async (token) => {
     return { error };
   }
 };
+
+export const fetchUserDriverAds = async (token) => {
+  try {
+    const { data } = await axios.get("/user/my-driver-ad", {
+      headers: { Authorization: token },
+    });
+
+    return { driverAds: data.driverAds };
+  } catch (error) {
+    printError(error);
+    return { error };
+  }
+};

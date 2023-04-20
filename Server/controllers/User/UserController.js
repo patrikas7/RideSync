@@ -4,6 +4,7 @@ import StatusCodes from "../../enums/statusCodes.js";
 import ErrorMessages from "../../enums/errorMessages.js";
 import bcrypt from "bcryptjs";
 import BasicUser from "../../models/BasicUser.js";
+import BusinessUser from "../../models/BusinessUser.js";
 import { parseUserProfilePicture } from "../Trip/TripControllerUtils.js";
 import { initChat } from "../../services/ChatService.js";
 import {
@@ -186,7 +187,7 @@ const getUserTrips = async (req, res) => {
 };
 
 const getUserChat = async (req, res) => {
-  const userId = req.userId;
+  const { userId } = req;
   const { receiver } = req.query;
 
   try {
@@ -216,6 +217,21 @@ const getUserChat = async (req, res) => {
   }
 };
 
+const getUserDriverAd = async (req, res) => {
+  const { userId } = req;
+
+  try {
+    const user = await BusinessUser.findById(userId);
+
+    res.status(StatusCodes.OK).json({ driverAds: user.driverAds });
+  } catch (error) {
+    Logging.error(error);
+    return res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   checkUserByEmail,
   getUserCars,
@@ -226,4 +242,5 @@ export default {
   deleteUser,
   getUserTrips,
   getUserChat,
+  getUserDriverAd,
 };
