@@ -38,9 +38,7 @@ export const parseChatNotificationData = (notification, id) => {
 
   const lastMessage = messages[messages.length - 1];
   const lastMessageSender = users.find((user) => user._id === lastMessage.user);
-  const lastMessageReceiver = users.find(
-    (user) => user._id !== lastMessage.user
-  );
+  const chatReceiver = users.find((user) => user._id !== id);
 
   const isLastMessageSentByMe = lastMessageSender?._id === id;
 
@@ -48,10 +46,7 @@ export const parseChatNotificationData = (notification, id) => {
     text: `${isLastMessageSentByMe ? "Aš" : lastMessageSender?.name}: ${
       lastMessage.text
     }`,
-    profilePictureUri: generatePictureUri(lastMessageSender?.profilePicture),
-    receiverProfilePictureUri: generatePictureUri(
-      lastMessageReceiver?.profilePicture
-    ),
-    receiver: lastMessageReceiver,
+    profilePictureUri: generatePictureUri(chatReceiver?.profilePicture),
+    receiver: chatReceiver,
   };
 };

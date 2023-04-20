@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
@@ -21,6 +21,10 @@ import Registration from "./src/routes/Registration";
 axios.defaults.baseURL = "http://localhost:5001";
 
 const Stack = createStackNavigator();
+LogBox.ignoreLogs([
+  "Non-serializable values were found in the navigation state",
+  "Sending `onAnimatedValueUpdate` with no listeners registered.",
+]);
 
 export default function App() {
   return (

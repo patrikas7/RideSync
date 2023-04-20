@@ -24,7 +24,7 @@ const NotificationPreview = ({ notification, styling, onPress, userId }) => {
 
     onPress(notification._id, {
       receiver: chatNotificationData.receiver._id,
-      profilePictureUri: chatNotificationData.receiverProfilePictureUri,
+      profilePictureUri: chatNotificationData.profilePictureUri,
       receiverName: chatNotificationData.receiver.name,
     });
   };

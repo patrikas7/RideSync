@@ -173,9 +173,9 @@ const getUserTrips = async (req, res) => {
       (trip.driver = parseUserProfilePicture(trip.driver)),
     ]);
 
-    user?.tripSearchRequests?.forEach((trip) => [
-      (trip.user = parseUserProfilePicture(trip.user)),
-    ]);
+    user?.tripSearchRequests?.forEach((trip) => {
+      trip.user = parseUserProfilePicture(trip.user);
+    });
 
     res.status(StatusCodes.OK).json(buildUserTripsResponse(type, user, userId));
   } catch (error) {

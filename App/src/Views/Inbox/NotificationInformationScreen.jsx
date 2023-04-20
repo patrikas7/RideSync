@@ -64,11 +64,19 @@ const NotificationInformationScreen = ({ token, tabsNavigation }) => {
               stops={notification.stops}
             />
 
-            <Text style={styles.reviewHeadline}>
-              Jusų kelionės įvertinimas:
-            </Text>
+            {notification.rating && (
+              <>
+                <Text style={styles.reviewHeadline}>
+                  Jusų kelionės įvertinimas:
+                </Text>
 
-            <Rating readonly={true} startingValue={5} style={styles.review} />
+                <Rating
+                  readonly={true}
+                  startingValue={notification.rating}
+                  style={styles.review}
+                />
+              </>
+            )}
           </View>
           {notification.notificationType ===
             NotificationTypes.TRIP_WAS_EDITED && (
