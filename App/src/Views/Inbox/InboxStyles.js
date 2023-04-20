@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
   button: {
     marginBottom: 32,
   },
+  reviewHeadline: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 32,
+    textAlign: "center",
+  },
+  review: { marginTop: 16 },
 });
 
 export default styles;

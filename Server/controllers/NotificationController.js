@@ -17,6 +17,7 @@ const getUsersNotification = async (req, res) => {
           path: "sender",
           select: "profilePicture",
         },
+        options: { sort: { createdAt: -1 } },
       })
       .populate({
         path: "chats",
@@ -111,14 +112,34 @@ export const sendNotificationsForPassengers = async (
   );
 };
 
-export const sendNotificationForRemovedUser = async (user, sender, trip) => {
+const createNotification = (user, sender, trip, notificationType, rating) => {
   const notification = new Notification({
     user,
     sender,
     trip,
-    notificationType: NotificationTypes.I_WAS_REMOVED_FROM_TRIP,
+    notificationType,
+    rating,
   });
-  await notification.save();
+  return notification.save();
+};
+
+export const sendNotificationForRemovedUser = async (user, sender, trip) => {
+  await createNotification(
+    user,
+    sender,
+    trip,
+    NotificationTypes.I_WAS_REMOVED_FROM_TRIP
+  );
+};
+
+export const sendReviewNotification = async (user, sender, trip, rating) => {
+  await createNotification(
+    user,
+    sender,
+    trip,
+    NotificationTypes.TRIP_REVIEW,
+    rating
+  );
 };
 
 const filterNotificationsByDate = (notifications, daysAgo = 0) => {

@@ -10,6 +10,9 @@ export const getNotificationHeadline = (notificationType) => {
 
   if (notificationType === NotificationTypes.I_WAS_REMOVED_FROM_TRIP)
     return "Kelionės vairuotojas atšaukė jūsų rezervaciją!";
+
+  if (notificationType === NotificationTypes.TRIP_REVIEW)
+    return "Jus gavote įvertinimą vienoje iš kelionių";
 };
 
 export const getHeadlineText = (notificationType) => {
@@ -21,6 +24,9 @@ export const getHeadlineText = (notificationType) => {
 
   if (notificationType === NotificationTypes.I_WAS_REMOVED_FROM_TRIP)
     return "Dėmesio, kelionės vairuotojas atšaukė jūsų rezervaciją!";
+
+  if (notificationType === NotificationTypes.TRIP_REVIEW)
+    return "Jus gavote įvertinimą vienoje iš kelionių";
 };
 
 export const parseChatNotificationData = (notification, id) => {

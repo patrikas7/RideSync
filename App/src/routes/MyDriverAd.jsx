@@ -1,8 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import PageNames from "../Constants/pageNames";
 import MyDriverAdFormScreen from "../Views/MyDriverAd/MyDriverAdFormScreen";
 import MyDriverAdOverviewScreen from "../Views/MyDriverAd/MyDriverAdOverviewScreen";
+import CitySearchScreen from "../Views/Search/CitySearchScreen";
 
 const MyDriverAd = ({ token }) => {
   const navigation = useNavigation();
@@ -21,6 +25,14 @@ const MyDriverAd = ({ token }) => {
         children={() => <MyDriverAdFormScreen token={token} />}
         name={PageNames.BUSINESS_MY_DRIVER_AD_FORM}
         options={{ title: "Vairuotojo skelbimas", headerShadowVisible: false }}
+      />
+      <Stack.Screen
+        component={CitySearchScreen}
+        name={PageNames.CITY_SEARCH}
+        options={{
+          headerShown: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
+        }}
       />
     </Stack.Navigator>
   );

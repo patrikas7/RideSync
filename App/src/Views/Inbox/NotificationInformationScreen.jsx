@@ -12,6 +12,7 @@ import useScreenArrowBack from "../../hooks/useScreenArrowBack";
 import styles from "./InboxStyles";
 import TripRoutesCard from "../../Components/TripInformation/cards/TripRoutesCard";
 import Button from "../../Components/Button/Button";
+import { Rating } from "react-native-ratings";
 
 const NotificationInformationScreen = ({ token, tabsNavigation }) => {
   const [notification, setNotification] = useState(null);
@@ -62,6 +63,12 @@ const NotificationInformationScreen = ({ token, tabsNavigation }) => {
               time={notification.trip.time}
               stops={notification.stops}
             />
+
+            <Text style={styles.reviewHeadline}>
+              Jusų kelionės įvertinimas:
+            </Text>
+
+            <Rating readonly={true} startingValue={5} style={styles.review} />
           </View>
           {notification.notificationType ===
             NotificationTypes.TRIP_WAS_EDITED && (

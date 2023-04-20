@@ -1,4 +1,6 @@
 import mongoose, { Schema } from "mongoose";
+import { sendReviewNotification } from "../controllers/NotificationController.js";
+import Logging from "../library/Logging.js";
 import BasicUser from "./BasicUser.js";
 
 const ReviewSchema = new Schema({
@@ -34,12 +36,23 @@ ReviewSchema.pre("save", async function (next) {
     const recipient = await BasicUser.findById(this.recipient);
     const reviewer = await BasicUser.findById(this.reviewer);
 
+    Logging.info(this.recipient);
+    Logging.info(this.reviewer);
+    Logging.info(recipient);
+    Logging.info(reviewer);
+
     if (recipient && reviewer) {
       recipient.reviews.push(this._id);
       reviewer.reviews.push(this._id);
 
       await recipient.save();
       await reviewer.save();
+      await sendReviewNotification(
+        this.recipient,
+        this.reviewer,
+        this.trip,
+        this.rating
+      );
     }
 
     next();

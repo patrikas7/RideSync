@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 import { NotificationTypes } from "../enums/enums.js";
-import Logging from "../library/Logging.js";
 import User from "./User.js";
 
 const NotificationSchema = new Schema({
@@ -29,6 +28,9 @@ const NotificationSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  rating: {
+    type: Number,
   },
 });
 

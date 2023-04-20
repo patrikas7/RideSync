@@ -24,8 +24,6 @@ const MyDriverAdFormScreen = ({ token }) => {
   const userCars = constructCarsList(route.params.userCars);
   useScreenArrowBack(navigation, PageNames.BUSINESS_MY_DRIVER_AD_OVERVIEW);
 
-  console.log(userCars);
-
   const handleOnPersonsCountChange = (seats) => {
     if (+seats > 4) {
       showMessage({
@@ -40,6 +38,16 @@ const MyDriverAdFormScreen = ({ token }) => {
     setFormData((prevState) => ({ ...prevState, seats }));
   };
 
+  const handleOnCityInputFocus = () => {
+    navigation.navigate(PageNames.CITY_SEARCH, {
+      inputType: "city",
+      value: formData.city,
+      prevScreen: PageNames.BUSINESS_MY_DRIVER_AD_FORM,
+      navigateToPrev: true,
+      props: { userCars: route.params.userCars },
+    });
+  };
+
   return (
     <Container>
       <View style={styles.container}>
@@ -50,6 +58,7 @@ const MyDriverAdFormScreen = ({ token }) => {
           onChange={(city) =>
             setFormData((prevState) => ({ ...prevState, city }))
           }
+          // onFocus={handleOnCityInputFocus}
         />
 
         <Input

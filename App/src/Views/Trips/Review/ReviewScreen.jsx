@@ -13,8 +13,8 @@ const ReviewScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeRecipient, setActiveRecipient] = useState(0);
   const { token, trip, recipients } = route.params;
+  const isRecipientPassenger = !!recipients[0]?.passenger;
 
-  console.log(recipients);
   useScreenArrowBack(
     navigation,
     PageNames.TRIP_INFORMATION,
@@ -24,14 +24,17 @@ const ReviewScreen = ({ navigation, route }) => {
 
   const handleOnReview = async () => {
     setIsLoading(true);
-    const { error } = await postReview(token, {
+    console.log(recipients[activeRecipient]._id);
+    const response = await postReview(token, {
       trip,
-      recipient: recipients[activeRecipient]._id,
+      recipient: isRecipientPassenger
+        ? recipients[activeRecipient].passenger._id
+        : recipients[activeRecipient]._id,
       rating,
     });
     setIsLoading(false);
 
-    if (!error && activeRecipient + 1 >= recipients.length) {
+    if (!response?.error && activeRecipient + 1 >= recipients.length) {
       navigation.navigate(PageNames.REVIEW_SUCCESS, { token });
       return;
     }
