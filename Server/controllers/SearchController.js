@@ -11,8 +11,24 @@ const getSuggestions = async (req, res) => {
   const { text } = req.query;
 
   try {
-    const suggestions = await fetchGeoapifySuggestions({ text, type: null });
-    res.json(suggestions);
+    const { data } = await axios.get(process.env.GEOAPIFY_URL, {
+      params: {
+        text,
+        limit: 3,
+        apiKey: process.env.GEOAPIFY_KEY,
+        lang: "lt",
+      },
+    });
+
+    const suggestions = data.features.map((feature) => ({
+      addressLine1: feature?.properties?.address_line1,
+      addressLine2: feature?.properties?.address_line2,
+      city: feature?.properties?.city,
+      longitude: feature?.properties?.lon,
+      latitude: feature?.properties.lat,
+    }));
+
+    res.status(StatusCodes.OK).json({ suggestions });
   } catch (error) {
     Logging.error(error);
     res
@@ -25,8 +41,25 @@ const getCitySuggestions = async (req, res) => {
   const { text } = req.query;
 
   try {
-    const suggestions = await fetchGeoapifySuggestions({ text, type: "city" });
-    res.status(StatusCodes.OK).json({ suggestions: [...new Set(suggestions)] });
+    const { data } = await axios.get(process.env.GEOAPIFY_URL, {
+      params: {
+        text,
+        limit: 3,
+        apiKey: process.env.GEOAPIFY_KEY,
+        lang: "lt",
+        type: "city",
+      },
+    });
+
+    const suggestions = data.features.map((feature) => ({
+      addressLine1: feature?.properties?.address_line1,
+      addressLine2: feature?.properties?.address_line2,
+      city: feature?.properties?.city,
+      longitude: feature?.properties?.lon,
+      latitude: feature?.properties.lat,
+    }));
+
+    res.status(StatusCodes.OK).json({ suggestions });
   } catch (error) {
     Logging.error(error);
     res
@@ -36,31 +69,6 @@ const getCitySuggestions = async (req, res) => {
 };
 
 const fetchGeoapifySuggestions = async ({ text, type }) => {
-  const { data } = await axios.get(process.env.GEOAPIFY_URL, {
-    params: {
-      text,
-      limit: 3,
-      apiKey: process.env.GEOAPIFY_KEY,
-      lang: "lt",
-      type: type || "address",
-    },
-  });
-
-  const features = data?.features || [];
-  const suggestions = features.map((feature) => {
-    if (type === "city") {
-      return feature?.properties?.city;
-    } else {
-      return {
-        addressLine1: feature?.properties?.address_line1,
-        addressLine2: feature?.properties?.address_line2,
-        city: feature?.properties?.city,
-        longitude: feature?.properties?.lon,
-        latitude: feature?.properties.lat,
-      };
-    }
-  });
-
   return suggestions;
 };
 

@@ -12,6 +12,10 @@ import validateIdMiddleware from "../middleware/validateIdMiddleware.js";
 const SearchRouter = express.Router();
 
 SearchRouter.route("/").get(authMiddleware, controller.getSuggestions);
+SearchRouter.route("/cities").get(
+  authMiddleware,
+  controller.getCitySuggestions
+);
 
 SearchRouter.route("/history")
   .get(

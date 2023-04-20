@@ -13,3 +13,14 @@ export const fetchDriversList = async (token) => {
     return { error };
   }
 };
+
+export const postDriverAd = async (token, formData) => {
+  try {
+    await axios.post("/driver-ad", formData, {
+      headers: { Authorization: token },
+    });
+  } catch (error) {
+    printError(error);
+    return { error };
+  }
+};

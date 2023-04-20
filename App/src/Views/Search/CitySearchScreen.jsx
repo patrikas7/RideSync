@@ -20,7 +20,8 @@ import { useIsFocused } from "@react-navigation/native";
 // Mirsta appsasa atidarius citySearch su klaipeda, su kitais miestais lyg viskas okey
 
 const CitySearchScreen = ({ route, navigation }) => {
-  const { inputType, value, prevScreen, navigateToPrev, props } = route.params;
+  const { inputType, value, prevScreen, navigateToPrev, props, isCitySearch } =
+    route.params;
   const [searchTerm, setSearchTerm] = useState(value);
   const [isLoading, setIsLoading] = useState(true);
   const [suggestions, setSuggestions] = useState([]);
@@ -40,11 +41,12 @@ const CitySearchScreen = ({ route, navigation }) => {
 
   const getSuggestions = async () => {
     try {
-      const { data } = await axios.get("/search", {
+      const endpoint = isCitySearch ? "/search/cities" : "/search";
+      const { data } = await axios.get(endpoint, {
         params: { text: debouncedSearchTerm },
         headers: { Authorization: token },
       });
-      setSuggestions(data);
+      setSuggestions(data.suggestions);
     } catch (error) {
       console.log(error);
     }
@@ -148,13 +150,14 @@ const CitySearchScreen = ({ route, navigation }) => {
           />
         </View>
         <View style={SearchStyles.resultsContainer}>
-          {suggestions.map((suggesstion, index) => (
-            <SearchSuggestion
-              key={index}
-              onPress={() => handleOnSuggestionPress(suggesstion)}
-              suggestion={suggesstion}
-            />
-          ))}
+          {suggestions.length > 0 &&
+            suggestions.map((suggesstion, index) => (
+              <SearchSuggestion
+                key={index}
+                onPress={() => handleOnSuggestionPress(suggesstion)}
+                suggestion={suggesstion}
+              />
+            ))}
         </View>
       </View>
     </View>

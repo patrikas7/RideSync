@@ -196,6 +196,16 @@ const Schemas = {
       trip: Joi.string().required(),
     }),
   },
+  driverAd: {
+    create: Joi.object({
+      driver: Joi.string().required(),
+      city: Joi.string().required(),
+      price: Joi.number().required(),
+      seats: Joi.number().required(),
+      description: Joi.string(),
+      car: Joi.string().required(),
+    }),
+  },
 };
 
 export default Schemas;
