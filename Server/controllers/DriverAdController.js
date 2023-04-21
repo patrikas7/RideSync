@@ -23,8 +23,9 @@ const postDriverAd = async (req, res) => {
     const driverAd = new DriverAd({ ...data, driver: userId });
     await driverAd.save();
 
-    res.status(StatusCodes.CREATION_SUCCESS).json({ review });
+    res.status(StatusCodes.CREATION_SUCCESS).json({ driverAd });
   } catch (error) {
+    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);

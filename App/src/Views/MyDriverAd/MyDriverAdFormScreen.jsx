@@ -71,9 +71,10 @@ const MyDriverAdFormScreen = ({ token }) => {
     setErrors(initialState);
     if (!isFormValid()) return;
     setIsLoading(true);
-    const { error } = await postDriverAd(token, formData);
+    const response = await postDriverAd(token, formData);
 
-    if (!error) {
+    if (!response?.error) {
+      navigation.navigate(PageNames.PUBLISH_SUCCES);
     }
 
     setIsLoading(false);

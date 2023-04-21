@@ -6,6 +6,7 @@ import {
 import PageNames from "../Constants/pageNames";
 import MyDriverAdFormScreen from "../Views/MyDriverAd/MyDriverAdFormScreen";
 import MyDriverAdOverviewScreen from "../Views/MyDriverAd/MyDriverAdOverviewScreen";
+import MyDriverAdSuccessScreen from "../Views/MyDriverAd/MyDriverAdSuccessScreen";
 import CitySearchScreen from "../Views/Search/CitySearchScreen";
 
 const MyDriverAd = ({ token }) => {
@@ -33,6 +34,11 @@ const MyDriverAd = ({ token }) => {
           headerShown: false,
           ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
+      />
+      <Stack.Screen
+        component={MyDriverAdSuccessScreen}
+        name={PageNames.PUBLISH_SUCCES}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

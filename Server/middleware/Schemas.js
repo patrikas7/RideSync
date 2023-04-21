@@ -198,7 +198,6 @@ const Schemas = {
   },
   driverAd: {
     create: Joi.object({
-      driver: Joi.string().required(),
       city: Joi.string().required(),
       price: Joi.number().required(),
       seats: Joi.number().required(),
