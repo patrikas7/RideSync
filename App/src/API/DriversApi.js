@@ -24,3 +24,27 @@ export const postDriverAd = async (token, formData) => {
     return { error };
   }
 };
+
+export const updateDriverAd = async (token, formData, id) => {
+  try {
+    await axios.put("/driver-ad", formData, {
+      params: { id },
+      headers: { Authorization: token },
+    });
+  } catch (error) {
+    printError(error);
+    return { error };
+  }
+};
+
+export const deleteDriverAd = async (token, id) => {
+  try {
+    await axios.delete("/driver-ad", {
+      params: { id },
+      headers: { Authorization: token },
+    });
+  } catch (error) {
+    printError(error);
+    return { error };
+  }
+};

@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import { View } from "react-native";
 import { showMessage } from "react-native-flash-message";
 import Spinner from "react-native-loading-spinner-overlay/lib";
-import { postDriverAd } from "../../API/DriversApi";
+import {
+  deleteDriverAd,
+  postDriverAd,
+  updateDriverAd,
+} from "../../API/DriversApi";
 import Button from "../../Components/Button/Button";
 import Container from "../../Components/Container/Container";
 import Dropdown from "../../Components/Form/Dropdown";
@@ -11,8 +15,9 @@ import Input from "../../Components/Form/Input";
 import ErrorMessages from "../../Constants/errorMessages";
 import PageNames from "../../Constants/pageNames";
 import useScreenArrowBack from "../../hooks/useScreenArrowBack";
-import { constructCarsList, isObjectEmpty } from "../../Utils/utils";
+import { alert, constructCarsList, isObjectEmpty } from "../../Utils/utils";
 import styles from "./MyDriverAdStyles";
+import useScreenIconRight from "../../hooks/useScreenIconRight";
 
 const initialState = {
   city: "",
@@ -21,17 +26,42 @@ const initialState = {
   car: null,
 };
 
+const getInitialState = (isEdit, driverAd) => {
+  if (!isEdit) return { ...initialState, description: "" };
+  return {
+    city: driverAd.city,
+    price: `${driverAd.price}`,
+    seats: `${driverAd.seats}`,
+    car: driverAd.car._id,
+    description: driverAd.description,
+  };
+};
+
 const MyDriverAdFormScreen = ({ token }) => {
-  const [formData, setFormData] = useState({
-    ...initialState,
-    description: "",
-  });
+  const route = useRoute();
+  const userCars = constructCarsList(route.params.userCars);
+  const isEdit = !!route.params.driverAd;
+  const [formData, setFormData] = useState(
+    getInitialState(isEdit, route.params?.driverAd)
+  );
   const [errors, setErrors] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
-  const route = useRoute();
-  const userCars = constructCarsList(route.params.userCars);
+
   useScreenArrowBack(navigation, PageNames.BUSINESS_MY_DRIVER_AD_OVERVIEW);
+
+  const handleOnDeletePress = () => {
+    alert("Skelbimo šalinimas", "Ar tikrai norite pašalinti skelbimą", () =>
+      handleOnDelete()
+    );
+  };
+
+  useScreenIconRight({
+    navigation,
+    icons: ["trash-outline"],
+    shouldRender: isEdit,
+    onPress: handleOnDeletePress,
+  });
 
   useEffect(() => {
     if (!route.params?.departure) return;
@@ -71,13 +101,46 @@ const MyDriverAdFormScreen = ({ token }) => {
     setErrors(initialState);
     if (!isFormValid()) return;
     setIsLoading(true);
+    isEdit ? await handleOnUpdate() : await handleOnCreate();
+    setIsLoading(false);
+  };
+
+  const handleOnDelete = async () => {
+    setIsLoading(true);
+    const response = await deleteDriverAd(token, route.params?.driverAd._id);
+    if (!response?.error) {
+      showMessage({
+        message: "Skelbimas buvo sėkmingai pašalintas",
+        type: "success",
+      });
+
+      navigation.navigate(PageNames.BUSINESS_MY_DRIVER_AD_OVERVIEW);
+      setIsLoading(false);
+    }
+  };
+
+  const handleOnUpdate = async () => {
+    const response = await updateDriverAd(
+      token,
+      formData,
+      route.params?.driverAd._id
+    );
+    if (!response?.error) {
+      showMessage({
+        message: "Skelbimas buvo sėkmingai atnaujintas",
+        type: "success",
+      });
+
+      navigation.navigate(PageNames.BUSINESS_MY_DRIVER_AD_OVERVIEW);
+    }
+  };
+
+  const handleOnCreate = async () => {
     const response = await postDriverAd(token, formData);
 
     if (!response?.error) {
       navigation.navigate(PageNames.PUBLISH_SUCCES);
     }
-
-    setIsLoading(false);
   };
 
   const isFormValid = () => {

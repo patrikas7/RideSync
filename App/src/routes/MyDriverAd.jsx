@@ -40,6 +40,11 @@ const MyDriverAd = ({ token }) => {
         name={PageNames.PUBLISH_SUCCES}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        children={() => <MyDriverAdFormScreen token={token} />}
+        name={PageNames.BUSINESS_MY_DRIVER_AD_EDIT}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

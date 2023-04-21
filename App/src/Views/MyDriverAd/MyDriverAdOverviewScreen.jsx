@@ -5,6 +5,7 @@ import Container from "../../Components/Container/Container";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import NoResults from "../../Components/NoResults/NoResults";
 import PageNames from "../../Constants/pageNames";
+import MyDriverAd from "../../Components/DriverAd/MyDriverAd";
 
 const MyDriverAdOverviewScreen = ({ token, tabsNavigation }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -49,6 +50,17 @@ const MyDriverAdOverviewScreen = ({ token, tabsNavigation }) => {
           buttonText="Vairuotojo skelbimas"
           onPress={() =>
             navigation.navigate(PageNames.BUSINESS_MY_DRIVER_AD_FORM, {
+              userCars,
+            })
+          }
+        />
+      )}
+      {!isLoading && driverAds?.length > 0 && (
+        <MyDriverAd
+          driverAd={driverAds[0]}
+          onPress={() =>
+            navigation.navigate(PageNames.BUSINESS_MY_DRIVER_AD_FORM, {
+              driverAd: driverAds[0],
               userCars,
             })
           }

@@ -221,7 +221,10 @@ const getUserDriverAd = async (req, res) => {
   const { userId } = req;
 
   try {
-    const user = await BusinessUser.findById(userId);
+    const user = await BusinessUser.findById(userId).populate({
+      path: "driverAds",
+      populate: { path: "car" },
+    });
 
     res.status(StatusCodes.OK).json({ driverAds: user.driverAds });
   } catch (error) {

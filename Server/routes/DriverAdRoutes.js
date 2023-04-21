@@ -12,6 +12,8 @@ DriverAdRouter.route("/")
     authMiddleware,
     ValidateSchema(Schemas.driverAd.create),
     controller.postDriverAd
-  );
+  )
+  .put(authMiddleware, controller.updateDriverAdHandler)
+  .delete(authMiddleware, controller.deleteDriverAd);
 
 export default DriverAdRouter;

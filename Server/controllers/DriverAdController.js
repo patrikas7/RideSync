@@ -32,4 +32,49 @@ const postDriverAd = async (req, res) => {
   }
 };
 
-export default { getDriverAds, postDriverAd };
+const updateDriverAdHandler = async (req, res) => {
+  const { id } = req.query;
+  const updateData = req.body;
+
+  try {
+    const updatedAd = await updateDriverAd(id, updateData);
+    res.status(StatusCodes.OK).json({ updatedAd });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+const updateDriverAd = async (id, updateData) => {
+  try {
+    const result = await DriverAd.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteDriverAd = async (req, res) => {
+  const { id } = req.query;
+
+  try {
+    await DriverAd.findByIdAndDelete(id);
+    res.status(StatusCodes.OK).json({ message: "deleted" });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
+export default {
+  getDriverAds,
+  postDriverAd,
+  updateDriverAdHandler,
+  deleteDriverAd,
+};
