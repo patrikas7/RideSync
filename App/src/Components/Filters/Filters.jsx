@@ -15,8 +15,9 @@ import Colors from "../../Constants/colors";
 import Sizes from "../../Constants/sizes";
 import Button from "../Button/Button";
 import Checkbox from "expo-checkbox";
+import useScreenIconRight from "../../hooks/useScreenIconRight";
 
-const initialState = {
+export const initialState = {
   tripOption: Object.keys(TripOptions)[2],
   departureTime: DepartureTimeSlots[0].key,
   availableSeats: AvailableSeatsSlots[0].key,
@@ -25,10 +26,17 @@ const initialState = {
   priceRange: [5, 50],
 };
 
-const Filters = ({ onButtonPress, prefill }) => {
+const Filters = ({ onButtonPress, prefill, navigation }) => {
   const [state, setState] = useState(
     isObjectEmpty(prefill) ? initialState : prefill
   );
+
+  useScreenIconRight({
+    navigation,
+    icons: ["refresh-outline"],
+    shouldRender: true,
+    onPress: () => setState(initialState),
+  });
 
   const renderSliderSlot = (item, index, activeSlot, setActiveSlot) => (
     <TouchableHighlight

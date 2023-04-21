@@ -68,10 +68,6 @@ const getCitySuggestions = async (req, res) => {
   }
 };
 
-const fetchGeoapifySuggestions = async ({ text, type }) => {
-  return suggestions;
-};
-
 const getSearchHistory = async (req, res) => {
   const user = req.user;
   const { type } = req.query;

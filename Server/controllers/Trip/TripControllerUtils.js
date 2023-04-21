@@ -3,6 +3,7 @@ import {
   DepartureTimeSlots,
   TripOptions,
 } from "../../enums/enums.js";
+import Logging from "../../library/Logging.js";
 
 export const buildSearchQuery = (req) => {
   const { destination, departure, date, personsCount } = req.query;
@@ -115,11 +116,15 @@ const buildPersonsCountQuery = (availableSeats) => {
 const buildPriceQuery = (onlyFreeTrips, priceRange) => {
   let priceQuery = {};
 
-  if (!onlyFreeTrips) {
-    const [minPrice, maxPrice] = priceRange.split("-");
-    priceQuery = { price: { $gte: minPrice, $lte: maxPrice } };
+  if (onlyFreeTrips === "false") {
+    const minPrice = priceRange[0];
+    const maxPrice = priceRange[1];
+
+    priceQuery = {
+      price: { $gte: minPrice, $lte: maxPrice },
+    };
   } else {
-    priceQuery = { price: { $eq: 0 } };
+    priceQuery = { price: { $eq: "0" } };
   }
 
   return priceQuery;

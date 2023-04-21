@@ -140,14 +140,26 @@ const postTrip = async (req, res) => {
 const filterTrips = async (req, res) => {
   const { isAddToFavouritesSelcted } = req.query;
   const userId = req.userId;
+
   const query = buildFiltersQuery(req.query);
 
   try {
     if (isAddToFavouritesSelcted === "true")
       await addTripToFavorites(req.query, userId);
     const trips = await findTrips(query);
+    const tripsWithRating = trips.map((trip) => {
+      const { averageRating, reviewsCount } = getRatingAndReviewCount(
+        trip.driver._id,
+        trip.driver.reviews
+      );
 
-    res.status(StatusCodes.OK).json({ trips });
+      return {
+        ...trip,
+        driver: { ...trip.driver, averageRating, reviewsCount },
+      };
+    });
+
+    res.status(StatusCodes.OK).json({ trips: tripsWithRating });
   } catch (error) {
     Logging.error(error);
     res
