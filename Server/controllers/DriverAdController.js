@@ -5,7 +5,7 @@ import DriverAd from "../models/DriverAd.js";
 
 const getDriverAds = async (_, res) => {
   try {
-    const driversAds = await DriverAd.find({ isActive: true });
+    const driversAds = await DriverAd.find({ isActive: true }).populate("car");
     return res.status(StatusCodes.OK).json({ driversAds });
   } catch (error) {
     Logging.error(error);

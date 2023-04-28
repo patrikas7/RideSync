@@ -5,13 +5,16 @@ import Spinner from "react-native-loading-spinner-overlay/lib";
 import Container from "../../Components/Container/Container";
 import NoResults from "../../Components/NoResults/NoResults";
 import PageNames from "../../Constants/pageNames";
+import { useIsFocused } from "@react-navigation/native";
+import DriversList from "../../Components/DriversList/DriversList";
 
 const DriversListScreen = ({ token, tabsNavigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [driversList, setDriversList] = useState([]);
+  const isFocuesed = useIsFocused();
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || !isFocuesed) return;
     const getDriversList = async () => {
       setIsLoading(true);
       const { driversAds, error } = await fetchDriversList(token);
@@ -21,7 +24,7 @@ const DriversListScreen = ({ token, tabsNavigation }) => {
     };
 
     getDriversList();
-  }, [token]);
+  }, [token, isFocuesed]);
 
   return (
     <Container>
@@ -35,6 +38,9 @@ const DriversListScreen = ({ token, tabsNavigation }) => {
             tabsNavigation.navigate(PageNames.BUSINESS_MY_DRIVER_AD)
           }
         />
+      )}
+      {!isLoading && driversList?.length > 0 && (
+        <DriversList driversList={driversList} />
       )}
     </Container>
   );
