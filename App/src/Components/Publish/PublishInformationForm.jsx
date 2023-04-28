@@ -22,6 +22,7 @@ import Button from "../Button/Button";
 import InputSwitch from "../Form/InputSwitch";
 import ErrorMessages from "../../Constants/errorMessages";
 import Dropdown from "../Form/Dropdown";
+import { isObjectEmpty } from "../../Utils/utils";
 
 const PublishInformationForm = () => {
   const state = useSelector((state) => state.publish);
@@ -49,29 +50,34 @@ const PublishInformationForm = () => {
 
   const handleOnNextClick = () => {
     const { publishType, price, personsCount, isRoundTrip, car } = state;
+    const errors = {};
     dispatch(resetErrors());
 
     if (publishType === PublishTypes.PUBLISH_TRIP) {
       if (!price) {
         dispatch(setPriceError(ErrorMessages.REQUIRED_FIELD));
-        return;
+        errors.price = ErrorMessages.REQUIRED_FIELD;
       }
       if (!car) {
         showMessage({ message: ErrorMessages.CAR_IS_REQUIRED, type: "danger" });
-        return;
+        errors.car = ErrorMessages.REQUIRED_FIELD;
       }
     }
 
     if (!personsCount) {
       dispatch(setPersonsCountError(ErrorMessages.REQUIRED_FIELD));
-      return;
+      errors.personsCount = ErrorMessages.REQUIRED_FIELD;
     }
+
+    if (!isObjectEmpty(errors)) return;
 
     dispatch(resetErrors());
     navigation.navigate(
       getPublishInformationNextScreen(publishType, isRoundTrip)
     );
   };
+
+  console.log(state.userCars);
 
   return (
     <View style={PublishInformationFormStyles.formContainer}>

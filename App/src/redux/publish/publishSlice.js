@@ -103,9 +103,7 @@ export const publishErrorsSlice = createSlice({
     setPriceError: (state, action) => {
       state.price = action.payload;
     },
-    resetErrors: (state) => {
-      state = initialErrorState;
-    },
+    resetErrors: () => initialErrorState,
   },
 });
 

@@ -117,11 +117,17 @@ const buildPriceQuery = (onlyFreeTrips, priceRange) => {
   let priceQuery = {};
 
   if (onlyFreeTrips === "false") {
-    const minPrice = priceRange[0];
-    const maxPrice = priceRange[1];
+    const minPrice = parseFloat(priceRange[0]);
+    const maxPrice = parseFloat(priceRange[1]);
 
     priceQuery = {
-      price: { $gte: minPrice, $lte: maxPrice },
+      $expr: {
+        $and: [
+          { $ne: ["$price", ""] },
+          { $gte: [{ $convert: { input: "$price", to: "double" } }, minPrice] },
+          { $lte: [{ $convert: { input: "$price", to: "double" } }, maxPrice] },
+        ],
+      },
     };
   } else {
     priceQuery = { price: { $eq: "0" } };
