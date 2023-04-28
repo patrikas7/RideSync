@@ -8,8 +8,9 @@ import BookmarksScreen from "../Views/Bookmarks/BookmarksScreen";
 import useUserData from "../hooks/useUserData";
 import BookmarkEditScreen from "../Views/Bookmarks/BookmarkEditScreen";
 import CitySearchScreen from "../Views/Search/CitySearchScreen";
+import BookmarkDateAndTimeSelectScreen from "../Views/Bookmarks/BookmarkDateAndTimeSelectScreen";
 
-const Bookmarks = ({ token }) => {
+const Bookmarks = ({ token, mainNavigation, id }) => {
   const Stack = createStackNavigator();
 
   return (
@@ -34,6 +35,21 @@ const Bookmarks = ({ token }) => {
       <Stack.Screen
         name={PageNames.BOOKMARK_EDIT}
         children={() => <BookmarkEditScreen token={token} />}
+        options={{
+          title: "Maršruto redagavimas",
+          headerShadowVisible: false,
+        }}
+      />
+
+      <Stack.Screen
+        name={PageNames.SEARCH_DATE_AND_TIME_SELECTION}
+        children={() => (
+          <BookmarkDateAndTimeSelectScreen
+            mainNavigation={mainNavigation}
+            token={token}
+            id={id}
+          />
+        )}
         options={{
           title: "Maršruto redagavimas",
           headerShadowVisible: false,

@@ -66,7 +66,9 @@ const BasicUserTabs = ({
       />
       <Tab.Screen
         name={PageNames.BOOKMARKS}
-        children={() => <Bookmarks token={token} />}
+        children={() => (
+          <Bookmarks token={token} mainNavigation={navigation} id={id} />
+        )}
         options={{
           tabBarLabel: "Išsaugoti",
           tabBarIcon: ({ color }) => (

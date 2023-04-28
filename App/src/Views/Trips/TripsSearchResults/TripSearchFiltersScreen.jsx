@@ -1,9 +1,7 @@
 import Container from "../../../Components/Container/Container";
 import PageNames from "../../../Constants/pageNames";
 import useScreenArrowBack from "../../../hooks/useScreenArrowBack";
-import useScreenIconRight from "../../../hooks/useScreenIconRight";
 import Filters from "../../../Components/Filters/Filters";
-import { useState } from "react";
 
 const TripSearchFiltersScreen = ({ navigation, route }) => {
   const { filters } = route.params;

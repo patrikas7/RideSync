@@ -50,7 +50,7 @@ const TripsSearchResults = ({ mainRoute }) => {
   useEffect(() => {
     if (!isFocused) return;
     const fetchTrips = async () => {
-      if (route.params?.query) return;
+      if (route.params?.query || mainRoute.params?.query) return;
 
       setIsLoading(true);
       try {
@@ -109,6 +109,14 @@ const TripsSearchResults = ({ mainRoute }) => {
     setFilteres(query);
     filterTrips(query);
   }, [route.params?.query]);
+
+  useEffect(() => {
+    if (!mainRoute.params?.query) return;
+    const query = mainRoute.params.query;
+
+    setFilteres(query);
+    filterTrips(query);
+  }, [mainRoute.params?.query]);
 
   const filterTrips = async (query) => {
     setIsLoading(true);

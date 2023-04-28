@@ -5,7 +5,6 @@ import SearchHistory from "../../Components/TripSearch/SearchHistory";
 import TripSearchForm from "../../Components/TripSearch/TripSearchForm";
 import Sizes from "../../Constants/sizes";
 import SearchStyles from "./SearchStyles";
-import useUserData from "../../hooks/useUserData";
 import axios from "axios";
 import Spinner from "react-native-loading-spinner-overlay/lib";
 import PageNames from "../../Constants/pageNames";

@@ -121,7 +121,15 @@ const BookmarkInformationScreen = ({ token }) => {
           itemStyling={styles.bookmarkDetail}
         />
       </View>
-      <Button text={"Ieškoti"} styling={styles.button} />
+      <Button
+        text={"Toliau"}
+        styling={styles.button}
+        onClick={() =>
+          navigation.navigate(PageNames.SEARCH_DATE_AND_TIME_SELECTION, {
+            bookmark,
+          })
+        }
+      />
     </Container>
   );
 };

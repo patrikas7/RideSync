@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { StyleSheet } from "react-native";
 import Button from "../../Components/Button/Button";
 import Container from "../../Components/Container/Container";
 import DateAndTimePicker from "../../Components/TimeAndDatePicker/TimeAndDatePicker";
@@ -46,5 +45,3 @@ const SearchDateAndTimeScreen = ({ navigation, route }) => {
 };
 
 export default SearchDateAndTimeScreen;
-
-const styles = StyleSheet.create({});
