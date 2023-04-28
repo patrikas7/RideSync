@@ -5,11 +5,13 @@ import Sizes from "../../Constants/sizes";
 import ListItem from "../List/ListItem";
 import Button from "../Button/Button";
 
-const MyDriverAd = ({ driverAd, onPress }) => {
+const MyDriverAd = ({ driverAd, onPress, isMyAd }) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}>
-        <Header text="Mano vairuotojo skelbimas" size={Sizes.HEADER_MEDIUM} />
+        {!isMyAd && (
+          <Header text="Mano vairuotojo skelbimas" size={Sizes.HEADER_MEDIUM} />
+        )}
         <View style={styles.driverAdContainer}>
           <ListItem
             icon={"home-outline"}
@@ -40,7 +42,7 @@ const MyDriverAd = ({ driverAd, onPress }) => {
           />
 
           <ListItem
-            icon={"car-outline"}
+            icon={"chatbox-outline"}
             text={"Aprašymas"}
             secondaryText={driverAd.description}
             itemStyling={styles.listItem}
@@ -48,7 +50,11 @@ const MyDriverAd = ({ driverAd, onPress }) => {
         </View>
       </View>
 
-      <Button text={"Redaguoti"} styling={styles.button} onClick={onPress} />
+      <Button
+        text={isMyAd ? "Redaguoti" : "Rašyti pranešimą"}
+        styling={styles.button}
+        onClick={onPress}
+      />
     </View>
   );
 };

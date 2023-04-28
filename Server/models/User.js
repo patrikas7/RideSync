@@ -9,6 +9,8 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   dateOfBirth: { type: Date, required: true },
   phoneNumber: { type: String },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
   gender: {
     type: String,
     enum: [Genders.MALE, Genders.FEMALE],

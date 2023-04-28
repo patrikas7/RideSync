@@ -16,4 +16,6 @@ DriverAdRouter.route("/")
   .put(authMiddleware, controller.updateDriverAdHandler)
   .delete(authMiddleware, controller.deleteDriverAd);
 
+DriverAdRouter.route("/:id").get(authMiddleware, controller.getDriverAd);
+
 export default DriverAdRouter;

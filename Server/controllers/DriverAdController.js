@@ -72,9 +72,34 @@ const deleteDriverAd = async (req, res) => {
   }
 };
 
+const getDriverAd = async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req;
+  try {
+    const driverAd = await DriverAd.findById(id).populate("car");
+    if (!driverAd)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: ErrorMessages.DRIVER_AD_NOT_FOUND });
+
+    return res.status(StatusCodes.OK).json({
+      driverAd: {
+        ...driverAd.toObject(),
+        isMyAd: driverAd.driver.toString() === userId,
+      },
+    });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send(ErrorMessages.UNEXPECTED_ERROR);
+  }
+};
+
 export default {
   getDriverAds,
   postDriverAd,
   updateDriverAdHandler,
   deleteDriverAd,
+  getDriverAd,
 };

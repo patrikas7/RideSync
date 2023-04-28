@@ -11,10 +11,13 @@ import StyleUtils from "../../Utils/styleUtils";
 import TripPersonProfile from "../TripInformation/TripPersonProfile";
 import { Ionicons } from "@expo/vector-icons";
 
-const DriverCard = ({ driver }) => {
-  console.log(driver);
+const DriverCard = ({ driver, onPress }) => {
   return (
-    <TouchableHighlight style={[styles.touchableHighlight]} activeOpacity={0.9}>
+    <TouchableHighlight
+      style={[styles.touchableHighlight]}
+      activeOpacity={0.9}
+      onPress={() => onPress(driver._id)}
+    >
       <View style={styles.cardContainer}>
         <Text style={styles.headline}>
           Vairuotojo skelbimas <Text style={styles.bold}>{driver.city}</Text>
@@ -43,12 +46,14 @@ const DriverCard = ({ driver }) => {
   );
 };
 
-const DriversList = ({ driversList }) => {
+const DriversList = ({ driversList, onPress }) => {
   return (
     <Container>
       <FlatList
         data={driversList}
-        renderItem={({ item, index }) => <DriverCard driver={item} />}
+        renderItem={({ item, index }) => (
+          <DriverCard driver={item} onPress={onPress} />
+        )}
         keyExtractor={(item) => item._id}
         style={styles.container}
       />

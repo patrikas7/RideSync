@@ -48,3 +48,16 @@ export const deleteDriverAd = async (token, id) => {
     return { error };
   }
 };
+
+export const fetchDriverAd = async (token, id) => {
+  try {
+    const { data } = await axios.get(`/driver-ad/${id}`, {
+      headers: { Authorization: token },
+    });
+
+    return { driverAd: data.driverAd };
+  } catch (error) {
+    printError(error);
+    return { error };
+  }
+};
