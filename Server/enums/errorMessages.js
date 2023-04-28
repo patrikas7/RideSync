@@ -17,6 +17,7 @@ const ErrorMessages = {
   TRIP_SEARCH_REQUEST_NOT_FOUND: "Kelionės paieškos užklausta buvo nerasta",
   NOTIFICATION_NOT_FOUND: "Pranešimas buvo nerastas",
   DRIVER_AD_NOT_FOUND: "Skelbimas buvo nerastas",
+  INVALID_TOKEN: "Netinkamas kodas",
 };
 
 export default ErrorMessages;

@@ -77,6 +77,7 @@ const LoginScreen = ({ navigation }) => {
         formState={formState}
         setFormState={setFormState}
         errors={errors}
+        navigation={navigation}
       />
       <View style={LoginStyles.buttonsContainer}>
         <Button text={"Prisijungti"} onClick={handleOnSubmit} />

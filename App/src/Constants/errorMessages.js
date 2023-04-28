@@ -19,6 +19,7 @@ const ErrorMessages = {
   PLATE_NUMBER_VALIDATION:
     "Netinkamas automobilio valstybinio numerio formatas. Tinakamas formatas yra ABC 123",
   CAR_IS_REQUIRED: "Turite pasirinkti automobilį",
+  INVALID_CODE: "Įvestas kodas yra netinkamas arba jau nebegalioja",
 };
 
 export default ErrorMessages;

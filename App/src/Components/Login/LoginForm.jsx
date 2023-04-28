@@ -1,8 +1,10 @@
 import { StyleSheet, View, Text } from "react-native";
 import Colors from "../../Constants/colors";
 import Input from "../Form/Input";
+import TextButton from "../Button/TextButton";
+import PageNames from "../../Constants/pageNames";
 
-const LoginForm = ({ formState, setFormState, errors }) => {
+const LoginForm = ({ formState, setFormState, errors, navigation }) => {
   return (
     <View style={styles.inputsContainer}>
       <Input
@@ -28,8 +30,13 @@ const LoginForm = ({ formState, setFormState, errors }) => {
         hasError={!!errors.password}
         errorText={errors.password}
       />
+
       <View style={styles.passwordReminderContainer}>
-        <Text style={styles.passwordReminderText}>Pamiršote slaptažodį?</Text>
+        <TextButton
+          text={"Pamiršote slaptažodį?"}
+          styling={styles.passwordReminderText}
+          onPress={() => navigation.navigate(PageNames.PASSWORD_RESET_EMAIL)}
+        />
       </View>
     </View>
   );

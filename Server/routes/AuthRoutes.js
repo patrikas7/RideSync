@@ -15,4 +15,7 @@ AuthRouter.route("/login").post(
   controller.login
 );
 
+AuthRouter.route("/forgot-password").post(controller.sendPassowrdResetCode);
+AuthRouter.route("/change-password").post(controller.changePassword);
+
 export default AuthRouter;

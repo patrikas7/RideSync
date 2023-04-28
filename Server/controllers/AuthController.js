@@ -7,6 +7,10 @@ import jwt from "jsonwebtoken";
 import BusinessUser from "../models/BusinessUser.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import crypto from "crypto";
+import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const registerUser = async (req, res) => {
   const { isBussinessRegistration, ...data } = req.body;
@@ -69,4 +73,77 @@ const login = async (req, res) => {
   }
 };
 
-export default { registerUser, login };
+const sendPassowrdResetCode = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: ErrorMessages.USER_NOT_FOUND });
+
+    const token = crypto.randomBytes(4).toString("hex");
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000;
+
+    await user.save();
+
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      to: user.email,
+      from: process.env.EMAIL_USERNAME,
+      subject: "Slaptažodžio atkurimas",
+      text: `Jusų atkurimo kodas ${token}. Pateikite šį kodą norint pakeisti slaptažodį.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.json({ message: "Reset password email sent" });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send("Įvyko netikėta klaida, bandykite vėliau");
+  }
+};
+
+const changePassword = async (req, res) => {
+  const { newPassword, email, code } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: ErrorMessages.USER_NOT_FOUND });
+
+    if (
+      code !== user.resetPasswordToken ||
+      user.resetPasswordExpires < Date.now()
+    ) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: ErrorMessages.INVALID_TOKEN });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(StatusCodes.OK).json({ message: "updated" });
+  } catch (error) {
+    Logging.error(error);
+    res
+      .status(StatusCodes.UNEXPECTED_ERROR)
+      .send("Įvyko netikėta klaida, bandykite vėliau");
+  }
+};
+
+export default { registerUser, login, sendPassowrdResetCode, changePassword };

@@ -17,6 +17,8 @@ import SearchDateAndTimeScreen from "./src/Views/SearchDateAndTimeScreen/SearchD
 import Profile from "./src/routes/Profile";
 import SplashScreen from "./src/Views/SplashScreen";
 import Registration from "./src/routes/Registration";
+import PasswordResetEmailScreen from "./src/Views/PasswordReset/PasswordResetEmailScreen";
+import PasswordResetScreen from "./src/Views/PasswordReset/PasswordResetScreen";
 
 axios.defaults.baseURL = "http://localhost:5001";
 
@@ -49,6 +51,22 @@ export default function App() {
             component={LoginScreen}
             options={{
               headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name={PageNames.PASSWORD_RESET_EMAIL}
+            component={PasswordResetEmailScreen}
+            options={{
+              title: "Paskyros el. paštas",
+              headerShadowVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name={PageNames.PASSWORD_RESET}
+            component={PasswordResetScreen}
+            options={{
+              title: "Slaptažodžio keitimas",
+              headerShadowVisible: false,
             }}
           />
           <Stack.Screen
