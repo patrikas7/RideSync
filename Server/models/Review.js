@@ -36,11 +36,6 @@ ReviewSchema.pre("save", async function (next) {
     const recipient = await BasicUser.findById(this.recipient);
     const reviewer = await BasicUser.findById(this.reviewer);
 
-    Logging.info(this.recipient);
-    Logging.info(this.reviewer);
-    Logging.info(recipient);
-    Logging.info(reviewer);
-
     if (recipient && reviewer) {
       recipient.reviews.push(this._id);
       reviewer.reviews.push(this._id);

@@ -6,10 +6,10 @@ import { cityType } from "./Trip.js";
 const TripSearchRequestSchema = new Schema({
   departure: { type: cityType, required: true },
   destination: { type: cityType, required: true },
-  date: { type: String, required: true },
-  time: { type: String, required: true },
+  date: { type: String, maxlength: 10, required: true },
+  time: { type: String, maxlength: 5, required: true },
   passengersCount: { type: Number, required: true },
-  comments: { type: String },
+  comments: { type: String, maxlength: 255 },
   user: { type: Schema.Types.ObjectId, ref: "BasicUser" },
 });
 

@@ -3,12 +3,12 @@ import { Genders } from "../enums/enums.js";
 import bcrypt from "bcryptjs";
 
 const UserSchema = new Schema({
-  name: { type: String, required: true },
-  surname: { type: String, required: true },
-  password: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  name: { type: String, maxlength: 50, required: true },
+  surname: { type: String, maxlength: 50, required: true },
+  password: { type: String, maxlength: 100, required: true },
+  email: { type: String, maxlength: 100, required: true, unique: true },
   dateOfBirth: { type: Date, required: true },
-  phoneNumber: { type: String },
+  phoneNumber: { type: String, maxlength: 20 },
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
   gender: {

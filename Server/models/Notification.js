@@ -19,6 +19,7 @@ const NotificationSchema = new Schema({
   },
   notificationType: {
     type: String,
+    maxlength: 20,
     required: true,
   },
   isRead: {

@@ -7,8 +7,8 @@ import {
 import BasicUser from "./BasicUser.js";
 
 const TripBookmarkSchema = new Schema({
-  departure: { type: String, required: true },
-  destination: { type: String, required: true },
+  departure: { type: String, maxlength: 50, required: true },
+  destination: { type: String, maxlength: 50, required: true },
   tripOption: { type: String, default: TripOptions.ALL_TRIPS },
   departureTime: { type: String, default: DepartureTimeSlots.ALL_TIMES },
   availableSeats: {
