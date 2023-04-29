@@ -48,7 +48,10 @@ const MyDriverAdFormScreen = ({ token }) => {
   const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
 
-  useScreenArrowBack(navigation, PageNames.BUSINESS_MY_DRIVER_AD_OVERVIEW);
+  useScreenArrowBack(
+    navigation,
+    route.params?.prevScreen || PageNames.BUSINESS_MY_DRIVER_AD_OVERVIEW
+  );
 
   const handleOnDeletePress = () => {
     alert("Skelbimo šalinimas", "Ar tikrai norite pašalinti skelbimą", () =>
