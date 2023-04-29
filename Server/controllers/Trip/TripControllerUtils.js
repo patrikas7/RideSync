@@ -3,7 +3,6 @@ import {
   DepartureTimeSlots,
   TripOptions,
 } from "../../enums/enums.js";
-import Logging from "../../library/Logging.js";
 
 export const buildSearchQuery = (req) => {
   const { destination, departure, date, personsCount } = req.query;
@@ -44,7 +43,7 @@ export const buildFiltersQuery = (req) => {
   return query;
 };
 
-const buildStopsSearchQuery = (destination, departure) => ({
+export const buildStopsSearchQuery = (destination, departure) => ({
   $or: [
     {
       "departure.city": departure,
@@ -67,7 +66,7 @@ const buildStopsSearchQuery = (destination, departure) => ({
   ],
 });
 
-const buildTripOptionsQuery = (tripOption) => {
+export const buildTripOptionsQuery = (tripOption) => {
   let tripOptionQuery = {};
   if (tripOption !== TripOptions.ALL_TRIPS) {
     tripOptionQuery = {
@@ -81,7 +80,7 @@ const buildTripOptionsQuery = (tripOption) => {
   return tripOptionQuery;
 };
 
-const buildTimeQuery = (departureTime) => {
+export const buildTimeQuery = (departureTime) => {
   let timeQuery = {};
 
   if (departureTime !== DepartureTimeSlots.ALL_TIMES) {
@@ -97,7 +96,7 @@ const buildTimeQuery = (departureTime) => {
   return timeQuery;
 };
 
-const buildPersonsCountQuery = (availableSeats) => {
+export const buildPersonsCountQuery = (availableSeats) => {
   let personsCountQuery = {};
 
   if (availableSeats !== AvailableSeatsSlots.DOES_NOT_MATTER) {
@@ -113,7 +112,7 @@ const buildPersonsCountQuery = (availableSeats) => {
   return personsCountQuery;
 };
 
-const buildPriceQuery = (onlyFreeTrips, priceRange) => {
+export const buildPriceQuery = (onlyFreeTrips, priceRange) => {
   let priceQuery = {};
 
   if (onlyFreeTrips === "false") {
@@ -147,7 +146,7 @@ export const getTripsWithUserType = (id, trips) =>
     };
   });
 
-const getRemainingTime = (dateStr, timeStr) => {
+export const getRemainingTime = (dateStr, timeStr) => {
   const inputDate = new Date(`${dateStr}T${timeStr}:00`);
   const now = new Date();
   const timeDiff = (inputDate.getTime() - now.getTime()) / (1000 * 60);
