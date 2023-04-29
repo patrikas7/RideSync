@@ -14,7 +14,6 @@ const BookmarkDateAndTimeSelectScreen = ({ mainNavigation, token, id }) => {
   const { bookmark } = route.params;
   useScreenArrowBack(navigation, PageNames.BOOKMARK_INFORMATION, { bookmark });
 
-  console.log(bookmark);
   const handleOnNextPress = () => {
     mainNavigation.navigate(PageNames.TRIPS, {
       destination: { city: bookmark.destination },

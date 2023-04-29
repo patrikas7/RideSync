@@ -24,7 +24,6 @@ const ReviewScreen = ({ navigation, route }) => {
 
   const handleOnReview = async () => {
     setIsLoading(true);
-    console.log(recipients[activeRecipient]._id);
     const response = await postReview(token, {
       trip,
       recipient: isRecipientPassenger

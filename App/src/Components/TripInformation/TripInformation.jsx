@@ -27,6 +27,7 @@ const TripInformation = ({
   setTrip,
   userId,
   hasTripFinished,
+  prevScreen,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const action = getPossibleAction(
@@ -106,7 +107,7 @@ const TripInformation = ({
         setIsLoading(true);
         await deleteTrip(token, id);
         setIsLoading(false);
-        navigation.navigate(PageNames.TRIP_SEARCH_RESULTS);
+        navigation.navigate(prevScreen);
       }
     );
   };
@@ -121,14 +122,14 @@ const TripInformation = ({
 
   const cancelReservation = async (passengerId) => {
     setIsLoading(true);
-    const { trip } = await deleteBooking(trip._id, passengerId, token);
-    if (trip) {
+    const response = await deleteBooking(trip._id, passengerId, token);
+    if (response?.trip) {
       showMessage({
         message: "Rezervacija buvo sėkmingai atšaukta",
         type: "success",
       });
 
-      setTrip(data.trip);
+      setTrip(response.trip);
     }
     setIsLoading(false);
   };

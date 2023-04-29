@@ -89,7 +89,7 @@ const saveSearch = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ updatedSearchHistory: searchHistory });
   } catch (error) {
-    Logging.error(err);
+    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);

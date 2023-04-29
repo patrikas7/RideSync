@@ -1,7 +1,7 @@
 import { printError } from "../Utils/utils";
 import axios from "axios";
 
-export const delteTrip = async (token, id) => {
+export const deleteTrip = async (token, id) => {
   try {
     await axios.delete("/trips/information", {
       params: { id },

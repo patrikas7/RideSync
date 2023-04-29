@@ -10,7 +10,7 @@ export const buildSearchQuery = (req) => {
   const query = {
     $and: [
       { ...buildStopsSearchQuery(destination, departure) },
-      // { date: { $eq: date } },
+      { date: { $eq: date } },
       { ...(personsCount ? { personsCount } : {}) },
     ],
   };
@@ -37,6 +37,7 @@ export const buildFiltersQuery = (req) => {
       buildTimeQuery(departureTime),
       buildPersonsCountQuery(availableSeats),
       buildPriceQuery(onlyFreeTrips, priceRange),
+      { date: { $eq: date } },
     ],
   };
 

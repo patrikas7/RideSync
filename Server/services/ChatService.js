@@ -93,7 +93,7 @@ const findChat = async (usersIds) => {
     }
   }
 
-  foundChat.messages.reverse();
+  if (foundChat) foundChat.messages.reverse();
 
   return foundChat;
 };

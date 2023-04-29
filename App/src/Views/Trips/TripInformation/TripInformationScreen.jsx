@@ -73,6 +73,7 @@ const TripInformationScreen = ({ navigation, route }) => {
           navigation={navigation}
           setTrip={setTrip}
           userId={userId}
+          prevScreen={prevScreen}
         />
       )}
     </Container>

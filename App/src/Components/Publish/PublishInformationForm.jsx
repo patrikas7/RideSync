@@ -77,8 +77,6 @@ const PublishInformationForm = () => {
     );
   };
 
-  console.log(state.userCars);
-
   return (
     <View style={PublishInformationFormStyles.formContainer}>
       <View style={PublishInformationFormStyles.fieldsContainer}>

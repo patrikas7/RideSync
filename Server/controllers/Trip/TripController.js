@@ -218,10 +218,10 @@ const seatBooking = async (req, res) => {
         .status(StatusCodes.BAD_REQUEST)
         .send(ErrorMessages.EXCEEDS_SEATS_COUNT);
 
-    // if (today > trip.date)
-    //   return res
-    //     .status(StatusCodes.BAD_REQUEST)
-    //     .send(ErrorMessages.TRIP_BOOKING_DATE);
+    if (today > trip.date)
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .send(ErrorMessages.TRIP_BOOKING_DATE);
 
     trip.personsCount -= passengersCount;
     trip.passengers.push({ passenger: userId, seatsBooked: passengersCount });
