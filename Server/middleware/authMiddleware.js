@@ -1,7 +1,5 @@
 import StatusCodes from "../enums/statusCodes.js";
-
 import jwt from "jsonwebtoken";
-import Logging from "../library/Logging.js";
 
 const authMiddleware = (req, res, next) => {
   const token = req.header("Authorization");
