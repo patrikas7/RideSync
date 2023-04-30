@@ -1,7 +1,7 @@
 import BasicUser from "../../models/BasicUser.js";
 import StatusCodes from "../../enums/statusCodes.js";
 import ErrorMessages from "../../enums/errorMessages.js";
-import Logging from "../../library/Logging.js";
+import userCheckMiddleware from "../../middleware/userCheckMIddleware.js";
 
 jest.mock("../../models/BasicUser.js");
 jest.mock("../../library/Logging.js");

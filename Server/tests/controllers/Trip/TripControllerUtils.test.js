@@ -65,6 +65,7 @@ describe("TripControllerUtils", () => {
               },
             ],
           },
+          { date: { $eq: "2022-01-01" } },
           { personsCount: 2 },
         ],
       };
@@ -131,6 +132,7 @@ describe("TripControllerUtils", () => {
               ],
             },
           },
+          { date: { $eq: "2022-01-01" } },
         ],
       };
       const query = buildFiltersQuery(req);
@@ -375,6 +377,7 @@ describe("TripControllerUtils", () => {
               },
             ],
           },
+          { date: { $eq: "2023-05-01" } },
           { personsCount: "2" },
         ],
       };
