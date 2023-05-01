@@ -2,7 +2,6 @@ import ErrorMessages from "../../enums/errorMessages.js";
 import StatusCodes from "../../enums/statusCodes.js";
 import Logging from "../../library/Logging.js";
 import Trip from "../../models/Trip.js";
-import BasicUser from "../../models/BasicUser.js";
 import User from "../../models/User.js";
 import TripBookmark from "../../models/TripBookmark.js";
 import {
@@ -16,7 +15,6 @@ import {
 import { sendNotificationForRemovedUser } from "../NotificationController.js";
 
 // PAGINATIONS
-// Add rating calculation
 
 const getTrips = async (req, res) => {
   const query = buildSearchQuery(req);
@@ -399,4 +397,5 @@ export default {
   seatBooking,
   cancelBooking,
   updatedTrip,
+  findTrips,
 };
