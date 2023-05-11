@@ -1,4 +1,3 @@
-import Logging from "../library/Logging.js";
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import Message from "../models/Message.js";
@@ -6,7 +5,6 @@ import Message from "../models/Message.js";
 export const chatService = (io) => {
   io.on("connection", (socket) => {
     socket.on("joinChat", async (chatId) => {
-      Logging.info("Joined to chat:", chatId);
       socket.join(chatId);
     });
 
@@ -33,7 +31,7 @@ export const chatService = (io) => {
     });
 
     socket.on("disconnect", () => {
-      Logging.info("User disconnected:", socket.id);
+      // Logging.info("User disconnected:", socket.id);
     });
   });
 };

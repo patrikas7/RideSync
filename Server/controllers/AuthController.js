@@ -1,5 +1,4 @@
 import StatusCodes from "../enums/statusCodes.js";
-import Logging from "../library/Logging.js";
 import BasicUser from "../models/BasicUser.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
@@ -24,7 +23,6 @@ const registerUser = async (req, res) => {
       .status(StatusCodes.CREATION_SUCCESS)
       .json({ message: "created" });
   } catch (error) {
-    Logging.error(error);
     res.status(StatusCodes.UNEXPECTED_ERROR).json({ error });
   }
 };
@@ -108,7 +106,6 @@ const sendPassowrdResetCode = async (req, res) => {
 
     res.json({ message: "Reset password email sent" });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send("Įvyko netikėta klaida, bandykite vėliau");
@@ -139,7 +136,6 @@ const changePassword = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ message: "updated" });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send("Įvyko netikėta klaida, bandykite vėliau");

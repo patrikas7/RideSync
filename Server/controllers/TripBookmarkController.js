@@ -1,4 +1,3 @@
-import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import TripBookmark from "../models/TripBookmark.js";
@@ -9,10 +8,8 @@ const getUserBookmarks = async (req, res) => {
 
   try {
     const user = await BasicUser.findById(userId).populate("tripBookmarks");
-
     res.status(StatusCodes.OK).json({ bookmarks: user.tripBookmarks });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -45,7 +42,6 @@ const updateBookmark = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ tripBookmark: updatedBookmark });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -59,7 +55,6 @@ const deleteBookmark = async (req, res) => {
     await TripBookmark.findByIdAndDelete(id);
     res.status(StatusCodes.OK).json({ message: "deleted" });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);

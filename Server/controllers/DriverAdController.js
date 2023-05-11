@@ -1,4 +1,3 @@
-import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import DriverAd from "../models/DriverAd.js";
@@ -8,7 +7,6 @@ const getDriverAds = async (_, res) => {
     const driversAds = await DriverAd.find({ isActive: true }).populate("car");
     return res.status(StatusCodes.OK).json({ driversAds });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -25,7 +23,6 @@ const postDriverAd = async (req, res) => {
 
     res.status(StatusCodes.CREATION_SUCCESS).json({ driverAd });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -40,7 +37,6 @@ const updateDriverAdHandler = async (req, res) => {
     const updatedAd = await updateDriverAd(id, updateData);
     res.status(StatusCodes.OK).json({ updatedAd });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -65,7 +61,6 @@ const deleteDriverAd = async (req, res) => {
     await DriverAd.findByIdAndDelete(id);
     res.status(StatusCodes.OK).json({ message: "deleted" });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -89,7 +84,6 @@ const getDriverAd = async (req, res) => {
       },
     });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);

@@ -1,4 +1,3 @@
-import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import User from "../models/User.js";
@@ -67,7 +66,6 @@ const getUsersNotification = async (req, res) => {
         olderNotifications.length,
     });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -85,7 +83,6 @@ const getUsersUnreadNotificationsCount = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ unreadNotificationsCount });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -191,7 +188,6 @@ const getNotification = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ notification });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -202,4 +198,6 @@ export default {
   getUsersNotification,
   getUsersUnreadNotificationsCount,
   getNotification,
+  filterNotificationsByDate,
+  filterOldNotifications,
 };

@@ -5,8 +5,6 @@ import {
 import Joi from "joi";
 import StatusCodes from "../../enums/statusCodes.js";
 
-jest.mock("../../library/Logging.js");
-
 describe("ValidateSchema middleware", () => {
   const mockNext = jest.fn();
   const mockRes = {

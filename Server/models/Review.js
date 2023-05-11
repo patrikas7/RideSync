@@ -1,6 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 import { sendReviewNotification } from "../controllers/NotificationController.js";
-import Logging from "../library/Logging.js";
 import BasicUser from "./BasicUser.js";
 
 const ReviewSchema = new Schema({

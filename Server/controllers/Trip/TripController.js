@@ -1,6 +1,5 @@
 import ErrorMessages from "../../enums/errorMessages.js";
 import StatusCodes from "../../enums/statusCodes.js";
-import Logging from "../../library/Logging.js";
 import Trip from "../../models/Trip.js";
 import User from "../../models/User.js";
 import TripBookmark from "../../models/TripBookmark.js";
@@ -13,8 +12,6 @@ import {
   getRatingAndReviewCount,
 } from "./TripControllerUtils.js";
 import { sendNotificationForRemovedUser } from "../NotificationController.js";
-
-// PAGINATIONS
 
 const getTrips = async (req, res) => {
   const query = buildSearchQuery(req);
@@ -35,7 +32,6 @@ const getTrips = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ trips: tripsWithRating });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -83,7 +79,6 @@ const getTripInformation = async (req, res) => {
       },
     });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -128,7 +123,6 @@ const postTrip = async (req, res) => {
     const newTrip = await trip.save();
     res.status(StatusCodes.CREATION_SUCCESS).json({ newTrip });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -159,7 +153,6 @@ const filterTrips = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ trips: tripsWithRating });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -188,7 +181,6 @@ const deleteTrip = async (req, res) => {
     await Trip.findByIdAndDelete(id);
     res.status(StatusCodes.OK).json({ message: "deleted" });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -235,7 +227,6 @@ const seatBooking = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ trip: { ...updatedTrip.toObject(), isUserPassenger: true } });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -288,7 +279,6 @@ const cancelBooking = async (req, res) => {
       },
     });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -381,7 +371,6 @@ const updatedTrip = async (req, res) => {
       },
     });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);

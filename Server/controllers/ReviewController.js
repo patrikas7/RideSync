@@ -1,4 +1,3 @@
-import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import Review from "../models/Review.js";
@@ -17,7 +16,6 @@ const createReview = async (req, res) => {
     await review.save();
     res.status(StatusCodes.CREATION_SUCCESS).json({ review });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -43,7 +41,6 @@ const canReviewBeDone = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ doesReviewExists });
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);

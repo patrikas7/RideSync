@@ -1,6 +1,5 @@
 import ErrorMessages from "../enums/errorMessages.js";
 import StatusCodes from "../enums/statusCodes.js";
-import Logging from "../library/Logging.js";
 import Car from "../models/Car.js";
 import BasicUser from "../models/BasicUser.js";
 import Trip from "../models/Trip.js";
@@ -24,7 +23,6 @@ const postCar = async (req, res) => {
     const newCar = await car.save();
     res.status(StatusCodes.CREATION_SUCCESS).json({ car: newCar });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -52,7 +50,6 @@ const updateCar = async (req, res) => {
 
     res.status(StatusCodes.CREATION_SUCCESS).json({ car: updatedCar });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -75,7 +72,6 @@ const deleteCar = async (req, res) => {
 
     res.status(StatusCodes.OK).json({ message: "deleted" });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -91,4 +87,4 @@ const isCarInActiveTrip = async (id) => {
   return unfinishedTrips.length;
 };
 
-export default { postCar, deleteCar, updateCar };
+export default { postCar, deleteCar, updateCar, isCarInActiveTrip };

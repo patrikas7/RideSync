@@ -1,6 +1,5 @@
 import ErrorMessages from "../enums/errorMessages.js";
 import StatusCodes from "../enums/statusCodes.js";
-import Logging from "../library/Logging.js";
 import BasicUser from "../models/BasicUser.js";
 
 const userCheckMiddleware = async (req, res, next) => {
@@ -16,7 +15,6 @@ const userCheckMiddleware = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    Logging.error(error);
     return res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);

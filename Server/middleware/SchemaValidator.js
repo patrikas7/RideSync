@@ -1,5 +1,4 @@
 import StatusCodes from "../enums/statusCodes.js";
-import Logging from "../library/Logging.js";
 
 export const ValidateSchema = (schema) => {
   return async (req, res, next) => {
@@ -18,7 +17,6 @@ const validate = async (schema, body, res, next) => {
     await schema.validateAsync(body);
     next();
   } catch (error) {
-    Logging.error(error);
     return res.status(StatusCodes.CANT_PROCESS).json({ error });
   }
 };

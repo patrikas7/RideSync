@@ -1,6 +1,6 @@
 import express from "express";
 import http from "http";
-import Logging from "./library/Logging.js";
+// import Logging from "./library/Logging.js";
 import { config } from "./config/config.js";
 import AuthRouter from "./routes/AuthRoutes.js";
 import UserRouter from "./routes/UserRoutes.js";
@@ -18,7 +18,7 @@ import mongoose from "mongoose";
 import { chatService } from "./services/ChatService.js";
 import { Server } from "socket.io";
 
-const app = express();
+export const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
@@ -39,14 +39,14 @@ mongoose
 
 const startServer = () => {
   app.use((req, res, next) => {
-    Logging.info(
-      `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
-    );
+    // Logging.info(
+    //   `Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`
+    // );
 
     res.on("finish", () => {
-      Logging.info(
-        `Result - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}] - STATUS: [${res.statusCode}]`
-      );
+      // Logging.info(
+      //   `Result - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}] - STATUS: [${res.statusCode}]`
+      // );
     });
 
     next();
@@ -70,10 +70,15 @@ const startServer = () => {
     next();
   });
 
-  server.listen(config.server.port, () =>
-    Logging.info(
-      `⚡️[server]: Server is running at http://localhost:${config.server.port}`
-    )
+  server.listen(
+    config.server.port,
+    () =>
+      console.log(
+        `⚡️[server]: Server is running at http://localhost:${config.server.port}`
+      )
+    // Logging.info(
+    //   `⚡️[server]: Server is running at http://localhost:${config.server.port}`
+    // )
   );
 
   app.use("/auth", AuthRouter);

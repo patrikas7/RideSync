@@ -1,4 +1,3 @@
-import Logging from "../library/Logging.js";
 import StatusCodes from "../enums/statusCodes.js";
 import ErrorMessages from "../enums/errorMessages.js";
 import TripSearchRequest from "../models/TripSearchRequest.js";
@@ -16,7 +15,7 @@ const postTripSearchRequest = async (req, res) => {
     const newTripSearchRequest = await tripSearchRequest.save();
     res.status(StatusCodes.CREATION_SUCCESS).json({ newTripSearchRequest });
   } catch (error) {
-    Logging.error(error);
+    console.log(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -58,7 +57,6 @@ const getTripSearchRequests = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ tripSearchRequests: tripSearchRequestsWithRating });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -95,7 +93,6 @@ const getTripSearchRequest = async (req, res) => {
       },
     });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -120,7 +117,6 @@ const updateTripSearchRequest = async (req, res) => {
       tripSearchRequest: updatedTripSearchRequest,
     });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
@@ -141,7 +137,6 @@ const deleteTripSearchRequest = async (req, res) => {
     await TripSearchRequest.findByIdAndDelete(id);
     res.status(StatusCodes.OK).json({ message: "deleted" });
   } catch (error) {
-    Logging.error(error);
     res
       .status(StatusCodes.UNEXPECTED_ERROR)
       .send(ErrorMessages.UNEXPECTED_ERROR);
